@@ -297,12 +297,10 @@ export function load_data_signUp(userInfo) {
         async: false,
         success: function (response) {
             x = response
-            alert(response)
             return x;
         },
         error: function (error) {
-            console.log(error)
-            x = null;
+            x = error;
         }
     })
     return x;

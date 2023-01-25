@@ -11,6 +11,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 let cookies = new Cookies();
+let errorMsg="";
 const notify = (msg) => toast.error(msg, {
     position: "top-left",
     autoClose: 5000,
@@ -316,27 +317,33 @@ export default class Signup extends Component {
         let e, k;
         if ((e = document.getElementById("password")).value.length > 20) {
             e.style.borderColor = 'red'
+            errorMsg = "הסיסמה חייבת להיות פחות מ 20 תווים"
             return true
         }
         if ((e = document.getElementById("password")).value !== (k = document.getElementById("repeat-password")).value) {
             e.style.borderColor = 'red'
             k.style.borderColor = 'red'
+            errorMsg = "הסיסמאות אינן תואמות"
             return true
         }
         if ((e = document.getElementById("id")).value.length !== 9) {
             e.style.borderColor = 'red'
+            errorMsg = "תעודת הזהות חייבת להיות באורך 9 ספרות"
             return true;
         }
         if ((e = document.getElementById("phoneNumber")).value.length !== 10) {
             e.style.borderColor = 'red'
+            errorMsg = "מספר הטלפון חייב להיות באורך 10 ספרות"
             return true
         }
         if ((e = document.getElementById("name")).value.length > 20) {
             e.style.borderColor = 'red'
+            errorMsg = "השם חייב להיות באורך פחות מ 20 תווים"
             return true
         }
         if ((e = document.getElementById("Lastname")).value.length > 20) {
             e.style.borderColor = 'red'
+            errorMsg = "שם המשפחה חייב להיות באורך פחות מ 20 תווים"
             return true
         }
         return false;
@@ -361,11 +368,15 @@ export default class Signup extends Component {
         if (!this.correctFormat()) {
             let info = this.collectData();
             const ui = load_data_signUp(info)
-            if (ui == "ההרשמה בוצעה בהצלחה") {
+            console.log(ui);
+            if (ui.includes( "ההרשמה בוצעה בהצלחה")) {
                 window.location.href = "/login";
             }
+            else{
+                notify(ui)
+            }
         }else{
-            notify("אחד או יותר מהשדות שהוזנו אינם תקינים");
+            notify(errorMsg);
         }
     }
 }
