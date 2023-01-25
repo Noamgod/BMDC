@@ -61,12 +61,8 @@ export default class LogIn extends React.Component {
 
     toWho(e) {
         document.getElementById("dropdownMenuLink").innerHTML = e.target.innerHTML;
-        if (e.target.innerHTML.includes("רייס")) {
-            toWho = "Yr4362635@gmail.com"
-        } else if (e.target.innerHTML.includes("הרטמן")) {
-            toWho = "shimonh907@gmail.com"
-        } else if (e.target.innerHTML.includes("מזכיר")) {
-            toWho = "chedvata.ds@gmail.com"
+        if (e.target.innerHTML.includes("מזכירות")) {
+            toWho = "officebmdc@gmail.com"
         } else if (e.target.innerHTML.includes("צוות")) {
             toWho = "chdvatayeshiva@gmail.com"
         }
@@ -103,17 +99,9 @@ export default class LogIn extends React.Component {
                                         </a>
 
                                         <ul className="dropdown-menu w-100 text-break" aria-labelledby="dropdownMenuLink">
-                                            <li className="dropdown-item li text-center w-100" onClick={(e) => {
-                                                this.toWho(e)
-                                            }}> הרב יהונתן רייס- פניות בנושאים כללים הקשורים לישיבה
-                                            </li>
-                                            <li className="dropdown-item li text-center w-100 text-break"  onClick={(e) => {
-                                                this.toWho(e)
-                                            }}>הרב שמעון הרטמן -פניות בנושאים כללים, בקשות ועוד
-                                            </li>
                                             <li className="dropdown-item li text-center w-100 text-break" onClick={(e) => {
                                                 this.toWho(e)
-                                            }}>מזכיר הישיבה - בקשות בנושאי טפסים, תיאום פגישות, ביקורים וכו
+                                            }}>מזכירות הישיבה - בקשות בנושאי טפסים, תיאום פגישות, ביקורים וכו
                                             </li>
                                             <li className="dropdown-item  li text-center w-100 text-break" onClick={(e) => {
                                                 this.toWho(e)
