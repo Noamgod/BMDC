@@ -1,0 +1,38 @@
+.my-custom-scrollbar {
+    position: relative;
+    height: 200px;
+    overflow: auto;
+}
+
+.table-wrapper-scroll-y {
+    height: 70vh;
+    display: block;
+}
+
+#hr_before_table {
+    border-style: dotted none none none;
+    border-width: 20px;
+    border-color: white;
+    width: 80%
+}
+
+.fgw-sorting {
+    padding: 10px;
+}
+
+.dtHorizontalExample {
+    width: 95% !important;
+}
+
+td, th {
+    text-align: center!important;
+}
+.w-sm-100-lg-75{
+    width: 75% !important;
+}
+@media (max-width: 1200px) {
+    .w-sm-100-lg-75{
+        width: 100%!important;
+    }
+
+}

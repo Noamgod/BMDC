@@ -1,0 +1,65 @@
+.issue-box {
+    background-color: #faf8ff;
+    border: 1px solid #c9c9d0;
+    border-radius: 6px;
+    box-shadow: 0 1px 0 rgba(27, 31, 35, .04);
+    margin-bottom: 16px;
+    padding: 16px;
+    position: relative;
+    width: 90%;
+}
+
+.hr-small {
+    width: 220px;
+    margin: 0 0 3px 0;
+}
+
+.max-height-100 {
+    max-height: 100px;
+}
+
+.bell:hover {
+    animation: -shake 300ms forwards linear;
+}
+
+
+/*------------------------------*/
+/*------------animation---------*/
+/*------------------------------*/
+
+@keyframes -shake {
+    25% {
+        transform: rotate(10deg);
+    }
+    50% {
+        transform: rotate(-10deg);
+    }
+    75% {
+        transform: rotate(10deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+
+@media only screen and (max-width: 900px) {
+    .issue-box {
+        width: 90%;
+        margin: auto;
+    }
+
+    .hr-small {
+        width: 100%;
+    }
+
+}
+
+
+.bg-priority_red {
+    background-color: rgb(243, 80, 80, 1) !important;
+}
+
+.bg-priority_yellow {
+    background-color: rgb(255 217 104) !important;
+}

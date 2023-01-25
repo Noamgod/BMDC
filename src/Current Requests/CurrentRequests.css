@@ -1,0 +1,89 @@
+.searchButton {
+    border-top-right-radius: 0!important;
+    border-bottom-right-radius: 0!important;
+}
+/*.circle{*/
+/*    border-radius: 50% !important;*/
+/*}*/
+.overflow-x-hide{
+    overflow-x: hidden;
+}
+.listShadow:hover{
+    background-color: #e1e1e1;
+}
+.bg-lightgrey{
+    background-color: #e1e1e1;
+}
+.margin-top-responsive-sm{
+    margin-top: 6.5rem;
+}
+
+.listShadow2{
+    animation: -slideFromLeft 1.2s;
+}
+.listShadow1{
+    animation: -slideFromRight 1.2s;
+}
+
+@keyframes -slideFromLeft {
+    0%{transform: translateX(-100%)}
+    100%{transform: translateX(0%)}
+}
+@keyframes -slideFromRight {
+     0%{transform: translateX(100%)}
+     100%{transform: translateX(0)}
+ }
+
+
+@keyframes -zoom {
+    0%{transform: scale(1, 1)}
+    50%{transform: scale(1.05, 1.05)}
+    100%{transform: scale(1.1, 1.1)}
+}
+#searchInput {
+    border-top-left-radius: 0!important;
+    border-bottom-left-radius: 0!important;
+    min-width: 40%!important;
+}
+
+.pickerInput {
+    height: 35px !important;
+}
+
+.list-group{
+    padding-right: 0!important;
+}
+
+
+@media (max-width: 1200px) {
+
+    .margin-top-responsive-sm{
+        margin-top: 6.5rem!important;
+    }
+
+    .pickerInput{
+        width: 100%!important;
+    }
+
+    #headerDiv{
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-right: 3px!important;
+    }
+    #outerBar{
+        width: 80% !important;
+    }
+
+    .sbutton{
+        margin-top: 1px!important;
+        margin-left: 0!important;
+        margin-right: 0!important;
+    }
+    #buttonContainer{
+        flex-direction: column!important;
+        justify-content: end!important;
+    }
+}
+.sbutton{
+    margin-left: 0.25rem!important;
+}

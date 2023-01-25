@@ -1,0 +1,48 @@
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+     display: none;
+    -webkit-appearance: none;
+     margin: 0;
+}
+
+
+input[type=number] {
+    -moz-appearance:textfield;
+}
+.SignUpBackground{
+    overflow: hidden;
+    background-color: #eeeeee;
+    padding: 5vh;
+    --bs-popover-body-color: #eeeeee ;
+}
+
+#first-container{
+border-top-left-radius: 0 !important;
+border-bottom-left-radius: 0!important;
+}
+#second-container{
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0!important;
+}
+
+.input-icon{
+    margin-right:20px !important; ;
+    position: center;
+}
+
+
+@media (max-width: 992px) {
+#s-main-div{
+    flex-direction:column !important;
+}
+    #first-container{
+        border-top-left-radius:0.40rem  !important;
+        border-bottom-left-radius: 0 !important;
+        border-bottom-right-radius: 0!important;
+    }
+    #second-container{
+        border-top-right-radius: 0 !important;
+        border-top-left-radius: 0!important;
+        border-bottom-right-radius: 0.40rem !important;
+    }
+}

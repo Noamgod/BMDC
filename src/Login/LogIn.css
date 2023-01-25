@@ -1,0 +1,10 @@
+#mainLoginDiv{
+    background-image: url("../Images/loginImage.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+.li{
+    overflow-wrap: break-word;
+
+}

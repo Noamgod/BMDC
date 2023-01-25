@@ -1,0 +1,46 @@
+.edit-box {
+    background-color: #faf8ff;
+    border: 1px solid #c9c9d0;
+    border-radius: 6px;
+    box-shadow: 0 1px 0 rgba(27, 31, 35, .04);
+    margin-bottom: 16px;
+    margin-right: 1.5rem;
+    position: relative;
+    height: 95vh;
+}
+
+.l-25 {
+    left: 25px !important;
+}
+
+@media only screen and (max-width: 992px) {
+    .all-percent,.hr-phone {
+        display: none !important;
+        visibility:hidden !important;
+    }
+    .phone {
+        position: sticky;
+        flex-direction: column !important;
+    }
+
+    .edit-box {
+        position: sticky;
+        width: 90% !important;
+        height: 40% !important;
+        margin-top: 2% !important;
+    }
+    .edit-box-inner {
+        justify-content:space-between;
+        flex-direction: row !important;
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+    .l-25 {
+        left: 0!important;
+        margin: auto!important;
+    }
+    .issue-box {
+        width: 100% !important;
+    }
+}
