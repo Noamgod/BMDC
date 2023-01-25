@@ -7,7 +7,7 @@ import DatePicker from "react-datepicker";
 import '@fortawesome/fontawesome-free/js/all.js';
 import "react-datepicker/dist/react-datepicker.css";
 import Cookies from "universal-cookie";
-import { ToastContainer, toast } from 'react-toastify';
+import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 let cookies = new Cookies();
@@ -34,6 +34,10 @@ function resetElements() {
     document.getElementById("birthday").style.borderColor = 'black'
     document.getElementById("cycle").style.borderColor = 'black'
     document.getElementById("class").style.borderColor = 'black'
+    document.getElementById("B").style.borderColor = 'black'
+    document.getElementById("B").checked = 'false'
+    document.getElementById("G").style.borderColor = 'black'
+    document.getElementById("G").checked = 'false'
 }
 
 function offCheckSlide() {
@@ -185,16 +189,16 @@ export default class Signup extends Component {
                             <p className={"text-center h4 text-primary mt-4"}> פרטיים כלליים </p>
                             <div className={"d-flex flex-row w-100 justify-content-center my-2"}>
                                 <div className={"d-flex flex-column"}>
-                                <div className="d-flex flex-row align-items-center mb-4 my-2 ">
-                                    <i className="fas fa-envelope fa-lg me-3 fa-fw mb-4"/>
-                                    <div className="form-outline flex-fill mb-0">
-                                        <input type="email" id="email"
-                                               className="form-control shadow"
-                                               required={true}/>
-                                        <label className="form-label text-primary"
-                                               htmlFor="email">Email</label>
+                                    <div className="d-flex flex-row align-items-center mb-4 my-2 ">
+                                        <i className="fas fa-envelope fa-lg me-3 fa-fw mb-4"/>
+                                        <div className="form-outline flex-fill mb-0">
+                                            <input type="email" id="email"
+                                                   className="form-control shadow"
+                                                   required={true}/>
+                                            <label className="form-label text-primary"
+                                                   htmlFor="email">Email</label>
+                                        </div>
                                     </div>
-                                </div>
 
                                     <div className="d-flex flex-row align-items-center mb-4">
                                         <i className="fas fa-key fa-lg me-3 fa-fw mb-4"/>
@@ -257,13 +261,33 @@ export default class Signup extends Component {
                                             />
 
                                             <datalist id={"rabbi"}>
-                                                <option value={"הרב חיים בר זכאי"}/>
+                                                <option value={"הרב יצחק מאיר יעבץ"}/>
                                                 <option value={"הרב אהרון לוי"}/>
                                                 <option value={"הרב ארי מור"}/>
                                                 <option value={"הרב אהרון מילר"}/>
                                             </datalist>
                                             <label className="form-label text-primary"
-                                                   htmlFor="cycle">שיעור</label>
+                                                   htmlFor="cycle">שיעור בסדר א'</label>
+                                        </div>
+                                    </div>
+                                    <div
+                                        className="d-flex flex-row align-items-center mb-4">
+                                        <i className="fas fa-book fa-lg me-3 fa-fw mb-4"/>
+                                        <div className="form-outline  flex-fill mb-0">
+                                            סדר נוסף:
+                                            <input id="B"
+                                                   className="form-control shadow col-sm-6 custom-select custom-select-sm"
+                                                   type={"radio"}
+
+                                            />
+                                            <label className="form-label text-primary"
+                                                   htmlFor="B"> ב'</label>
+                                            <input id="G"
+                                                   className="form-control shadow col-sm-6 custom-select custom-select-sm"
+                                                                                      type={"radio"}
+                                        />
+                                            <label className="form-label text-primary"
+                                                   htmlFor="G"> ב'</label>
                                         </div>
                                     </div>
                                 </div>
@@ -290,7 +314,7 @@ export default class Signup extends Component {
                         <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                             <button type="button"
                                     className="btn btn-primary btn-lg"
-                                    onClick={()=>{
+                                    onClick={() => {
                                         this.setStateInfo()
                                     }}
                             >בצע רישום
@@ -300,10 +324,10 @@ export default class Signup extends Component {
                                 autoClose={5000}
                                 hideProgressBar={false}
                                 newestOnTop={false}
-                                closeOnClick = {true}
+                                closeOnClick={true}
                                 rtl={false}
-                                draggable ={true}
-                                pauseOnHover = {true}
+                                draggable={true}
+                                pauseOnHover={true}
                                 theme="colored"
                             />
                         </div>
@@ -346,6 +370,11 @@ export default class Signup extends Component {
             errorMsg = "שם המשפחה חייב להיות באורך פחות מ 20 תווים"
             return true
         }
+        if ((e = document.getElementById("B")).checked ===false && (k = document.getElementById("G")).checked ===false)  {
+            e.style.borderColor = 'red'
+            k.style.borderColor = 'red'
+            return true
+        }
         return false;
     }
 
@@ -358,8 +387,10 @@ export default class Signup extends Component {
             phone_number: document.getElementById("phoneNumber").value,
             password: document.getElementById("password").value,
             birthday: formatDate(this.state.date),
-            cycle:document.getElementById("cycle").value,
-            class :document.getElementById("class").value
+            cycle: document.getElementById("cycle").value,
+            class: document.getElementById("class").value,
+            oderClass: document.getElementById("B").value.checked ===true ? "B" : "G"
+            //B = סדר ב' , G = סדר ג'
         }
     }
 
@@ -368,7 +399,6 @@ export default class Signup extends Component {
         if (!this.correctFormat()) {
             let info = this.collectData();
             const ui = load_data_signUp(info)
-            console.log(ui);
             if (ui.includes( "ההרשמה בוצעה בהצלחה")) {
                 window.location.href = "/login";
             }
