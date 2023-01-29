@@ -290,7 +290,8 @@ export function load_data_signUp(userInfo) {
             phone_number: userInfo.phone_number,
             birthday: userInfo.birthday,
             cycle: userInfo.cycle,
-            class: userInfo.class
+            class: userInfo.class,
+            secondClass: userInfo.secondClass,
         },
         dataType: 'json',
         timeout: 2000,

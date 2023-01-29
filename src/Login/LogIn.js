@@ -292,7 +292,7 @@ export default class LogIn extends React.Component {
 
                                         <div className="mb-md-5 mt-md-4 pb-5">
 
-                                            <h2 className="fw-bold mb-2 text-uppercase">חדוותא</h2>
+                                            <h2 className="fw-bold mb-2 text-uppercase">דרך חיים</h2>
                                             <p className="text-white-50 mb-5">נא להזין את האימייל והסיסמה שלך</p>
 
                                             <div className="form-outline form-white mb-4">
@@ -355,10 +355,20 @@ export default class LogIn extends React.Component {
                                             <NavLink to={"/sign-up"}
                                                      className="text-white-50 fw-bold">להרשמה לחץ כאן</NavLink>
                                         </div>
-                                        <div className={"mt-3"}>
-                                            <button type="button" className="btn-lg btn-warning center" data-toggle="modal"
-                                                    data-target="#contactUsFromLogIn">צור קשר
-                                            </button>
+                                        <div className={"d-flex flex-row justify-content-center"}>
+                                            <div className={"mt-3"}>
+                                                <button type="button" className="btn-lg btn-warning center" data-toggle="modal"
+                                                        data-target="#contactUsFromLogIn">צור קשר
+                                                </button>
+                                            </div>
+                                            <div className={"mt-3"}>
+                                                <button type="button" className="btn-lg btn-warning center"
+                                                onClick={(e) => {
+                                                    window.open("https://www.matara.pro/nedarimplus/online/?mosad=7004305");
+                                                }}
+                                                > לתרומה
+                                                </button>
+                                            </div>
                                         </div>
 
                                     </div>

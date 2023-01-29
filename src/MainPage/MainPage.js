@@ -1,5 +1,4 @@
 import React from "react";
-import logo from "../Images/logo2.png"
 import Cookies from "universal-cookie"
 import ripple from "ripple-effects"
 import 'bootstrap/dist/css/bootstrap.css';
@@ -209,7 +208,7 @@ export default class MainPage extends React.Component {
                             <div className={"collapse navbar-collapse"} id={"navbarTogglerDemo01"}>
                                 <ul className={"nav navbar-collapse"}>
                                     <img style={{maxHeight: "65px", maxWidth: "20%"}}
-                                         src={logo}
+                                         src={"https://Chedvatatest.com/assets/logo.png"}
                                          className={"img-responsive rounded navbar-brand scale-logo-big"} alt={"Logo"}/>
                                     {this.getButtons()}
 

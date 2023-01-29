@@ -11,7 +11,7 @@ import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 let cookies = new Cookies();
-let errorMsg="";
+let errorMsg = "";
 const notify = (msg) => toast.error(msg, {
     position: "top-left",
     autoClose: 5000,
@@ -236,12 +236,10 @@ export default class Signup extends Component {
                                             />
 
                                             <datalist id={"c"}>
-                                                <option value={"א  2017"}/>
-                                                <option value={"ב  2018"}/>
-                                                <option value={"ג  2019"}/>
-                                                <option value={"ד  2020"}/>
-                                                <option value={"ה  2021"}/>
-                                                <option value={"ו  2022"}/>
+                                                <option value={"מחזור י - תשפ\"ג"}/>
+                                                <option value={"מחזור ט - תשפ\"ב"}/>
+                                                <option value={"מחזור ח - תשפ\"א"}/>
+                                                <option value={"מחזור תש\"פ"}/>
                                             </datalist>
                                             <label className="form-label text-primary"
                                                    htmlFor="cycle">מחזור</label>
@@ -262,9 +260,9 @@ export default class Signup extends Component {
 
                                             <datalist id={"rabbi"}>
                                                 <option value={"הרב יצחק מאיר יעבץ"}/>
-                                                <option value={"הרב אהרון לוי"}/>
-                                                <option value={"הרב ארי מור"}/>
-                                                <option value={"הרב אהרון מילר"}/>
+                                                <option value={"הרב יצחק ברוך רוזנבלום"}/>
+                                                <option value={"הרב נתנאל עמר"}/>
+
                                             </datalist>
                                             <label className="form-label text-primary"
                                                    htmlFor="cycle">שיעור בסדר א'</label>
@@ -273,21 +271,30 @@ export default class Signup extends Component {
                                     <div
                                         className="d-flex flex-row align-items-center mb-4">
                                         <i className="fas fa-book fa-lg me-3 fa-fw mb-4"/>
-                                        <div className="form-outline  flex-fill mb-0">
+                                        <div className="d-flex flex-row mb-0">
                                             סדר נוסף:
                                             <input id="B"
-                                                   className="form-control shadow col-sm-6 custom-select custom-select-sm"
+                                                   className="m-1"
                                                    type={"radio"}
-
+                                                   onChange={() => {
+                                                       if (document.getElementById("B").checked) {
+                                                           document.getElementById("G").checked = false;
+                                                       }
+                                                   }}
                                             />
                                             <label className="form-label text-primary"
                                                    htmlFor="B"> ב'</label>
                                             <input id="G"
-                                                   className="form-control shadow col-sm-6 custom-select custom-select-sm"
-                                                                                      type={"radio"}
-                                        />
+                                                   className=" m-1 "
+                                                   type={"radio"}
+                                                   onChange={() => {
+                                                       if (document.getElementById("G").checked) {
+                                                           document.getElementById("B").checked = false;
+                                                       }
+                                                   }}
+                                            />
                                             <label className="form-label text-primary"
-                                                   htmlFor="G"> ב'</label>
+                                                   htmlFor="G"> ג'</label>
                                         </div>
                                     </div>
                                 </div>
@@ -339,6 +346,9 @@ export default class Signup extends Component {
 
     correctFormat = () => {
         let e, k;
+        if(document.getElementById("flexSwitchCheckDefault").checked === false){
+            return true
+        }
         if ((e = document.getElementById("password")).value.length > 20) {
             e.style.borderColor = 'red'
             errorMsg = "הסיסמה חייבת להיות פחות מ 20 תווים"
@@ -370,9 +380,10 @@ export default class Signup extends Component {
             errorMsg = "שם המשפחה חייב להיות באורך פחות מ 20 תווים"
             return true
         }
-        if ((e = document.getElementById("B")).checked ===false && (k = document.getElementById("G")).checked ===false)  {
+        if ((e = document.getElementById("B")).checked === false && (k = document.getElementById("G")).checked === false) {
             e.style.borderColor = 'red'
             k.style.borderColor = 'red'
+            errorMsg = "חובה לבחור סדר"
             return true
         }
         return false;
@@ -389,7 +400,7 @@ export default class Signup extends Component {
             birthday: formatDate(this.state.date),
             cycle: document.getElementById("cycle").value,
             class: document.getElementById("class").value,
-            oderClass: document.getElementById("B").value.checked ===true ? "B" : "G"
+            secondClass: document.getElementById("B").value.checked === true ? "B" : "G"
             //B = סדר ב' , G = סדר ג'
         }
     }
@@ -399,13 +410,12 @@ export default class Signup extends Component {
         if (!this.correctFormat()) {
             let info = this.collectData();
             const ui = load_data_signUp(info)
-            if (ui.includes( "ההרשמה בוצעה בהצלחה")) {
+            if (ui.includes("ההרשמה בוצעה בהצלחה")) {
                 window.location.href = "/login";
-            }
-            else{
+            } else {
                 notify(ui)
             }
-        }else{
+        } else {
             notify(errorMsg);
         }
     }
