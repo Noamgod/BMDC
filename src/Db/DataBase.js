@@ -346,11 +346,9 @@ export function getUserAttendanceHistory(email, password, that) {
         timeout: 2000,
         async: true,
         success: function (response) {
-            console.log("response is getAtted ", response)
             that.setState({loadingAttendanceHistory: false, attendanceHistory: response})
         },
         error: function (error) {
-            console.log("error getAtted ", error)
         }
     })
     return x;

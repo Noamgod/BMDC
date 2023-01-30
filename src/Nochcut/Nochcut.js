@@ -16,7 +16,7 @@ import {forEach} from "react-bootstrap/ElementChildren";
 
 
 let idForEdit;
-export default class MyComponent extends Component {
+export default class Nochecut extends Component {
     constructor(props) {
         super(props);
         this.state = {

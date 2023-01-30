@@ -380,7 +380,12 @@ export default class Signup extends Component {
             errorMsg = "שם המשפחה חייב להיות באורך פחות מ 20 תווים"
             return true
         }
-        if ((e = document.getElementById("B")).checked === false && (k = document.getElementById("G")).checked === false) {
+        if ((e = document.getElementById("email")).value.length > 30) {
+            e.style.borderColor = 'red'
+            errorMsg = "האימייל חייב להיות באורך פחות מ 30 תווים"
+            return true
+        }
+        if ((e = document.getElementById("B")).checked ===false && (k = document.getElementById("G")).checked ===false)  {
             e.style.borderColor = 'red'
             k.style.borderColor = 'red'
             errorMsg = "חובה לבחור סדר"
