@@ -1,16 +1,18 @@
 import React, {Component} from 'react';
 import "./Nochcut.css"
 import {
-    load_data_getRegisteredStudentsForRabbiByDate,
-    load_data_getUnRegisteredStudentsForRabbiByDate,
-    insert_into_attendance,
-    update_student_attendance,
-    load_data_daysOfAttendance_for_all_students_to_nochcut,
-    load_data_daysInMonth_for_Nochcut, load_data_getAllUserAttendanceHistoryFor_nochcut
+    load_data_getRegisteredStudentsForRabbiByDate,//Finished
+    load_data_getUnRegisteredStudentsForRabbiByDate,//Finished
+    insert_into_attendance, //need to check if teacher but don't have to do it because it's not that important
+    update_student_attendance,//need to check if teacher but don't have to do it because it's not that important
+    load_data_daysOfAttendance_for_all_students_to_nochcut,//No need to check if admin but need to check if student (priority low/mid)
+    load_data_daysInMonth_for_Nochcut,//Finished
+    load_data_getAllUserAttendanceHistoryFor_nochcut//Finished
 } from "../Db/DataBase";
 import ScaleLoader from "react-spinners/ScaleLoader";
 import {formatDate} from "../SendRequest/SendRequest";
 import {MyCalendar} from "../Components/Calendar/Calendar";
+import {forEach} from "react-bootstrap/ElementChildren";
 
 
 let idForEdit;
@@ -29,7 +31,8 @@ export default class MyComponent extends Component {
             registeredStudents: null,
             map_attendance: "",
             map_attendanceHistory: "",
-            daysInMonth:""
+            daysInMonth:"",
+
         }
     }
 
@@ -49,17 +52,17 @@ export default class MyComponent extends Component {
             )
         }
 
-        let rabbi = this.state.userProps.first_name + " " + this.state.userProps.last_name;
         if (this.state.runAjax) {
             load_data_getAllUserAttendanceHistoryFor_nochcut(this.props.userProps.email,this.props.userProps.password ,this)
-            load_data_getRegisteredStudentsForRabbiByDate(rabbi, formatDate(this.state.date), this)
-            load_data_getUnRegisteredStudentsForRabbiByDate(rabbi, formatDate(this.state.date), this)
+            load_data_getRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this)
+            load_data_getUnRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this)
             load_data_daysOfAttendance_for_all_students_to_nochcut(this)
             load_data_daysInMonth_for_Nochcut(this.props.userProps.email,this.props.userProps.password ,this)
             this.setState({runAjax: false})
         }
         return (
             <>
+
                 <div className={"margin-top-responsive"}>
                     {<MyCalendar that={this}/>}
                 </div>
@@ -98,13 +101,36 @@ export default class MyComponent extends Component {
                             </div>
                         </div>
                     </div>
+
                     <div>
-                        <h5 className={"text-center fw-bold"}>{this.state.date.toLocaleDateString()}</h5>
+                        <h5 className={"text-center fw-bold text-white"}>{this.state.date.toLocaleDateString()}</h5>
+                        <div className={"container-fluid d-flex w-95 flex-row justify-content-start"}>
+                            {this.createBoxes()}
+                        </div>
                         {this.GetWholeTable()}
                     </div>
                 </div>
             </>
         );
+    }
+
+    createBoxes = () => {
+        let boxes = [];
+        for (let i = 0; i < 3; i++) {
+            boxes.push(
+                <div className="box text-center d-flex" onClick={(e)=>{
+                    let box = document.querySelectorAll(".box")
+                    box.forEach((element)=> {
+                        element.classList.remove("box-selected")
+                    })
+                    e.currentTarget.classList.add("box-selected");
+                }}>
+                    <h3 className="m-auto">Testing</h3>
+                </div>
+            )
+
+        }
+        return boxes;
     }
 
     GetWholeTable = () => {

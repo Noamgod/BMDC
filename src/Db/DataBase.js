@@ -494,7 +494,7 @@ export function load_data_deleteRequest(email, password, date) {
 
 }
 
-export function load_data_updateRequestByQuery(email, password, date, id, update) {
+export function load_data_updateRequestByQuery(email, password, date, id, update ) {
     let x = null
     $.ajax({
         url: "Adb.php",
@@ -525,6 +525,7 @@ export function load_data_lowerDaysOff(email, password, id, update) {
         async: false,
         success: function (response) {
             x = response
+            e.disabled = false;
             return response
         },
         error: function (error) {
@@ -1167,12 +1168,12 @@ export function insert_into_attendance(uuid, status, date, first_name, last_name
     return x;
 }
 
-export function load_data_getRegisteredStudentsForRabbiByDate(Rabbi, date, that) {
+export function load_data_getRegisteredStudentsForRabbiByDate(email, password, date, that) {
     let x;
     $.ajax({
         url: "Udb.php",
         type: "POST",
-        data: {type: "get_registered_students_for_rabbi", Rabbi: Rabbi, date: date},
+        data: {type: "get_registered_students_for_rabbi",email:email, password:password, date: date},
         dataType: 'json',
         timeout: 2000,
         async: true,
@@ -1191,12 +1192,12 @@ export function load_data_getRegisteredStudentsForRabbiByDate(Rabbi, date, that)
     return x;
 }
 
-export function load_data_getUnRegisteredStudentsForRabbiByDate(rabbi, date, that) {
+export function load_data_getUnRegisteredStudentsForRabbiByDate(email, password, date, that) {
     let x;
     $.ajax({
         url: "Udb.php",
         type: "POST",
-        data: {type: "get_unregistered_students_for_rabbi", Rabbi: rabbi, date: date},
+        data: {type: "get_unregistered_students_for_rabbi", email:email, password:password, date: date},
         dataType: 'json',
         timeout: 2000,
         async: true,
@@ -1683,6 +1684,25 @@ export function load_data_countStatus(email, password, role, that, tickets) {
         }
     })
 }
+// export function load_data_getTeacherSederList(email, password, that){
+//     let x = null;
+//     $.ajax({
+//         url: "Udb.php",
+//         type: "POST",
+//         data:{type:"getTeacherSederList", password:password, email:email},
+//         dataType:'json',
+//         timeout:2000,
+//         async:true,
+//         success:function (response) {
+//             x=response;
+//             that.setState({teacherSederList:x})
+//         },
+//         error:function (error) {
+//             console.log("getTeacherSederList not working: ", error)
+//
+//         }
+//     })
+// }
 
 
 

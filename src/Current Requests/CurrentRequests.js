@@ -327,10 +327,12 @@ export default class CurrentRequests extends Component {
         if (approve == 1 || approve == 2) {
             return (
                 <div id={"buttonContainer"} className={"flex-row justify-content-evenly"}>
-                    <button onClick={() => {
-                        updateRequest(this.props.userProps.email, this.props.userProps.password, date, id, 0, approve)
+                    <button disabled={false} onClick={() => {
+
+                        updateRequest(this.props.userProps.email, this.props.userProps.password, date, id, 0, approve )
                         let msg = "שים לב!! בקשתך בתאריך " + `${date}` + " מבוטלת ונשלחה לחישוב מחדש על ידי אמנון\n כרגע בתאריך זה עליך להתייצב בישיבה כרגיל עד להודעה אחרת מהמערכת. המשך יום מקסים "
                         sendMail(this.props.userProps.email, this.props.userProps.password,email, "בקשת שחרורך מבוטלת!", msg)
+                        e.currentTarget.disabled=false;
                         this.setState({runAjax: true})
                     }} className={"sbutton btn btn-danger text-center "}>
                         איתחול
@@ -338,10 +340,12 @@ export default class CurrentRequests extends Component {
                 </div>)
         } else return (
             <div id={"buttonContainer"} className={"flex-row justify-content-evenly"}>
-                <button onClick={() => {
-                    updateRequest(this.props.userProps.email, this.props.userProps.password, date, id, 1, approve)
+                <button disabled={false} onClick={( ) => {
+
+                    updateRequest(this.props.userProps.email, this.props.userProps.password, date, id, 1, approve )
                     let msg = " בקשתך בתאריך " + `${date}` + " אושרה. המשך יום מקסים "
                     sendMail(this.props.userProps.email, this.props.userProps.password,email, "בקשת שחרור", msg)
+                    e.currentTarget.disabled = false;
                     this.setState({runAjax: true})
                 }} className={"sbutton btn btn-success text-center "}>
                     קבל
