@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './Signup.css'
 import ripple from "ripple-effects"
-import {load_data_signUp} from "../Db/DataBase"
+import {load_data_getClasses, load_data_signUp} from "../Db/DataBase"
 import DatePicker from "react-datepicker";
 import '@fortawesome/fontawesome-free/js/all.js';
 import "react-datepicker/dist/react-datepicker.css";
@@ -11,7 +11,8 @@ import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 let cookies = new Cookies();
-let errorMsg = "";
+let errorMsg = "שדה חובה";
+let elements = [];
 const notify = (msg) => toast.error(msg, {
     position: "top-left",
     autoClose: 5000,
@@ -22,6 +23,7 @@ const notify = (msg) => toast.error(msg, {
     progress: undefined,
     theme: "colored",
 });
+
 
 function resetElements() {
     document.getElementById("name").style.borderColor = 'black'
@@ -34,10 +36,10 @@ function resetElements() {
     document.getElementById("birthday").style.borderColor = 'black'
     document.getElementById("cycle").style.borderColor = 'black'
     document.getElementById("class").style.borderColor = 'black'
-    document.getElementById("B").style.borderColor = 'black'
+   /* document.getElementById("B").style.borderColor = 'black'
     document.getElementById("B").checked = 'false'
     document.getElementById("G").style.borderColor = 'black'
-    document.getElementById("G").checked = 'false'
+    document.getElementById("G").checked = 'false'*/
 }
 
 function offCheckSlide() {
@@ -51,6 +53,7 @@ export default class Signup extends Component {
             date: new Date("2002-01-01"),
             min: new Date("2000-01-01"),
             max: new Date("2007-01-01"),
+            classes: null,
             TOS: false
         }
     }
@@ -68,7 +71,10 @@ export default class Signup extends Component {
             }
             this.props.that.setState({userProps: null})
         }
-
+        if (this.state.classes == null) {
+            console.log(this.state.classes)
+            load_data_getClasses(this)
+        }
         return (
             <div>
                 <div className="modal" tabIndex="-1" id={"promp"}>
@@ -268,34 +274,45 @@ export default class Signup extends Component {
                                                    htmlFor="cycle">שיעור בסדר א'</label>
                                         </div>
                                     </div>
-                                    <div
-                                        className="d-flex flex-row align-items-center mb-4">
-                                        <i className="fas fa-book fa-lg me-3 fa-fw mb-4"/>
-                                        <div className="d-flex flex-row mb-0">
-                                            סדר נוסף:
-                                            <input id="B"
-                                                   className="m-1"
-                                                   type={"radio"}
-                                                   onChange={() => {
-                                                       if (document.getElementById("B").checked) {
-                                                           document.getElementById("G").checked = false;
-                                                       }
-                                                   }}
-                                            />
-                                            <label className="form-label text-primary"
-                                                   htmlFor="B"> ב'</label>
-                                            <input id="G"
-                                                   className=" m-1 "
-                                                   type={"radio"}
-                                                   onChange={() => {
-                                                       if (document.getElementById("G").checked) {
-                                                           document.getElementById("B").checked = false;
-                                                       }
-                                                   }}
-                                            />
-                                            <label className="form-label text-primary"
-                                                   htmlFor="G"> ג'</label>
+                                    <div className="d-flex flex-row align-items-center mb-4">
+                                        <i className="fas fa-book fa-lg me-3 fa-fw mx-1"/>
+                                        {/*<div className="d-flex flex-row mb-0">*/}
+                                        {/*    סדרים נוספים:*/}
+                                        {/*    <input id="B"*/}
+                                        {/*           className="m-1"*/}
+                                        {/*           type={"radio"}*/}
+                                        {/*           onChange={() => {*/}
+                                        {/*               if (document.getElementById("B").checked) {*/}
+                                        {/*                   document.getElementById("G").checked = false;*/}
+                                        {/*               }*/}
+                                        {/*           }}*/}
+                                        {/*    />*/}
+                                        {/*    <label className="form-label text-primary"*/}
+                                        {/*           htmlFor="B"> ב'</label>*/}
+                                        {/*    <input id="G"*/}
+                                        {/*           className=" m-1 "*/}
+                                        {/*           type={"radio"}*/}
+                                        {/*           onChange={() => {*/}
+                                        {/*               if (document.getElementById("G").checked) {*/}
+                                        {/*                   document.getElementById("B").checked = false;*/}
+                                        {/*               }*/}
+                                        {/*           }}*/}
+                                        {/*    />*/}
+                                        {/*    <label className="form-label text-primary"*/}
+                                        {/*           htmlFor="G"> ג'</label>*/}
+                                        {/*</div>*/}
+
+
+                                        <div className="dropdown">
+                                            <button type="button" className="btn btn-primary dropdown-toggle"
+                                                    data-bs-toggle="dropdown" aria-expanded="false"
+                                                    data-bs-auto-close="outside">
+                                                סדרים נוספים
+                                            </button>
+                                            {this.getAllClasses()}
                                         </div>
+
+
                                     </div>
                                 </div>
                             </div>
@@ -344,9 +361,53 @@ export default class Signup extends Component {
         );
     }
 
+
+    getAllClasses = () => {
+        if (this.state.classes == null) {
+            return (<div className={"text-center"}>
+                <div className="spinner-border text-primary" role="status">
+                </div>
+            </div>)
+        } else {
+            let listOfClasses = this.state.classes;
+            listOfClasses.shift();
+            for (const i in listOfClasses) {
+                if (listOfClasses[i].default == 1) {
+                    elements.push(
+                        <div className="d-flex justify-content-between w-75 m-auto">
+                            <label className="form-label text-primary"
+                                   htmlFor={this.state.classes[i].name}> {this.state.classes[i].name}</label>
+                            <input id={this.state.classes[i].name}
+                                   className="m-1 form-check-input"
+                                   type={"checkbox"}
+                                   defaultChecked={true}
+                                   disabled={true}
+                            />
+                        </div>
+                    )
+                } else {
+                    elements.push(
+                        <div className="d-flex justify-content-between w-75 m-auto">
+                            <label className="form-label text-primary"
+                                   htmlFor={this.state.classes[i].name}> {this.state.classes[i].name}</label>
+                            <input id={this.state.classes[i].name}
+                                   className="m-1 form-check-input"
+                                   type={"checkbox"}/>
+                        </div>
+                    )
+                }
+            }
+            return (<div className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    {elements}
+                </div>
+            )
+        }
+    }
+
     correctFormat = () => {
         let e, k;
-        if(document.getElementById("flexSwitchCheckDefault").checked === false){
+        if (document.getElementById("flexSwitchCheckDefault").checked === false) {
+            errorMsg = "אנא אשר את תנאי השימוש לפני הרשמה"
             return true
         }
         if ((e = document.getElementById("password")).value.length > 20) {
@@ -385,29 +446,36 @@ export default class Signup extends Component {
             errorMsg = "האימייל חייב להיות באורך פחות מ 30 תווים"
             return true
         }
-        if ((e = document.getElementById("B")).checked ===false && (k = document.getElementById("G")).checked ===false)  {
-            e.style.borderColor = 'red'
-            k.style.borderColor = 'red'
-            errorMsg = "חובה לבחור סדר"
-            return true
-        }
-        return false;
+        // if ((e = document.getElementById("B")).checked ===false && (k = document.getElementById("G")).checked ===false)  {
+        //     e.style.borderColor = 'red'
+        //     k.style.borderColor = 'red'
+        //     errorMsg = "חובה לבחור סדר"
+        //     return true
+        // }
     }
 
     collectData = () => {
-        return {
-            first_name: document.getElementById("name").value,
-            last_name: document.getElementById("Lastname").value,
-            email: document.getElementById("email").value,
-            id: document.getElementById("id").value,
-            phone_number: document.getElementById("phoneNumber").value,
-            password: document.getElementById("password").value,
-            birthday: formatDate(this.state.date),
-            cycle: document.getElementById("cycle").value,
-            class: document.getElementById("class").value,
-            secondClass: document.getElementById("B").value.checked === true ? "B" : "G"
-            //B = סדר ב' , G = סדר ג'
+        let list = []
+        for (const i in elements) {
+            if (document.getElementById(elements[i].props.children[1].props.id).checked) {
+                list.push(elements[i].props.children[1].props.id)
+            }
         }
+        console.log(list,"list")
+        return (
+            {
+                first_name: document.getElementById("name").value,
+                last_name: document.getElementById("Lastname").value,
+                email: document.getElementById("email").value,
+                id: document.getElementById("id").value,
+                phone_number: document.getElementById("phoneNumber").value,
+                password: document.getElementById("password").value,
+                birthday: formatDate(this.state.date),
+                cycle: document.getElementById("cycle").value,
+                class: document.getElementById("class").value,
+                listOfClasses: list,
+            }
+        )
     }
 
     setStateInfo = () => {

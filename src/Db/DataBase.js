@@ -291,7 +291,7 @@ export function load_data_signUp(userInfo) {
             birthday: userInfo.birthday,
             cycle: userInfo.cycle,
             class: userInfo.class,
-            secondClass: userInfo.secondClass,
+            listOfClasses: userInfo.listOfClasses,
         },
         dataType: 'json',
         timeout: 2000,
@@ -512,6 +512,27 @@ export function load_data_updateRequestByQuery(email, password, date, id, update
     return x;
 }
 
+export function load_data_getClasses(that){
+    let x = null
+    $.ajax({
+        url: "Cdb.php",
+        type: "POST",
+        data: {type: "getClasses"},
+        dataType: 'json',
+        timeout: 2000,
+        async: true,
+        success: function (response) {
+            console.log(response)
+            that.setState({classes: response})
+            return response
+        },
+        error: function (error) {
+            console.log("error", error);
+        }
+    })
+    return x;
+}
+
 export function load_data_lowerDaysOff(email, password, id, update) {
     let x = null
     $.ajax({
@@ -523,7 +544,6 @@ export function load_data_lowerDaysOff(email, password, id, update) {
         async: false,
         success: function (response) {
             x = response
-            e.disabled = false;
             return response
         },
         error: function (error) {

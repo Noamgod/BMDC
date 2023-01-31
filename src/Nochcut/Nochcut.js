@@ -128,8 +128,8 @@ export default class Nochecut extends Component {
                     <h3 className="m-auto">Testing</h3>
                 </div>
             )
-
         }
+        boxes[0].classList.toggle("box-selected")
         return boxes;
     }
 
