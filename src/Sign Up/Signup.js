@@ -276,33 +276,6 @@ export default class Signup extends Component {
                                     </div>
                                     <div className="d-flex flex-row align-items-center mb-4">
                                         <i className="fas fa-book fa-lg me-3 fa-fw mx-1"/>
-                                        {/*<div className="d-flex flex-row mb-0">*/}
-                                        {/*    סדרים נוספים:*/}
-                                        {/*    <input id="B"*/}
-                                        {/*           className="m-1"*/}
-                                        {/*           type={"radio"}*/}
-                                        {/*           onChange={() => {*/}
-                                        {/*               if (document.getElementById("B").checked) {*/}
-                                        {/*                   document.getElementById("G").checked = false;*/}
-                                        {/*               }*/}
-                                        {/*           }}*/}
-                                        {/*    />*/}
-                                        {/*    <label className="form-label text-primary"*/}
-                                        {/*           htmlFor="B"> ב'</label>*/}
-                                        {/*    <input id="G"*/}
-                                        {/*           className=" m-1 "*/}
-                                        {/*           type={"radio"}*/}
-                                        {/*           onChange={() => {*/}
-                                        {/*               if (document.getElementById("G").checked) {*/}
-                                        {/*                   document.getElementById("B").checked = false;*/}
-                                        {/*               }*/}
-                                        {/*           }}*/}
-                                        {/*    />*/}
-                                        {/*    <label className="form-label text-primary"*/}
-                                        {/*           htmlFor="G"> ג'</label>*/}
-                                        {/*</div>*/}
-
-
                                         <div className="dropdown">
                                             <button type="button" className="btn btn-primary dropdown-toggle"
                                                     data-bs-toggle="dropdown" aria-expanded="false"
@@ -370,7 +343,6 @@ export default class Signup extends Component {
             </div>)
         } else {
             let listOfClasses = this.state.classes;
-            listOfClasses.shift();
             for (const i in listOfClasses) {
                 if (listOfClasses[i].default == 1) {
                     elements.push(

@@ -7,7 +7,7 @@ import {
     update_student_attendance,//need to check if teacher but don't have to do it because it's not that important
     load_data_daysOfAttendance_for_all_students_to_nochcut,//No need to check if admin but need to check if student (priority low/mid)
     load_data_daysInMonth_for_Nochcut,//Finished
-    load_data_getAllUserAttendanceHistoryFor_nochcut//Finished
+    load_data_getAllUserAttendanceHistoryFor_nochcut, getClassesForRabbi//Finished
 } from "../Db/DataBase";
 import ScaleLoader from "react-spinners/ScaleLoader";
 import {formatDate} from "../SendRequest/SendRequest";
@@ -32,7 +32,7 @@ export default class Nochecut extends Component {
             map_attendance: "",
             map_attendanceHistory: "",
             daysInMonth:"",
-
+            classesForRabbi: null,
         }
     }
 
@@ -58,6 +58,7 @@ export default class Nochecut extends Component {
             load_data_getUnRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this)
             load_data_daysOfAttendance_for_all_students_to_nochcut(this)
             load_data_daysInMonth_for_Nochcut(this.props.userProps.email,this.props.userProps.password ,this)
+            getClassesForRabbi(this)
             this.setState({runAjax: false})
         }
         return (
@@ -105,7 +106,7 @@ export default class Nochecut extends Component {
                     <div>
                         <h5 className={"text-center fw-bold text-white"}>{this.state.date.toLocaleDateString()}</h5>
                         <div className={"container-fluid d-flex w-95 flex-row justify-content-start"}>
-                            {this.createBoxes()}
+                            {this.createClassTabButtons()}
                         </div>
                         {this.GetWholeTable()}
                     </div>
@@ -114,23 +115,35 @@ export default class Nochecut extends Component {
         );
     }
 
-    createBoxes = () => {
-        let boxes = [];
-        for (let i = 0; i < 3; i++) {
-            boxes.push(
-                <div className="box text-center d-flex" onClick={(e)=>{
+    createClassTabButtons = () => {
+        if (this.state.classesForRabbi == null) {
+            return (
+                <div className={"m-auto"}>
+                <ScaleLoader color={"white"}/>
+                </div>)
+        }
+        let classes = this.state.classesForRabbi;
+        let buttons = [];
+        Object.keys(classes).forEach((key) => {
+
+            if (classes[key] == 1){
+            buttons.push(
+                <div className="box shadow text-center mx-1 d-flex" onClick={(e)=>{
                     let box = document.querySelectorAll(".box")
                     box.forEach((element)=> {
                         element.classList.remove("box-selected")
                     })
                     e.currentTarget.classList.add("box-selected");
                 }}>
-                    <h3 className="m-auto">Testing</h3>
+                    <h5 className="m-auto">{key}</h5>
                 </div>
             )
-        }
-        boxes[0].classList.toggle("box-selected")
-        return boxes;
+            }
+        })
+
+        if (buttons.length > 0)
+        buttons[0].props.className += " box-selected";
+        return buttons;
     }
 
     GetWholeTable = () => {

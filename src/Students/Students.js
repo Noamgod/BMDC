@@ -13,7 +13,7 @@ import ScaleLoader from "react-spinners/HashLoader";
 import {toast, ToastContainer} from "react-toastify";
 
 
-let defaultImage = "https://chedvata.com/assets/profile.svg";
+let defaultImage = "https://chedvatatest.com/Images/defaultProfile.png";
 
 export default class Students extends React.Component {
     constructor(props) {
@@ -286,8 +286,8 @@ export default class Students extends React.Component {
                                                 <span className={"fw-bold"}>איפוס תמונה</span>
                                                 <button className={"btn btn-primary"}
                                                         data-dismiss="modal" onClick={() => {
-                                                    load_data_setImagePath("assets/profile.svg", this.props.userProps.email, this.props.userProps.password)
-                                                    let tempHash = this.state.images.set(this.state.student.uuid, "assets/profile.svg")
+                                                    load_data_setImagePath("images/defaultProfile.png", this.props.userProps.email, this.props.userProps.password)
+                                                    let tempHash = this.state.images.set(this.state.student.uuid, "images/defaultProfile.png")
                                                     this.setState({images: tempHash})
                                                 }}>תמונת ברירת מחדל
                                                 </button>
@@ -485,7 +485,7 @@ export default class Students extends React.Component {
                     data-toggle={this.props.userProps.admin == "admin" || this.props.userProps.admin == "operator" ? "modal" : "nothing"}
                     data-target={this.props.userProps.admin == "admin" || this.props.userProps.admin == "operator" ? "#myModal" : "nothing"}>
                     <img
-                        className= {map.get(user.uuid)=="assets/profile.svg"?"profileImg card-img-top":  "profileImg object-fit-cover card-img-top"} src={map.get(user.uuid)=="assets/profile.svg"?defaultImage:"https://chedvata.com/" + map.get(user.uuid)}
+                        className= {map.get(user.uuid)=="Images/defaultProfile.png"?"profileImg card-img-top":  "profileImg object-fit-cover card-img-top"} src={map.get(user.uuid)=="Images/defaultProfile.png"?defaultImage:"https://chedvatatest.com/" + map.get(user.uuid)}
                         alt={"Profile Image"} />
                     <div
                         className={"card-body resize-text d-flex flex-column" + this.birthdayThisMonth(user.birthday)}>
@@ -555,7 +555,7 @@ export default class Students extends React.Component {
         let link = this.creatLinkToWhatsapp(user);
         return (<img onClick={() => {
                 window.open(link, '_blank');
-            }} width={50} src={"https://chedvata.com/assets/whatsapp.svg"}
+            }} width={50} src={"https://chedvatatest.com/assets/whatsapp.svg"}
                      className={"start-0 bottom-0 position-absolute"} alt={"whatsapp"}/>)
     }
 

@@ -512,6 +512,27 @@ export function load_data_updateRequestByQuery(email, password, date, id, update
     return x;
 }
 
+
+export function getClassesForRabbi(that){
+    $.ajax({
+        url: "Cdb.php",
+        type: "POST",
+        data: {type: "getClassesForRabbi", email: that.props.userProps.email, password: that.props.userProps.password},
+        dataType: 'json',
+        timeout: 2000,
+        async: true,
+        success: function (response) {
+            console.log(response)
+            that.setState({classesForRabbi: response})
+            return response
+        },
+        error: function (error) {
+            console.log("error", error);
+        }
+    })
+    return null;
+}
+
 export function load_data_getClasses(that){
     let x = null
     $.ajax({

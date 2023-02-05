@@ -1,12 +1,13 @@
 .my-custom-scrollbar {
     position:relative;
     height: 200px;
-    overflow: auto;
+    /*overflow: auto;*/
+    overflow-x: auto;
 }
-.table-wrapper-scroll-y {
-    height: 80vh;
-    display: block;
-}
+/*.table-wrapper-scroll-y {*/
+/*    height: 80vh;*/
+/*    display: block;*/
+/*}*/
 
 .table-header-row{
     border-top-left-radius: 20px!important;
@@ -38,18 +39,19 @@
     }
 }
 .box{
+
     width:100px;
     height:40px;
-    background-color: rgb(244, 240, 240);
+    border-radius: 50px;
+
+    background-color: rgb(255, 255, 255);
     color: black;
     padding: 2px;
     transition: color, background-color 0.4s;
-    border: none;
     cursor: pointer!important;
 }
 
 .box-selected{
-    border: black 1px solid;
     background-color: rgb(13, 110, 253) !important;
     color: #fff;
 }
