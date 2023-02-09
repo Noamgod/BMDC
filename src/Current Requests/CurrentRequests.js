@@ -327,11 +327,15 @@ export default class CurrentRequests extends Component {
         if (approve == 1 || approve == 2) {
             return (
                 <div id={"buttonContainer"} className={"flex-row justify-content-evenly"}>
-                    <button disabled={false} onClick={() => {
-
-                        updateRequest(this.props.userProps.email, this.props.userProps.password, date, id, 0, approve )
-                        let msg = "שים לב!! בקשתך בתאריך " + `${date}` + " מבוטלת ונשלחה לחישוב מחדש על ידי אמנון\n כרגע בתאריך זה עליך להתייצב בישיבה כרגיל עד להודעה אחרת מהמערכת. המשך יום מקסים "
-                        sendMail(this.props.userProps.email, this.props.userProps.password,email, "בקשת שחרורך מבוטלת!", msg)
+                    <button onClick={() => {
+                        let mailInfo = {
+                            email: this.props.userProps.email,
+                            password: this.props.userProps.password,
+                            to: email,
+                            subject:"בקשת שחרורך מבוטלת!",
+                            msg: "שים לב!! בקשתך בתאריך " + `${date}` + " מבוטלת ונשלחה לחישוב מחדש על ידי אמנון\n כרגע בתאריך זה עליך להתייצב בישיבה כרגיל עד להודעה אחרת מהמערכת. המשך יום מקסים "
+                        }
+                        updateRequest(this.props.userProps.email, this.props.userProps.password, date, id, 0, mailInfo)
                         this.setState({runAjax: true})
                     }} className={"sbutton btn btn-danger text-center "}>
                         איתחול
@@ -339,21 +343,22 @@ export default class CurrentRequests extends Component {
                 </div>)
         } else return (
             <div id={"buttonContainer"} className={"flex-row justify-content-evenly"}>
-                <button disabled={false} onClick={( ) => {
-
-                    updateRequest(this.props.userProps.email, this.props.userProps.password, date, id, 1, approve )
+                <button onClick={() => {
                     let msg = " בקשתך בתאריך " + `${date}` + " אושרה. המשך יום מקסים "
-                    sendMail(this.props.userProps.email, this.props.userProps.password,email, "בקשת שחרור", msg)
+                    let mailInfo = {
+                        email: this.props.userProps.email,
+                        password: this.props.userProps.password,
+                        to: email,
+                        subject:"בקשת שחרורך אושרה!",
+                        msg: msg
+                    }
+                    updateRequest(this.props.userProps.email, this.props.userProps.password, date, id, 1, mailInfo)
                     this.setState({runAjax: true})
                 }} className={"sbutton btn btn-success text-center "}>
                     קבל
                 </button>
                 <button onClick={() => {
                     this.setState({reasonList: [date, id, approve, email]})
-
-                    // updateRequest(date, id, 2, approve)
-                    // sendMail(this.props.userProps.email, this.props.userProps.password, email, "בקשת שחרור", " בקשתך בתאריך " + `${date}` + " לא אושרה. המשך יום מקסים ")
-                    // this.setState({runAjax: true})
                 }}  data-toggle="modal" data-target="#reasonForDenyModal" className={"sbutton btn btn-danger "}>
                     דחה
                 </button>
@@ -387,8 +392,14 @@ export default class CurrentRequests extends Component {
                                     if(reason.trim()===""){
                                         reason = "המערכת לא ראתה לנכון לאפשר לך לצאת"
                                     }
-                                    updateRequest(this.props.userProps.email, this.props.userProps.password, this.state.reasonList[0], this.state.reasonList[1], 2, this.state.reasonList[2])
-                                    sendMail(this.props.userProps.email, this.props.userProps.password, this.state.reasonList[3], "בקשת שחרור", " בקשתך בתאריך " + `${this.state.reasonList[0]}` + " לא אושרה. סיבה: "+reason+" המשך יום מקסים ")
+                                    let mailInfo = {
+                                        email: this.props.userProps.email,
+                                        password: this.props.userProps.password,
+                                        to: this.state.reasonList[3],
+                                        subject: "בקשת שחרורך נדחתה",
+                                        msg: "בקשתך בתאריך " + `${this.state.reasonList[0]}` + " נדחתה. הסיבה: " + reason + ". המשך יום מקסים "
+                                    }
+                                    updateRequest(this.props.userProps.email, this.props.userProps.password, this.state.reasonList[0], this.state.reasonList[1], 2, mailInfo)
                                     this.setState({runAjax: true})
                                     document.getElementById("deny-reason").value = ""
                                 }}>שליחה

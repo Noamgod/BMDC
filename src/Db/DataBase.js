@@ -491,7 +491,7 @@ export function load_data_deleteRequest(email, password, date) {
 
 }
 
-export function load_data_updateRequestByQuery(email, password, date, id, update) {
+export function load_data_updateRequestByQuery(email, password, date, id, update, mailInfo) {
     let x = null
     $.ajax({
         url: "Adb.php",
@@ -553,12 +553,12 @@ export function load_data_getClasses(that) {
     return x;
 }
 
-export function load_data_lowerDaysOff(email, password, id, update) {
+export function load_data_lowerDaysOff(email, password, id, update, status) {
     let x = null
     $.ajax({
         url: "Adb.php",
         type: "POST",
-        data: {type: "lowerDaysOff", email: email, password: password, update: update, id: id},
+        data: {type: "lowerDaysOff", email: email, password: password, update: update, id: id, status: status},
         dataType: 'json',
         timeout: 2000,
         async: false,
