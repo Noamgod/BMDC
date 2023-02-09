@@ -15,8 +15,7 @@ let studentQueries = {}
 let studentCounter = 2;
 let netunimCounter = 3;
 let netunimQueries = {};
-let attendanceCounter = 2;
-let attendanceQueries = {};
+let attendanceCounter = 1;
 
 export function encrypt(text) {
     return CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(text))
@@ -492,7 +491,7 @@ export function load_data_deleteRequest(email, password, date) {
 
 }
 
-export function load_data_updateRequestByQuery(email, password, date, id, update ) {
+export function load_data_updateRequestByQuery(email, password, date, id, update) {
     let x = null
     $.ajax({
         url: "Adb.php",
@@ -513,7 +512,7 @@ export function load_data_updateRequestByQuery(email, password, date, id, update
 }
 
 
-export function getClassesForRabbi(that){
+export function getClassesForRabbi(that) {
     $.ajax({
         url: "Cdb.php",
         type: "POST",
@@ -533,7 +532,7 @@ export function getClassesForRabbi(that){
     return null;
 }
 
-export function load_data_getClasses(that){
+export function load_data_getClasses(that) {
     let x = null
     $.ajax({
         url: "Cdb.php",
@@ -1158,28 +1157,27 @@ export function attendanceEdit(id, date, addDay) {
     return x;
 }
 
-export function update_student_attendance(uuid, date, status) {
-    let x;
-    $.ajax({
-        url: "Adb.php",
-        type: "POST",
-        data: {type: "update_student_attendance", uuid: uuid, date: date, status: status},
-        dataType: 'json',
-        timeout: 2000,
-        async: false,
-        success: function (response) {
-            x = response
-        },
-        error: function (error) {
-            console.log("update_attendance_status dont work: ", error)
-            x = null
-        }
+// export function update_student_attendance(uuid, date, status) {
+//     let x;
+//     $.ajax({
+//         url: "Adb.php",
+//         type: "POST",
+//         data: {type: "update_student_attendance", uuid: uuid, date: date, status: status},
+//         dataType: 'json',
+//         timeout: 2000,
+//         async: false,
+//         success: function (response) {
+//             x = response
+//         },
+//         error: function (error) {
+//             console.log("update_attendance_status dont work: ", error)
+//             x = null
+//         }
+//     })
+//     return x;
+// }
 
-    })
-    return x;
-}
-
-export function insert_into_attendance(uuid, status, date, first_name, last_name) {
+export function insert_into_attendance(uuid, status, date,  selectedClass) {
     let x;
     $.ajax({
         url: "Adb.php",
@@ -1188,9 +1186,8 @@ export function insert_into_attendance(uuid, status, date, first_name, last_name
             type: "insert_into_attendance",
             uuid: uuid,
             date: date,
-            first_name: first_name,
-            last_name: last_name,
-            status: status
+            status: status,
+            class: selectedClass
         },
         dataType: 'json',
         timeout: 2000,
@@ -1207,20 +1204,24 @@ export function insert_into_attendance(uuid, status, date, first_name, last_name
     return x;
 }
 
-export function load_data_getRegisteredStudentsForRabbiByDate(email, password, date, that) {
+export function load_data_getRegisteredStudentsForRabbiByDate(email, password, date, selectedClass, that) {
     let x;
     $.ajax({
         url: "Udb.php",
         type: "POST",
-        data: {type: "get_registered_students_for_rabbi",email:email, password:password, date: date},
+        data: {
+            type: "get_registered_students_for_rabbi",
+            email: email,
+            password: password,
+            date: date,
+            class: selectedClass
+        },
         dataType: 'json',
         timeout: 2000,
         async: true,
         success: function (response) {
             x = response
-            attendanceCounter -= 1;
-            attendanceQueries["registered_students"] = x;
-            finishedAttendance(that);
+            that.setState({registeredStudents: x});
         },
         error: function (error) {
             console.log(error)
@@ -1231,20 +1232,18 @@ export function load_data_getRegisteredStudentsForRabbiByDate(email, password, d
     return x;
 }
 
-export function load_data_getUnRegisteredStudentsForRabbiByDate(email, password, date, that) {
+export function load_data_getUnRegisteredStudentsForRabbiByDate(email, password, date,selectedClass, that) {
     let x;
     $.ajax({
         url: "Udb.php",
         type: "POST",
-        data: {type: "get_unregistered_students_for_rabbi", email:email, password:password, date: date},
+        data: {type: "get_unregistered_students_for_rabbi", email: email, password: password, date: date, class:selectedClass},
         dataType: 'json',
         timeout: 2000,
         async: true,
         success: function (response) {
             x = response
-            attendanceCounter -= 1;
-            attendanceQueries["unregistered_students"] = x;
-            finishedAttendance(that);
+            that.setState({unregisteredStudents: x})
         },
         error: function (error) {
             console.log(error)
@@ -1324,16 +1323,6 @@ export function load_data_daysOfAttendance(email, password, that) {
     return x;
 }
 
-function finishedAttendance(that) {
-    if (attendanceCounter === 0) {
-        attendanceCounter = 2;
-        that.setState({
-            registeredStudents: attendanceQueries['registered_students'],
-            unregisteredStudents: attendanceQueries['unregistered_students'],
-            loading: false
-        })
-    }
-}
 
 function finishedNetunim(that) {
     if (netunimCounter == 0) {
@@ -1362,7 +1351,7 @@ export function load_data_getAllUserAttendanceHistory(email, password, that) {
             for (let i = 0; i < response.length; i++) {
                 map.set(response[i].uuid, [response[i].January, response[i].February, response[i].March, response[i].April, response[i].May, response[i].June, response[i].July, response[i].August, response[i].September, response[i].October, response[i].November, response[i].December])
             }
-            that.setState({allUserAttendanceHistory: map, loadingAllUserAttendanceHistory:false})
+            that.setState({allUserAttendanceHistory: map, loadingAllUserAttendanceHistory: false})
         },
         error: function (error) {
             console.log("get_all_user_attendance_history not work: ", error)
@@ -1372,15 +1361,16 @@ export function load_data_getAllUserAttendanceHistory(email, password, that) {
     })
     return x;
 }
+
 export function load_data_getAllUserAttendanceHistoryFor_nochcut(email, password, that) {
     let x;
     let date = new Date();
-    date.setMonth(date.getMonth()-1)
-    let month= date.toLocaleString('default', { month: 'long' });
+    date.setMonth(date.getMonth() - 1)
+    let month = date.toLocaleString('default', {month: 'long'});
     $.ajax({
         url: "Adb.php",
         type: "POST",
-        data: {type: "get_all_user_attendance_history_for_nochut", email: email, password: password,month:month},
+        data: {type: "get_all_user_attendance_history_for_nochut", email: email, password: password, month: month},
         dataType: 'json',
         timeout: 2000,
         async: true,
@@ -1389,7 +1379,6 @@ export function load_data_getAllUserAttendanceHistoryFor_nochcut(email, password
             for (let i = 0; i < response.length; i++) {
                 map.set(response[i].uuid, response[i].month)
             }
-            console.log(map)
             that.setState({map_attendanceHistory: map})
         },
         error: function (error) {
@@ -1426,6 +1415,7 @@ export function load_data_daysOfAttendance_for_all_students(that) {
     })
     return x;
 }
+
 export function load_data_daysOfAttendance_for_all_students_to_nochcut(that) {
     let x = new Map();
     $.ajax({
@@ -1439,7 +1429,7 @@ export function load_data_daysOfAttendance_for_all_students_to_nochcut(that) {
             for (let i = 0; i < response.length; i++) {
                 x.set(response[i].uuid, response[i].days)
             }
-          that.setState({map_attendance: x})
+            that.setState({map_attendance: x})
         },
         error: function (error) {
             console.log("presence not work: ", error)
@@ -1617,7 +1607,7 @@ export function delete_User(email, password, id) {
 export function load_data_downloadAttendance_for_all_students(email, password, that) {
     let x;
     const current = new Date();
-    current.setMonth(current.getMonth()-1);
+    current.setMonth(current.getMonth() - 1);
     $.ajax({
         url: "downloadAttendance.php",
         type: "POST",
@@ -1723,6 +1713,7 @@ export function load_data_countStatus(email, password, role, that, tickets) {
         }
     })
 }
+
 // export function load_data_getTeacherSederList(email, password, that){
 //     let x = null;
 //     $.ajax({

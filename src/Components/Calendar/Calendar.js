@@ -165,7 +165,7 @@ export function MyCalendar(props) {
                     </button>
                 </div>
             </div>
-            <table id={"calendar-hide"} className={"table w-95 table-responsive-xxl m-auto"} style={{display: "table"}}>
+            <table id={"calendar-hide"} className={"table w-95 table-responsive-xxl m-auto"} style={{display: "none"}}>
                 {TableHeader()}
                 {TableBody(daysInMonth)}
             </table>

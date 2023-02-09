@@ -4,7 +4,7 @@ import {
     load_data_getRegisteredStudentsForRabbiByDate,//Finished
     load_data_getUnRegisteredStudentsForRabbiByDate,//Finished
     insert_into_attendance, //need to check if teacher but don't have to do it because it's not that important
-    update_student_attendance,//need to check if teacher but don't have to do it because it's not that important
+    // update_student_attendance,//need to check if teacher but don't have to do it because it's not that important
     load_data_daysOfAttendance_for_all_students_to_nochcut,//No need to check if admin but need to check if student (priority low/mid)
     load_data_daysInMonth_for_Nochcut,//Finished
     load_data_getAllUserAttendanceHistoryFor_nochcut, getClassesForRabbi//Finished
@@ -12,7 +12,6 @@ import {
 import ScaleLoader from "react-spinners/ScaleLoader";
 import {formatDate} from "../SendRequest/SendRequest";
 import {MyCalendar} from "../Components/Calendar/Calendar";
-import {forEach} from "react-bootstrap/ElementChildren";
 
 
 let idForEdit;
@@ -22,17 +21,18 @@ export default class Nochecut extends Component {
         this.state = {
             userProps: props.userProps,
             date: new Date(),
-            loading: true,
+            // loading: true,
             runAjax: true,
             data: null,
             already_attendance: false,
             edit: false,
             unregisteredStudents: null,
             registeredStudents: null,
+            classesForRabbi: null,
             map_attendance: "",
             map_attendanceHistory: "",
-            daysInMonth:"",
-            classesForRabbi: null,
+            daysInMonth: "",
+            selectedClass: "תפילה",
         }
     }
 
@@ -53,17 +53,16 @@ export default class Nochecut extends Component {
         }
 
         if (this.state.runAjax) {
-            load_data_getAllUserAttendanceHistoryFor_nochcut(this.props.userProps.email,this.props.userProps.password ,this)
-            load_data_getRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this)
-            load_data_getUnRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this)
+            load_data_getAllUserAttendanceHistoryFor_nochcut(this.props.userProps.email, this.props.userProps.password, this)
+            load_data_getRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this.state.selectedClass, this)
+            load_data_getUnRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this.state.selectedClass, this)
             load_data_daysOfAttendance_for_all_students_to_nochcut(this)
-            load_data_daysInMonth_for_Nochcut(this.props.userProps.email,this.props.userProps.password ,this)
+            load_data_daysInMonth_for_Nochcut(this.props.userProps.email, this.props.userProps.password, this)
             getClassesForRabbi(this)
             this.setState({runAjax: false})
         }
         return (
             <>
-
                 <div className={"margin-top-responsive"}>
                     {<MyCalendar that={this}/>}
                 </div>
@@ -83,15 +82,15 @@ export default class Nochecut extends Component {
                                     <button className={"btn button mx-1 btn-success text-center"}
                                             data-dismiss="modal"
                                             onClick={() => {
-                                                update_student_attendance(idForEdit,formatDate(this.state.date), 1)
-                                                this.setState({runAjax: true})
+                                                insert_into_attendance(idForEdit,1, formatDate(this.state.date), this.state.selectedClass)
+                                                this.refreshList()
                                             }}>נכח
                                     </button>
                                     <button className={"btn button mx-1 btn-danger text-center"}
                                             data-dismiss="modal"
                                             onClick={() => {
-                                                update_student_attendance(idForEdit,formatDate(this.state.date), 0)
-                                                this.setState({runAjax: true})
+                                                insert_into_attendance(idForEdit,0, formatDate(this.state.date), this.state.selectedClass)
+                                                this.refreshList()
                                             }}>לא נכח
                                     </button>
                                 </div>
@@ -119,56 +118,59 @@ export default class Nochecut extends Component {
         if (this.state.classesForRabbi == null) {
             return (
                 <div className={"m-auto"}>
-                <ScaleLoader color={"white"}/>
+                    <ScaleLoader color={"white"}/>
                 </div>)
         }
         let classes = this.state.classesForRabbi;
         let buttons = [];
         Object.keys(classes).forEach((key) => {
 
-            if (classes[key] == 1){
-            buttons.push(
-                <div className="box shadow text-center mx-1 d-flex" onClick={(e)=>{
-                    let box = document.querySelectorAll(".box")
-                    box.forEach((element)=> {
-                        element.classList.remove("box-selected")
-                    })
-                    e.currentTarget.classList.add("box-selected");
-                }}>
-                    <h5 className="m-auto">{key}</h5>
-                </div>
-            )
+            if (classes[key] == 1) {
+                buttons.push(
+                    <div className="box shadow text-center mx-1 d-flex" onClick={(e) => {
+                        this.setState({selectedClass: e.currentTarget.innerText, registeredStudents: null, unRegisteredStudents: null})
+                        load_data_getRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), e.currentTarget.innerText, this)
+                        load_data_getUnRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), e.currentTarget.innerText, this)
+                        let box = document.querySelectorAll(".box")
+                        box.forEach((element) => {
+                            element.classList.remove("box-selected")
+                        })
+                        e.currentTarget.classList.add("box-selected");
+                    }}>
+                        <h5 className="m-auto">{key}</h5>
+                    </div>
+                )
             }
         })
 
         if (buttons.length > 0)
-        buttons[0].props.className += " box-selected";
+            buttons[0].props.className += " box-selected";
         return buttons;
     }
 
     GetWholeTable = () => {
-        if (this.state.loading) {
+        if (this.state.unregisteredStudents !== null && this.state.registeredStudents !== null && this.state.classesForRabbi !== null){
             return (
-                <div className={"m-auto"}>
+                <div className={"m-auto my-custom-scrollbar w-95 mt-2"}>
+                    <table className={"table table-hover table-responsive table-light table-bordered"} style={{minHeight: '500px'}}>
+                        {this.creatRow()}
+                        <tbody>
+                        {this.CreatTable()}
+                        </tbody>
+                    </table>
+                </div>
+            )
+        } else {
+            return (
+                <div className={"container-fluid m-auto d-flex justify-content-center"}>
                     <ScaleLoader color={"white"}/>
                 </div>
             )
         }
-
-        return (
-            <div className={"m-auto table-wrapper-scroll-y my-custom-scrollbar w-95 mt-2"}>
-                <table className={"table table-hover table-responsive table-light table-bordered"}>
-                    {this.creatRow()}
-                    <tbody>
-                    {this.CreatTable()}
-                    </tbody>
-                </table>
-            </div>
-        )
     }
 
-    GetButton = (uuid, date, isRegistered, first_name, last_name) => {
-        if (isRegistered) {
+    GetButton = (uuid, date, isRegistered) => {
+        if (isRegistered == 1 || isRegistered == 0) {
             return (
                 <div className={"d-flex flex-row justify-content-center"}>
                     <div id={"Edit-btu-for-nochecout"}>
@@ -186,20 +188,28 @@ export default class Nochecut extends Component {
                 <div className={"d-flex flex-row justify-content-center"}>
                     <button className={"btn mx-1 btn-table btn-success text-center"}
                             onClick={() => {
-                                insert_into_attendance(uuid, 1, date, first_name, last_name)
-                                this.setState({runAjax: true})
+                                insert_into_attendance(uuid, 1, date,  this.state.selectedClass)
+                                this.refreshList()
                             }}>נכח
                     </button>
                     <button className={"btn mx-1 btn-table btn-danger text-center"}
                             onClick={() => {
-                                insert_into_attendance(uuid, 0, date, first_name, last_name)
-                                this.setState({runAjax: true})
+                                insert_into_attendance(uuid, 0, date,  this.state.selectedClass)
+                                this.refreshList()
                             }}>לא נכח
                     </button>
                 </div>
             )
         }
     }
+    refreshList =() =>{
+        this.setState({registeredStudents: null, unregisteredStudents: null})
+        setTimeout(() => {
+            load_data_getUnRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this.state.selectedClass, this)
+            load_data_getRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this.state.selectedClass, this)
+            }, 1000)
+        }
+
 
     creatRow() {
         return (
@@ -219,47 +229,74 @@ export default class Nochecut extends Component {
     CreatTable() {
         let unregistered = this.state.unregisteredStudents;
         let registered = this.state.registeredStudents;
+        let merged = unregistered.concat(registered);
+        merged = merged.sort((a, b) => {
+            if (a.last_name < b.last_name) {
+                return -1;
+            }
+            if (a.last_name > b.last_name) {
+                return 1;
+            }
+            return 0;
+        })
         let table = [];
         let date = formatDate(this.state.date)
-        for (let index in unregistered) {
-            let user = unregistered[index];
+        for (let index in merged) {
+            let user = merged[index];
+            let attendStatus = user.hasOwnProperty("attend") ? user.attend : 2;
             table.push(
-                <tr className={"table-light"}>
-                    <th className={"text-center"} scope={"row"}>{(parseInt(index)+1)}</th>
+                <tr className={attendStatus == 1 ? "table-success" : attendStatus == 0 ? "table-danger" : "table-light"}>
+                    <th className={"text-center"} scope={"row"}>{(parseInt(index) + 1)}</th>
                     <td className={"text-center"}>{user.last_name}</td>
                     <td className={"text-center"}>{user.first_name}</td>
                     <td>
-                        {this.GetButton(user.uuid, date, false, user.first_name, user.last_name)}
+                        {this.GetButton(user.uuid, date, attendStatus, user.first_name, user.last_name)}
                     </td>
                     {this.getAttendance(user.uuid)}
                     {this.getAttendanceHistory(user.uuid)}
                 </tr>
             )
         }
-        for (let index in registered) {
-            let user = registered[index];
-            table.push(
-                <tr className={user.attend == 1 ? "table-success" : "table-danger"}>
-                    <th className={"text-center"} scope={"row"}>{(parseInt(index) + unregistered.length+1)}</th>
-                    <td className={"text-center"}>{user.last_name}</td>
-                    <td className={"text-center"}>{user.first_name}</td>
-                    <td>
-                        {this.GetButton(user.uuid, date, true, user.first_name, user.last_name)}
-                    </td>
-                    {this.getAttendance(user.uuid)}
-                    {this.getAttendanceHistory(user.uuid)}
-                </tr>
-            )
-        }
+        // for (let index in unregistered) {
+        //     let user = unregistered[index];
+        //     table.push(
+        //         <tr className={"table-light"}>
+        //             <td className={"text-center"} scope={"row"}>{(parseInt(index) + 1)}</td>
+        //             <td className={"text-center"}>{user.last_name}</td>
+        //             <td className={"text-center"}>{user.first_name}</td>
+        //             <td>
+        //                 {this.GetButton(user.uuid, date, false, user.first_name, user.last_name)}
+        //             </td>
+        //             {this.getAttendance(user.uuid)}
+        //             {this.getAttendanceHistory(user.uuid)}
+        //         </tr>
+        //     )
+        // }
+        // for (let index in registered) {
+        //     let user = registered[index];
+        //     table.push(
+        //         <tr className={user.attend == 1 ? "table-success" : "table-danger"}>
+        //             <td className={"text-center"} scope={"row"}>{(parseInt(index) + unregistered.length + 1)}</td>
+        //             <td className={"text-center"}>{user.last_name}</td>
+        //             <td className={"text-center"}>{user.first_name}</td>
+        //             <td>
+        //                 {this.GetButton(user.uuid, date, true, user.first_name, user.last_name)}
+        //             </td>
+        //             {this.getAttendance(user.uuid)}
+        //             {this.getAttendanceHistory(user.uuid)}
+        //         </tr>
+        //     )
+        // }
         return table
     }
 
     getAttendance(uuid) {
         let attendance = this.state.map_attendance.get(uuid) == null ? 0 : this.state.map_attendance.get(uuid);
         return (
-            <td className={"text-center"} >{((this.state.daysInMonth.days - attendance) / this.state.daysInMonth.days * 100).toFixed(2)}%</td>
+            <td className={"text-center"}>{((this.state.daysInMonth.days - attendance) / this.state.daysInMonth.days * 100).toFixed(2)}%</td>
         )
     }
+
     getAttendanceHistory(uuid) {
         let attendance = this.state.map_attendanceHistory.get(uuid) == null ? 0 : this.state.map_attendanceHistory.get(uuid);
         return (
