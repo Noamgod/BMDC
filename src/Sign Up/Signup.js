@@ -348,7 +348,7 @@ export default class Signup extends Component {
                     elements.push(
                         <div className="d-flex justify-content-between w-75 m-auto">
                             <label className="form-label text-primary"
-                                   htmlFor={this.state.classes[i].name}> {this.state.classes[i].name}</label>
+                                   htmlFor={this.state.classes[i].name}> {(this.state.classes[i].name).replace("_"," ")}</label>
                             <input id={this.state.classes[i].name}
                                    className="m-1 form-check-input"
                                    type={"checkbox"}
@@ -361,7 +361,7 @@ export default class Signup extends Component {
                     elements.push(
                         <div className="d-flex justify-content-between w-75 m-auto">
                             <label className="form-label text-primary"
-                                   htmlFor={this.state.classes[i].name}> {this.state.classes[i].name}</label>
+                                   htmlFor={this.state.classes[i].name}> {(this.state.classes[i].name).replace("_"," ")}</label>
                             <input id={this.state.classes[i].name}
                                    className="m-1 form-check-input"
                                    type={"checkbox"}/>

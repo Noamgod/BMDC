@@ -13,7 +13,7 @@ import ScaleLoader from "react-spinners/ScaleLoader";
 import {formatDate} from "../SendRequest/SendRequest";
 import {MyCalendar} from "../Components/Calendar/Calendar";
 
-
+let mergedList = [];
 let idForEdit;
 export default class Nochecut extends Component {
     constructor(props) {
@@ -128,7 +128,7 @@ export default class Nochecut extends Component {
             if (classes[key] == 1) {
                 buttons.push(
                     <div className="box shadow text-center mx-1 d-flex" onClick={(e) => {
-                        this.setState({selectedClass: e.currentTarget.innerText, registeredStudents: null, unRegisteredStudents: null})
+                        this.setState({selectedClass: e.currentTarget.innerText.replace(" ","_"), registeredStudents: null, unRegisteredStudents: null})
                         load_data_getRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), e.currentTarget.innerText, this)
                         load_data_getUnRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), e.currentTarget.innerText, this)
                         let box = document.querySelectorAll(".box")
@@ -137,7 +137,7 @@ export default class Nochecut extends Component {
                         })
                         e.currentTarget.classList.add("box-selected");
                     }}>
-                        <h5 className="m-auto">{key}</h5>
+                        <h5 className="m-auto">{key.replace('_'," ")}</h5>
                     </div>
                 )
             }
@@ -151,8 +151,8 @@ export default class Nochecut extends Component {
     GetWholeTable = () => {
         if (this.state.unregisteredStudents !== null && this.state.registeredStudents !== null && this.state.classesForRabbi !== null){
             return (
-                <div className={"m-auto my-custom-scrollbar w-95 mt-2"}>
-                    <table className={"table table-hover table-responsive table-light table-bordered"} style={{minHeight: '500px'}}>
+                <div className={"m-auto my-custom-scrollbar w-95 mt-2"} style={{minHeight: '500px'}}>
+                    <table className={"table table-hover table-responsive table-light table-bordered"} >
                         {this.creatRow()}
                         <tbody>
                         {this.CreatTable()}
@@ -203,11 +203,8 @@ export default class Nochecut extends Component {
         }
     }
     refreshList =() =>{
-        this.setState({registeredStudents: null, unregisteredStudents: null})
-        setTimeout(() => {
             load_data_getUnRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this.state.selectedClass, this)
             load_data_getRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this.state.selectedClass, this)
-            }, 1000)
         }
 
 
@@ -229,8 +226,8 @@ export default class Nochecut extends Component {
     CreatTable() {
         let unregistered = this.state.unregisteredStudents;
         let registered = this.state.registeredStudents;
-        let merged = unregistered.concat(registered);
-        merged = merged.sort((a, b) => {
+        mergedList = unregistered.concat(registered);
+        mergedList = mergedList.sort((a, b) => {
             if (a.last_name < b.last_name) {
                 return -1;
             }
@@ -241,8 +238,8 @@ export default class Nochecut extends Component {
         })
         let table = [];
         let date = formatDate(this.state.date)
-        for (let index in merged) {
-            let user = merged[index];
+        for (let index in mergedList) {
+            let user = mergedList[index];
             let attendStatus = user.hasOwnProperty("attend") ? user.attend : 2;
             table.push(
                 <tr className={attendStatus == 1 ? "table-success" : attendStatus == 0 ? "table-danger" : "table-light"}>
@@ -250,7 +247,7 @@ export default class Nochecut extends Component {
                     <td className={"text-center"}>{user.last_name}</td>
                     <td className={"text-center"}>{user.first_name}</td>
                     <td>
-                        {this.GetButton(user.uuid, date, attendStatus, user.first_name, user.last_name)}
+                        {this.GetButton(user.uuid, date, attendStatus, user.first_name, user.last_name, index)}
                     </td>
                     {this.getAttendance(user.uuid)}
                     {this.getAttendanceHistory(user.uuid)}

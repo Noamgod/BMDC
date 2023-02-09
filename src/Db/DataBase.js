@@ -1191,7 +1191,7 @@ export function insert_into_attendance(uuid, status, date,  selectedClass) {
         },
         dataType: 'json',
         timeout: 2000,
-        async: true,
+        async: false,
         success: function (response) {
             x = response
         },
