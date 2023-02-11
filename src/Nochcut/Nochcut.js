@@ -206,7 +206,6 @@ export default class Nochecut extends Component {
             load_data_getUnRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this.state.selectedClass, this)
             load_data_getRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this.state.selectedClass, this)
             load_data_daysOfAttendance_for_all_students_to_nochcut(this, this.state.selectedClass)
-
     }
 
 

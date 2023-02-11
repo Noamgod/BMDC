@@ -1159,7 +1159,7 @@ export function changeClassesForUser(uuid, list) {
     $.ajax({
         url: "Cdb.php",
         type: "POST",
-        data: {type: "changeClassesForUser", uuid:uuid,list: JSON.stringify(list)},
+        data: {type: "changeClassesForUser", uuid:uuid,list: list},
         dataType: 'json',
         timeout: 2000,
         async: false,
