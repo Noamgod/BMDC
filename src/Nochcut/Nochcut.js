@@ -56,7 +56,7 @@ export default class Nochecut extends Component {
             load_data_getAllUserAttendanceHistoryFor_nochcut(this.props.userProps.email, this.props.userProps.password, this)
             load_data_getRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this.state.selectedClass, this)
             load_data_getUnRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this.state.selectedClass, this)
-            load_data_daysOfAttendance_for_all_students_to_nochcut(this)
+            load_data_daysOfAttendance_for_all_students_to_nochcut(this, this.state.selectedClass)
             load_data_daysInMonth_for_Nochcut(this.props.userProps.email, this.props.userProps.password, this)
             getClassesForRabbi(this)
             this.setState({runAjax: false})
@@ -129,8 +129,8 @@ export default class Nochecut extends Component {
                 buttons.push(
                     <div className="box shadow text-center mx-1 d-flex" onClick={(e) => {
                         this.setState({selectedClass: e.currentTarget.innerText.replace(" ","_"), registeredStudents: null, unRegisteredStudents: null})
-                        load_data_getRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), e.currentTarget.innerText, this)
-                        load_data_getUnRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), e.currentTarget.innerText, this)
+                        load_data_getRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this.state.selectedClass, this)
+                        load_data_getUnRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this.state.selectedClass, this)
                         let box = document.querySelectorAll(".box")
                         box.forEach((element) => {
                             element.classList.remove("box-selected")
@@ -205,7 +205,9 @@ export default class Nochecut extends Component {
     refreshList =() =>{
             load_data_getUnRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this.state.selectedClass, this)
             load_data_getRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this.state.selectedClass, this)
-        }
+            load_data_daysOfAttendance_for_all_students_to_nochcut(this, this.state.selectedClass)
+
+    }
 
 
     creatRow() {

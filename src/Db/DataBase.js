@@ -552,6 +552,25 @@ export function load_data_getClasses(that) {
     })
     return x;
 }
+export function load_data_getClassesForUser(that,uuid) {
+    let x = null;
+    $.ajax({
+        url: "Cdb.php",
+        type: "POST",
+        data: {type: "getClassesForUser",uuid:uuid},
+        dataType: 'json',
+        timeout: 2000,
+        async: true,
+        success: function (response) {
+            console.log(response)
+            that.setState({classesForUser: response})
+        },
+        error: function (error) {
+            console.log("error", error);
+        }
+    })
+    return x;
+}
 
 export function load_data_lowerDaysOff(email, password, id, update, status) {
     let x = null
@@ -1135,7 +1154,27 @@ export function attendance(id, date, addDay, that) {
     })
     return x;
 }
+export function changeClassesForUser(uuid, list) {
+    let x;
+    $.ajax({
+        url: "Cdb.php",
+        type: "POST",
+        data: {type: "changeClassesForUser", uuid:uuid,list: JSON.stringify(list)},
+        dataType: 'json',
+        timeout: 2000,
+        async: false,
+        success: function (response) {
+            x = response
+            console.log("changeClassesForUser: ", response)
+        },
+        error: function (error) {
+            console.log("changeClassesForUser: ", error)
+            x = null
+        }
 
+    })
+    return x;
+}
 export function attendanceEdit(id, date, addDay) {
     let x;
     $.ajax({
@@ -1416,12 +1455,12 @@ export function load_data_daysOfAttendance_for_all_students(that) {
     return x;
 }
 
-export function load_data_daysOfAttendance_for_all_students_to_nochcut(that) {
+export function load_data_daysOfAttendance_for_all_students_to_nochcut(that,seder) {
     let x = new Map();
     $.ajax({
         url: "Adb.php",
         type: "POST",
-        data: {type: "presence_for_all_students"},
+        data: {type: "presence_for_all_students",seder:seder},
         dataType: 'json',
         timeout: 2000,
         async: true,
