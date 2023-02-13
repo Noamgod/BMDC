@@ -24,7 +24,7 @@ export default class Netunim extends Component {
             attendanceModal: false,
             data: "",
             runAjax: true,
-            daysInMonth: "",
+            daysInMonthf: "",
             map_attendance: "",
             loading: true,
             search: ""
