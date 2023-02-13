@@ -124,7 +124,6 @@ export default class Nochecut extends Component {
         let classes = this.state.classesForRabbi;
         let buttons = [];
         Object.keys(classes).forEach((key) => {
-
             if (classes[key] == 1) {
                 buttons.push(
                     <div className="box shadow text-center mx-1 d-flex" onClick={(e) => {

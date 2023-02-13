@@ -14,10 +14,10 @@ import {
 import ScaleLoader from "react-spinners/HashLoader"
 import icon from "../Images/userIcon2.png"
 import ripple from "ripple-effects"
-import GetPercentage from "./percentage";
+// import GetPercentage from "./percentage";
 import {decrypt} from "../encryption";
 import {cookies} from "../App";
-import {getBar, getLine} from "../Components/Charts/Bar";
+import {getBar} from "../Components/Charts/Bar";
 
 const  monthsInHebrew = [ 'אוגוסט', 'ספטמבר', 'אוקטובר','נובמבר', 'דצמבר', 'ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי'];
 

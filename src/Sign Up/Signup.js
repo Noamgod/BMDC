@@ -72,7 +72,6 @@ export default class Signup extends Component {
             this.props.that.setState({userProps: null})
         }
         if (this.state.classes == null) {
-            console.log(this.state.classes)
             load_data_getClasses(this)
         }
         return (
@@ -344,20 +343,6 @@ export default class Signup extends Component {
         } else {
             let listOfClasses = this.state.classes;
             for (const i in listOfClasses) {
-                if (listOfClasses[i].default == 1) {
-                    elements.push(
-                        <div className="d-flex justify-content-between w-75 m-auto">
-                            <label className="form-label text-primary"
-                                   htmlFor={this.state.classes[i].name}> {(this.state.classes[i].name).replace("_"," ")}</label>
-                            <input id={this.state.classes[i].name}
-                                   className="m-1 form-check-input"
-                                   type={"checkbox"}
-                                   defaultChecked={true}
-                                   disabled={true}
-                            />
-                        </div>
-                    )
-                } else {
                     elements.push(
                         <div className="d-flex justify-content-between w-75 m-auto">
                             <label className="form-label text-primary"
@@ -368,7 +353,6 @@ export default class Signup extends Component {
                         </div>
                     )
                 }
-            }
             return (<div className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                     {elements}
                 </div>
