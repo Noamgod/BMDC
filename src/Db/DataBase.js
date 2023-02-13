@@ -2,6 +2,7 @@ import $ from 'jquery';
 import {formatDate} from "../SendRequest/SendRequest";
 
 
+
 const CryptoJS = require('crypto-js');
 
 const MONTHS = ["january", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
@@ -1054,6 +1055,47 @@ function finishedStudents(that) {
         })
     }
 
+}
+
+export function add_data_addNewClass(email, password, className, addStudentsList, mandatory){
+    let x = null;
+    $.ajax({
+        url:"Cdb.php",
+        type:"POST",
+        data:{type:"addNewClass", email:email, password:password, className:className, addStudentsList:addStudentsList, mandatory:mandatory},
+        dataType:'json',
+        timeout:2000,
+        async:true,
+        success:function(response){
+            x = response
+            return x;
+        },
+        error:function(error){
+            console.log(error)
+            x = null;
+        }
+    })
+}
+
+export function load_data_getAllStudents_name_uuid(email, password, that) {
+    let x = null;
+    $.ajax({
+        url: "Udb.php",
+        type: "POST",
+        data: {type: "getAllStudents_name_uuid", email: email, password: password},
+        dataType: 'json',
+        timeout: 2000,
+        async: true,
+        success: function (response) {
+            x = response
+            that.setState({studentsNameUuid: x})
+        },
+        error: function (error) {
+            console.log(error, "getAllStudents_name_uuid")
+            x = null;
+        }
+    })
+    return x;
 }
 
 export function load_data_setImagePath(path, email, password) {
