@@ -502,7 +502,9 @@ export function load_data_updateRequestByQuery(email, password, date, id, update
         timeout: 2000,
         async: false,
         success: function (response) {
-            x = response
+            if(response === "successfully updated request"){
+                sendMail(email, password, mailInfo.to, mailInfo.subject, mailInfo.msg)
+            }
             return response
         },
         error: function (error) {
