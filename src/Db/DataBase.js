@@ -14,7 +14,7 @@ let eventQueries = {}
 let eventsCounter = 2;
 let studentQueries = {}
 let studentCounter = 2;
-let netunimCounter = 3;
+let netunimCounter = 1;
 let netunimQueries = {};
 let attendanceCounter = 1;
 
@@ -983,7 +983,7 @@ export function getImage(email, password, that) {
         async: true,
         success: function (response) {
             url = response;
-            that.setState({imgLoading: false, image: "https://chedvata.com/" + url.img_name})
+            that.setState({imgLoading: false, image: "https://bmdcny.com/" + url.img_name})
         },
         error: function (error) {
             console.log("Error", error)
@@ -1413,7 +1413,7 @@ function finishedNetunim(that) {
             map_attendance: netunimQueries["map_attendance"],
             daysInMonth: netunimQueries["daysInMonth"]
         })
-        netunimCounter = 3;
+        netunimCounter = 1;
     }
 
 }

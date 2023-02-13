@@ -2,7 +2,6 @@ import React from 'react';
 import "./percentage.css";
 import CircleLoader from "react-spinners/MoonLoader";
 import {load_data_get_Attend_LastMonthPercent_for_teacher, load_data_getUserLastMonthPercent} from "../Db/DataBase";
-import {CircularProgressbarWithChildren} from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
 
