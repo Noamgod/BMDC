@@ -7,21 +7,37 @@ import {
     // update_student_attendance,//need to check if teacher but don't have to do it because it's not that important
     load_data_daysOfAttendance_for_all_students_to_nochcut,//No need to check if admin but need to check if student (priority low/mid)
     load_data_daysInMonth_for_Nochcut,//Finished
-    load_data_getAllUserAttendanceHistoryFor_nochcut, getClassesForRabbi//Finished
+    load_data_getAllUserAttendanceHistoryFor_nochcut,
+    getClassesForRabbi,
+    load_data_getAllStudents_name_uuid,//Finished
+    add_data_addNewClass
 } from "../Db/DataBase";
 import ScaleLoader from "react-spinners/ScaleLoader";
 import {formatDate} from "../SendRequest/SendRequest";
 import {MyCalendar} from "../Components/Calendar/Calendar";
+import {SearchModal} from "../Components/SearchBar-Modal/SearchBar-Modal";
 
 let mergedList = [];
 let idForEdit;
+
+function getSearchBarModal(list) {
+    if(list == null){
+        return (
+            <div className={"m-auto"}>
+                <ScaleLoader color={"white"}/>
+            </div>
+        )
+    }else{
+        return <SearchModal props={list}/>
+    }
+}
+
 export default class Nochecut extends Component {
     constructor(props) {
         super(props);
         this.state = {
             userProps: props.userProps,
             date: new Date(),
-            // loading: true,
             runAjax: true,
             data: null,
             already_attendance: false,
@@ -33,6 +49,7 @@ export default class Nochecut extends Component {
             map_attendanceHistory: "",
             daysInMonth: "",
             selectedClass: "תפילה",
+            studentsNameUuid: null
         }
     }
 
@@ -56,13 +73,49 @@ export default class Nochecut extends Component {
             load_data_getAllUserAttendanceHistoryFor_nochcut(this.props.userProps.email, this.props.userProps.password, this)
             load_data_getRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this.state.selectedClass, this)
             load_data_getUnRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this.state.selectedClass, this)
-            load_data_daysOfAttendance_for_all_students_to_nochcut(this)
+            load_data_daysOfAttendance_for_all_students_to_nochcut(this, this.state.selectedClass)
             load_data_daysInMonth_for_Nochcut(this.props.userProps.email, this.props.userProps.password, this)
+            load_data_getAllStudents_name_uuid(this.props.userProps.email, this.props.userProps.password, this)
             getClassesForRabbi(this)
             this.setState({runAjax: false})
         }
+
         return (
             <>
+                <div className="modal fade" id="addClassModal" role="dialog">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <button type="button" className="btn-close" data-bs-dismiss="modal"
+                                        data-dismiss={"modal"}
+                                        aria-label="Close"/>
+                                <h4 className="modal-title text-center">הוסף שיעור</h4>
+                            </div>
+                            <div className="modal-body">
+                                <div className={"d-flex flex-column"}>
+                                    <input type="text" className="form-control" id={"newClassName"} placeholder="שם הכיתה"/>
+                                    <hr/>
+                                    {getSearchBarModal(this.state.studentsNameUuid)}
+                                </div>
+                            </div>
+                            <div className="modal-footer">
+                                <input type={"button"} className={"btn btn-success"} value={"Add"} data-bs-dismiss="modal"
+                                       data-dismiss={"modal"} onClick={()=>{
+                                    let listOfCheckedUUID = []
+                                    document.querySelectorAll(".addToClass").forEach((x)=>{
+                                        if (x.checked)
+                                            listOfCheckedUUID.push(x.value)
+                                    })
+
+                                    add_data_addNewClass(this.props.userProps.email, this.props.userProps.password, document.getElementById("newClassName").value, listOfCheckedUUID, document.getElementById("mandatoryCheckBox").checked)
+                                }}/>
+                                <button type="button" className="btn btn-default" data-bs-dismiss="modal"
+                                        data-dismiss={"modal"}>סגור
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div className={"margin-top-responsive"}>
                     {<MyCalendar that={this}/>}
                 </div>
@@ -106,6 +159,7 @@ export default class Nochecut extends Component {
                         <h5 className={"text-center fw-bold text-white"}>{this.state.date.toLocaleDateString()}</h5>
                         <div className={"container-fluid d-flex w-95 flex-row justify-content-start"}>
                             {this.createClassTabButtons()}
+                            {/*{this.addClassButton()}*/}
                         </div>
                         {this.GetWholeTable()}
                     </div>
@@ -113,7 +167,13 @@ export default class Nochecut extends Component {
             </>
         );
     }
-
+    addClassButton = () =>{
+        return(<div>
+            <button className={"btn button mx-1 btn-secondary text-center"} data-toggle="modal" data-target="#addClassModal">
+                הוסף כיתה
+            </button>
+        </div>)
+    }
     createClassTabButtons = () => {
         if (this.state.classesForRabbi == null) {
             return (
@@ -128,8 +188,8 @@ export default class Nochecut extends Component {
                 buttons.push(
                     <div className="box shadow text-center mx-1 d-flex" onClick={(e) => {
                         this.setState({selectedClass: e.currentTarget.innerText.replace(" ","_"), registeredStudents: null, unRegisteredStudents: null})
-                        load_data_getRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), e.currentTarget.innerText, this)
-                        load_data_getUnRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), e.currentTarget.innerText, this)
+                        load_data_getRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this.state.selectedClass, this)
+                        load_data_getUnRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this.state.selectedClass, this)
                         let box = document.querySelectorAll(".box")
                         box.forEach((element) => {
                             element.classList.remove("box-selected")
@@ -204,7 +264,8 @@ export default class Nochecut extends Component {
     refreshList =() =>{
             load_data_getUnRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this.state.selectedClass, this)
             load_data_getRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this.state.selectedClass, this)
-        }
+            load_data_daysOfAttendance_for_all_students_to_nochcut(this, this.state.selectedClass)
+    }
 
 
     creatRow() {

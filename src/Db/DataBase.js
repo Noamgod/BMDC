@@ -2,6 +2,7 @@ import $ from 'jquery';
 import {formatDate} from "../SendRequest/SendRequest";
 
 
+
 const CryptoJS = require('crypto-js');
 
 const MONTHS = ["january", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
@@ -13,7 +14,7 @@ let eventQueries = {}
 let eventsCounter = 2;
 let studentQueries = {}
 let studentCounter = 2;
-let netunimCounter = 3;
+let netunimCounter = 1;
 let netunimQueries = {};
 let attendanceCounter = 1;
 
@@ -501,7 +502,9 @@ export function load_data_updateRequestByQuery(email, password, date, id, update
         timeout: 2000,
         async: false,
         success: function (response) {
-            x = response
+            if(response === "successfully updated request"){
+                sendMail(email, password, mailInfo.to, mailInfo.subject, mailInfo.msg)
+            }
             return response
         },
         error: function (error) {
@@ -545,6 +548,25 @@ export function load_data_getClasses(that) {
             console.log(response)
             that.setState({classes: response})
             return response
+        },
+        error: function (error) {
+            console.log("error", error);
+        }
+    })
+    return x;
+}
+export function load_data_getClassesForUser(that,uuid) {
+    let x = null;
+    $.ajax({
+        url: "Cdb.php",
+        type: "POST",
+        data: {type: "getClassesForUser",uuid:uuid},
+        dataType: 'json',
+        timeout: 2000,
+        async: true,
+        success: function (response) {
+            console.log(response)
+            that.setState({classesForUser: response})
         },
         error: function (error) {
             console.log("error", error);
@@ -963,7 +985,7 @@ export function getImage(email, password, that) {
         async: true,
         success: function (response) {
             url = response;
-            that.setState({imgLoading: false, image: "https://chedvata.com/" + url.img_name})
+            that.setState({imgLoading: false, image: "https://bmdcny.com/" + url.img_name})
         },
         error: function (error) {
             console.log("Error", error)
@@ -1035,6 +1057,47 @@ function finishedStudents(that) {
         })
     }
 
+}
+
+export function add_data_addNewClass(email, password, className, addStudentsList, mandatory){
+    let x = null;
+    $.ajax({
+        url:"Cdb.php",
+        type:"POST",
+        data:{type:"addNewClass", email:email, password:password, className:className, addStudentsList:addStudentsList, mandatory:mandatory},
+        dataType:'json',
+        timeout:2000,
+        async:true,
+        success:function(response){
+            x = response
+            return x;
+        },
+        error:function(error){
+            console.log(error)
+            x = null;
+        }
+    })
+}
+
+export function load_data_getAllStudents_name_uuid(email, password, that) {
+    let x = null;
+    $.ajax({
+        url: "Udb.php",
+        type: "POST",
+        data: {type: "getAllStudents_name_uuid", email: email, password: password},
+        dataType: 'json',
+        timeout: 2000,
+        async: true,
+        success: function (response) {
+            x = response
+            that.setState({studentsNameUuid: x})
+        },
+        error: function (error) {
+            console.log(error, "getAllStudents_name_uuid")
+            x = null;
+        }
+    })
+    return x;
 }
 
 export function load_data_setImagePath(path, email, password) {
@@ -1135,7 +1198,27 @@ export function attendance(id, date, addDay, that) {
     })
     return x;
 }
+export function changeClassesForUser(uuid, list) {
+    let x;
+    $.ajax({
+        url: "Cdb.php",
+        type: "POST",
+        data: {type: "changeClassesForUser", uuid:uuid,list: list},
+        dataType: 'json',
+        timeout: 2000,
+        async: false,
+        success: function (response) {
+            x = response
+            console.log("changeClassesForUser: ", response)
+        },
+        error: function (error) {
+            console.log("changeClassesForUser: ", error)
+            x = null
+        }
 
+    })
+    return x;
+}
 export function attendanceEdit(id, date, addDay) {
     let x;
     $.ajax({
@@ -1332,7 +1415,7 @@ function finishedNetunim(that) {
             map_attendance: netunimQueries["map_attendance"],
             daysInMonth: netunimQueries["daysInMonth"]
         })
-        netunimCounter = 3;
+        netunimCounter = 1;
     }
 
 }
@@ -1416,12 +1499,12 @@ export function load_data_daysOfAttendance_for_all_students(that) {
     return x;
 }
 
-export function load_data_daysOfAttendance_for_all_students_to_nochcut(that) {
+export function load_data_daysOfAttendance_for_all_students_to_nochcut(that,seder) {
     let x = new Map();
     $.ajax({
         url: "Adb.php",
         type: "POST",
-        data: {type: "presence_for_all_students"},
+        data: {type: "presence_for_all_students",seder:seder},
         dataType: 'json',
         timeout: 2000,
         async: true,

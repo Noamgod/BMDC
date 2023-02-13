@@ -113,7 +113,7 @@ export default class sendRequest extends React.Component {
                                             let x = load_data_sendRequest(this.props.userProps.email, this.props.userProps.password,user.date,user.reason);
                                             if (x == 1) {
                                                 notifySuccess("הבקשה נשלחה בהצלחה")
-                                                sendMailFrom("chedvata.ds@gmail.com", "בקשה לשחרור", "<h1>בקשת שיחרור של: " + user.first_name + " " + user.last_name + "</h1>" + "<h3>תאריך: " + user.date + "</h3>" + "<h3>סיבה: " + user.reason.replace(/'/g, '\\\'') + "</h3>"
+                                                sendMailFrom("noamgodli@chedvata.com", "בקשה לשחרור", "<h1>בקשת שיחרור של: " + user.first_name + " " + user.last_name + "</h1>" + "<h3>תאריך: " + user.date + "</h3>" + "<h3>סיבה: " + user.reason.replace(/'/g, '\\\'') + "</h3>"
                                                     , "chedvata@chedvata.com")
                                             }
                                             else {

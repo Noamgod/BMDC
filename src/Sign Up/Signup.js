@@ -36,10 +36,10 @@ function resetElements() {
     document.getElementById("birthday").style.borderColor = 'black'
     document.getElementById("cycle").style.borderColor = 'black'
     document.getElementById("class").style.borderColor = 'black'
-   /* document.getElementById("B").style.borderColor = 'black'
-    document.getElementById("B").checked = 'false'
-    document.getElementById("G").style.borderColor = 'black'
-    document.getElementById("G").checked = 'false'*/
+    /* document.getElementById("B").style.borderColor = 'black'
+     document.getElementById("B").checked = 'false'
+     document.getElementById("G").style.borderColor = 'black'
+     document.getElementById("G").checked = 'false'*/
 }
 
 function offCheckSlide() {
@@ -241,10 +241,10 @@ export default class Signup extends Component {
                                             />
 
                                             <datalist id={"c"}>
-                                                <option value={"מחזור י - תשפ\"ג"}/>
-                                                <option value={"מחזור ט - תשפ\"ב"}/>
-                                                <option value={"מחזור ח - תשפ\"א"}/>
-                                                <option value={"מחזור תש\"פ"}/>
+                                                <option className={"text-center"} value={"מחזור י - תשפ\"ג"}/>
+                                                <option className={"text-center"} value={"מחזור ט - תשפ\"ב"}/>
+                                                <option className={"text-center"} value={"מחזור ח - תשפ\"א"}/>
+                                                <option className={"text-center"} value={"מחזור תש\"פ"}/>
                                             </datalist>
                                             <label className="form-label text-primary"
                                                    htmlFor="cycle">מחזור</label>
@@ -264,9 +264,9 @@ export default class Signup extends Component {
                                             />
 
                                             <datalist id={"rabbi"}>
-                                                <option value={"הרב יצחק מאיר יעבץ"}/>
-                                                <option value={"הרב יצחק ברוך רוזנבלום"}/>
-                                                <option value={"הרב נתנאל עמר"}/>
+                                                <option className={"text-center"} value={"הרב יצחק מאיר יעבץ"}/>
+                                                <option className={"text-center"} value={"הרב יצחק ברוך רוזנבלום"}/>
+                                                <option className={"text-center"} value={"הרב נתנאל עמר"}/>
 
                                             </datalist>
                                             <label className="form-label text-primary"
@@ -360,6 +360,7 @@ export default class Signup extends Component {
         }
     }
 
+
     correctFormat = () => {
         let e, k;
         if (document.getElementById("flexSwitchCheckDefault").checked === false) {
@@ -417,7 +418,7 @@ export default class Signup extends Component {
                 list.push(elements[i].props.children[1].props.id)
             }
         }
-        console.log(list,"list")
+        console.log(list, "list")
         return (
             {
                 first_name: document.getElementById("name").value,
