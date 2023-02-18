@@ -348,6 +348,11 @@ export default class Nochecut extends Component {
     }
 
     getAttendance(uuid) {
+        if (this.state.map_attendance == "") {
+            return (
+                <td className={"text-center"}>0%</td>
+            )
+        }
         let attendance = this.state.map_attendance.get(uuid) == null ? 0 : this.state.map_attendance.get(uuid);
         return (
             <td className={"text-center"}>{((this.state.daysInMonth.days - attendance) / this.state.daysInMonth.days * 100).toFixed(2)}%</td>

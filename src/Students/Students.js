@@ -246,12 +246,10 @@ export default class Students extends React.Component {
                                                 />
 
                                                 <datalist id={"c"}>
-                                                    <option value={"א  2017"}/>
-                                                    <option value={"ב  2018"}/>
-                                                    <option value={"ג  2019"}/>
-                                                    <option value={"ד  2020"}/>
-                                                    <option value={"ה  2021"}/>
-                                                    <option value={"ו  2022"}/>
+                                                    <option value={"מחזור י - תשפ\"ג"}/>
+                                                    <option value={"מחזור ט - תשפ\"ב"}/>
+                                                    <option value={"מחזור ח - תשפ\"א"}/>
+                                                    <option value={"מחזור ז - תש\"פ"}/>
                                                 </datalist>
                                             </div>
                                         </div>
@@ -379,7 +377,7 @@ export default class Students extends React.Component {
                     break;
                 case "rabbi":
                     this.change_class();
-                   break
+                    break
 
             }
         }
@@ -473,10 +471,10 @@ export default class Students extends React.Component {
         let elements = document.getElementById("CheckBoxDropdown").children;
         let list = []
         HTMLCollection.prototype.forEach = Array.prototype.forEach;
-        elements.forEach((child)=>{
-            list.push(child.children[1].id ,child.children[1].checked)
+        elements.forEach((child) => {
+            list.push(child.children[1].id, child.children[1].checked)
         })
-        changeClassesForUser(this.state.student.uuid,list)
+        changeClassesForUser(this.state.student.uuid, list)
     }
 
     movePage(page) {
@@ -641,7 +639,7 @@ export default class Students extends React.Component {
             })
         }
         return (<div className="dropdown-menu overflow-auto" style={{maxHeight: "160px"}
-        } id={"CheckBoxDropdown"} aria-labelledby="dropdownMenuButton1">
+            } id={"CheckBoxDropdown"} aria-labelledby="dropdownMenuButton1">
                 {elements}
             </div>
         )

@@ -244,7 +244,7 @@ export default class Signup extends Component {
                                                 <option className={"text-center"} value={"מחזור י - תשפ\"ג"}/>
                                                 <option className={"text-center"} value={"מחזור ט - תשפ\"ב"}/>
                                                 <option className={"text-center"} value={"מחזור ח - תשפ\"א"}/>
-                                                <option className={"text-center"} value={"מחזור תש\"פ"}/>
+                                                <option className={"text-center"} value={"מחזור ז- תש\"פ"}/>
                                             </datalist>
                                             <label className="form-label text-primary"
                                                    htmlFor="cycle">מחזור</label>

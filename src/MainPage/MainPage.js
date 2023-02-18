@@ -136,7 +136,6 @@ export default class MainPage extends React.Component {
                                     let email = this.props.userProps.email;
                                     let msg = "<h1/>שם: <h1>" + `${name}` + "<h3>הבעיה:</h3>" + `${problem.value}` + "  " + `${email}`
                                     sendMailFrom("chdvatayeshiva@gmail.com", "תמיכה טכנית", msg, email)
-                                    sendMailFrom("chedvata.ds@gmail.com", "תמיכה טכנית", msg, email)
                                     problem.value = "";
                                 }}>שליחה
                                 </button>
@@ -340,7 +339,7 @@ export default class MainPage extends React.Component {
                                     <div className={"d-flex flex-row justify-content-end"}>
                                         <button data-dismiss="modal" onClick={() => {
                                             let days = document.getElementById("daysFromInput");
-                                            reset_days_to_new_month(days.value)
+                                            reset_days_to_new_month(days.value,this.state.userProps.email,this.state.userProps.password)
                                             set_days_in_month(days.value)
                                             days.setAttribute("placeholder", days.value)
                                             days.value = null

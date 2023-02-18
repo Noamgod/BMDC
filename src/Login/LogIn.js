@@ -63,7 +63,7 @@ export default class LogIn extends React.Component {
         document.getElementById("dropdownMenuLink").innerHTML = e.target.innerHTML;
         if (e.target.innerHTML.includes("מזכירות")) {
             toWho = "officebmdc@gmail.com"
-        } else if (e.target.innerHTML.includes("צוות")) {
+        } else if (e.target.innerHTML.includes("צוות האתר")) {
             toWho = "chdvatayeshiva@gmail.com"
         }
     }
