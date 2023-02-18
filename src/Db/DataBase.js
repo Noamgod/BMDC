@@ -2,7 +2,6 @@ import $ from 'jquery';
 import {formatDate} from "../SendRequest/SendRequest";
 
 
-
 const CryptoJS = require('crypto-js');
 
 const MONTHS = ["january", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
@@ -502,7 +501,7 @@ export function load_data_updateRequestByQuery(email, password, date, id, update
         timeout: 2000,
         async: false,
         success: function (response) {
-            if(response === "successfully updated request"){
+            if (response === "successfully updated request") {
                 sendMail(email, password, mailInfo.to, mailInfo.subject, mailInfo.msg)
             }
             return response
@@ -555,12 +554,13 @@ export function load_data_getClasses(that) {
     })
     return x;
 }
-export function load_data_getClassesForUser(that,uuid) {
+
+export function load_data_getClassesForUser(that, uuid) {
     let x = null;
     $.ajax({
         url: "Cdb.php",
         type: "POST",
-        data: {type: "getClassesForUser",uuid:uuid},
+        data: {type: "getClassesForUser", uuid: uuid},
         dataType: 'json',
         timeout: 2000,
         async: true,
@@ -1059,20 +1059,27 @@ function finishedStudents(that) {
 
 }
 
-export function add_data_addNewClass(email, password, className, addStudentsList, mandatory){
+export function add_data_addNewClass(email, password, className, addStudentsList, mandatory) {
     let x = null;
     $.ajax({
-        url:"Cdb.php",
-        type:"POST",
-        data:{type:"addNewClass", email:email, password:password, className:className, addStudentsList:addStudentsList, mandatory:mandatory},
-        dataType:'json',
-        timeout:2000,
-        async:true,
-        success:function(response){
+        url: "Cdb.php",
+        type: "POST",
+        data: {
+            type: "addNewClass",
+            email: email,
+            password: password,
+            className: className,
+            addStudentsList: addStudentsList,
+            mandatory: mandatory
+        },
+        dataType: 'json',
+        timeout: 2000,
+        async: true,
+        success: function (response) {
             x = response
             return x;
         },
-        error:function(error){
+        error: function (error) {
             console.log(error)
             x = null;
         }
@@ -1198,12 +1205,13 @@ export function attendance(id, date, addDay, that) {
     })
     return x;
 }
+
 export function changeClassesForUser(uuid, list) {
     let x;
     $.ajax({
         url: "Cdb.php",
         type: "POST",
-        data: {type: "changeClassesForUser", uuid:uuid,list: list},
+        data: {type: "changeClassesForUser", uuid: uuid, list: list},
         dataType: 'json',
         timeout: 2000,
         async: false,
@@ -1219,6 +1227,7 @@ export function changeClassesForUser(uuid, list) {
     })
     return x;
 }
+
 export function attendanceEdit(id, date, addDay) {
     let x;
     $.ajax({
@@ -1260,7 +1269,7 @@ export function attendanceEdit(id, date, addDay) {
 //     return x;
 // }
 
-export function insert_into_attendance(uuid, status, date,  selectedClass) {
+export function insert_into_attendance(uuid, status, date, selectedClass) {
     let x;
     $.ajax({
         url: "Adb.php",
@@ -1315,12 +1324,18 @@ export function load_data_getRegisteredStudentsForRabbiByDate(email, password, d
     return x;
 }
 
-export function load_data_getUnRegisteredStudentsForRabbiByDate(email, password, date,selectedClass, that) {
+export function load_data_getUnRegisteredStudentsForRabbiByDate(email, password, date, selectedClass, that) {
     let x;
     $.ajax({
         url: "Udb.php",
         type: "POST",
-        data: {type: "get_unregistered_students_for_rabbi", email: email, password: password, date: date, class:selectedClass},
+        data: {
+            type: "get_unregistered_students_for_rabbi",
+            email: email,
+            password: password,
+            date: date,
+            class: selectedClass
+        },
         dataType: 'json',
         timeout: 2000,
         async: true,
@@ -1499,12 +1514,12 @@ export function load_data_daysOfAttendance_for_all_students(that) {
     return x;
 }
 
-export function load_data_daysOfAttendance_for_all_students_to_nochcut(that,seder) {
+export function load_data_daysOfAttendance_for_all_students_to_nochcut(that, seder) {
     let x = new Map();
     $.ajax({
         url: "Adb.php",
         type: "POST",
-        data: {type: "presence_for_all_students",seder:seder},
+        data: {type: "presence_for_all_students", seder: seder},
         dataType: 'json',
         timeout: 2000,
         async: true,
@@ -1595,12 +1610,18 @@ export function load_data_daysInMonth_for_Nochcut(email, password, that) {
 }
 
 
-export function reset_days_to_new_month(days) {
+export function reset_days_to_new_month(days, email, password) {
     let x;
     $.ajax({
         url: "Adb.php",
         type: "POST",
-        data: {type: "reset_days_to_new_month", days: days, month: MONTHS[new Date().getMonth()]},
+        data: {
+            type: "reset_days_to_new_month",
+            days: days,
+            month: MONTHS[new Date().getMonth()],
+            email: email,
+            password: password
+        },
         dataType: 'json',
         timeout: 3000,
         async: false,

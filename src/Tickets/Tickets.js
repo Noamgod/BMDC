@@ -225,7 +225,7 @@ export default class Tickets extends Component {
             liSelect = "תמיכה תכנית באתר"
         } else if (e.target.innerHTML === "מזכירות הישיבה") {
             liSelect = "מזכירות הישיבה"
-        } else if (e.target.innerHTML === "מנכ\"ל הישיבה") {
+        } else if (e.target.innerHTML === "מנהל הישיבה") {
             liSelect = "מנכ\"ל הישיבה"
         }
     }
