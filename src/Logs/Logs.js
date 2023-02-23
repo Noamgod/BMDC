@@ -60,8 +60,7 @@ export default class Logs extends Component {
     }
 
     render() {
-        if(this.props.userProps.email.toLowerCase() !== "chdvatayeshiva@gmail.com"){ // Dovid change this in the future to work with admins
-
+        if(this.props.userProps.admin !== "operator" && this.props.userProps.admin !== "admin" ){ // Dovid change this in the future to work with admins
             return(
                 <div>
                     <h1>אין לך גישה לדף זה</h1>
