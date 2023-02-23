@@ -19,6 +19,7 @@ import Netunim from "./Netunim/Netunim";
 import {decrypt} from "./encryption";
 import {ScaleLoader} from "react-spinners";
 import Tickets from "./Tickets/Tickets";
+import Logs from "./Logs/Logs";
 
 export const cookies = new Cookies()
 
@@ -60,6 +61,7 @@ class App extends React.Component {
                         <Route path={"/sign-up"} element={<Signup userProps={this.state.userProps} that={this}/>}/>
                         <Route path={"*"} element={this.state.userProps == null ? <LogIn that={this}/> :
                             <Profile userProps={this.state.userProps}/>}/>
+                        <Route path={"/logs"} element={<Logs userProps={this.state.userProps}/>}/>
                     </Routes>
                 </Router>
             );

@@ -11,6 +11,7 @@ import {
 } from "../Db/DataBase";
 import '@fortawesome/fontawesome-free/js/fontawesome';
 import {NavLink} from "react-router-dom";
+import {log10} from "chart.js/helpers";
 
 const cookies = new Cookies();
 
@@ -63,7 +64,7 @@ export default class MainPage extends React.Component {
             alert("אין אפשרות להזין 0 ככמות התלמידים.")
         } else {
             alert("כמות התלמידים שונתה ל- " + newStudentCount.value)
-            update_data_studentCount("UPDATE singleton SET value='" + newStudentCount.value + "' WHERE singleton_name = 'student_count'")
+            update_data_studentCount(this.props.userProps.email, this.props.userProps.password, newStudentCount.value)
             newStudentCount.value = null;
             this.setState({loading: true})
             get_student_count(this)
@@ -71,7 +72,7 @@ export default class MainPage extends React.Component {
     }
     insertNewId = (id) => {
         if (id.length == 9) {
-            load_data_insertID(id);
+            load_data_insertID(this.props.userProps.email, this.props.userProps.password, id);
             alert("הת\"ז נוסף בהצלחה")
             document.getElementById("addIdInput").value = null;
         } else {
@@ -191,7 +192,9 @@ export default class MainPage extends React.Component {
                                 </NavLink>
                             </li>
                             {this.getNuchechut(true)}
+                            {this.getLogsButton(true)}
                             {this.getAdminButtons(true)}
+
                         </ul>
                     </div>
                 </div>
@@ -287,7 +290,7 @@ export default class MainPage extends React.Component {
             > תקלות
             </NavLink>
             {this.getAdminButtons(false)}
-
+            {this.getLogsButton(false)}
         </>);
     }
 
@@ -340,7 +343,7 @@ export default class MainPage extends React.Component {
                                         <button data-dismiss="modal" onClick={() => {
                                             let days = document.getElementById("daysFromInput");
                                             reset_days_to_new_month(days.value,this.state.userProps.email,this.state.userProps.password)
-                                            set_days_in_month(days.value)
+                                            set_days_in_month(this.props.userProps.email, this.state.userProps.password, days.value)
                                             days.setAttribute("placeholder", days.value)
                                             days.value = null
                                         }}
@@ -400,6 +403,27 @@ export default class MainPage extends React.Component {
                 </li>
             )
         } else return null;
+    }
+
+    getLogsButton = (sidebar) => {
+        if(this.props.userProps.admin == "operator" || this.props.userProps.admin == "admin"){
+            console.log("in1")
+            if(!sidebar){
+                console.log("in2")
+                return (
+                    <NavLink to={"/logs"} className={"btn white-border navbar-brand nav-top-active mx-1 text-white"}
+                    >הסטוריה
+                    </NavLink>
+                )
+            }else return (
+                <li className="nav-item hover-glow">
+                    <NavLink onClick={forceCloseNavBar} to={"/logs"} className={"nav-link text-truncate"} >
+                        <i className="fas fa-chart-bar fa-2x"></i><span
+                        className="mx-2 align-super mb-1 d-sm-inline">הסטוריה</span>
+                    </NavLink>
+                </li>
+            )
+        }
     }
 }
 function forceCloseNavBar(){

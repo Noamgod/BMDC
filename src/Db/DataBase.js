@@ -187,12 +187,12 @@ function finishedEvents(that) {
     }
 }
 
-export function load_data_insertID(id) {
+export function load_data_insertID(email, password, id) {
     let x = null
     $.ajax({
         url: "Udb.php",
         type: "POST",
-        data: {type: "InsertIdToIds", id: id},
+        data: {type: "InsertIdToIds", email: email, password: password, id: id},
         dataType: 'json',
         timeout: 2000,
         async: true,
@@ -672,11 +672,11 @@ export function insert_data_event(password, email, event_title, description, tim
     return x;
 }
 
-export function update_data_studentCount(sql) {
+export function update_data_studentCount(email, password, count) {
     $.ajax({
         url: "Udb.php",
         type: "POST",
-        data: {type: "updateStudentCount", sql: sql},
+        data: {type: "updateStudentCount", email: email, password: password, count: count},
         dataType: 'json',
         timeout: 2000,
         async: false,
@@ -1837,6 +1837,25 @@ export function load_data_countStatus(email, password, role, that, tickets) {
 //         }
 //     })
 // }
+
+export function load_data_getLogs(email, password, that){
+    let x = null;
+    $.ajax({
+        url: "Ldb.php",
+        type: "POST",
+        data:{type:"getLogs", email: email, password: password},
+        dataType:'json',
+        timeout:2000,
+        async:true,
+        success:function (response) {
+            x = response;
+            that.setState({loading: false, runAjax: false, logs: x, showingLogs: x})
+        },
+        error:function (error) {
+            console.log("getLogs not working:", error)
+        }
+    })
+}
 
 
 
