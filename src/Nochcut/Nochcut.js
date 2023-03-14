@@ -42,6 +42,7 @@ export default class Nochecut extends Component {
             data: null,
             already_attendance: false,
             edit: false,
+            bool: true,
             unregisteredStudents: null,
             registeredStudents: null,
             classesForRabbi: null,
@@ -183,20 +184,27 @@ export default class Nochecut extends Component {
         }
         let classes = this.state.classesForRabbi;
         let buttons = [];
-        Object.keys(classes).forEach((key) => {
+
+        Object.keys(classes).forEach((key,i) => {
             if (classes[key] == 1) {
+                if(this.state.bool){
+                    console.log("here", key)
+                    this.refreshList(key)
+                    this.setState({bool: false, selectedClass: key})
+                }
+
                 buttons.push(
                     <div className="box shadow text-center mx-1 d-flex" onClick={(e) => {
                         this.setState({selectedClass: e.currentTarget.innerText.replace(" ","_"), registeredStudents: null, unRegisteredStudents: null})
-                        load_data_getRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this.state.selectedClass, this)
-                        load_data_getUnRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this.state.selectedClass, this)
+                        load_data_getRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date),  e.currentTarget.innerText.replace(" ","_"), this)
+                        load_data_getUnRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date),  e.currentTarget.innerText.replace(" ","_"), this)
                         let box = document.querySelectorAll(".box")
                         box.forEach((element) => {
                             element.classList.remove("box-selected")
                         })
                         e.currentTarget.classList.add("box-selected");
                     }}>
-                        <h5 className="m-auto">{key.replace('_'," ")}</h5>
+                        <h5 className="m-auto" id={"className"+i}>{key.replace('_'," ")}</h5>
                     </div>
                 )
             }
@@ -261,12 +269,12 @@ export default class Nochecut extends Component {
             )
         }
     }
-    refreshList =() =>{
-            load_data_getUnRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this.state.selectedClass, this)
-            load_data_getRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this.state.selectedClass, this)
-            load_data_daysOfAttendance_for_all_students_to_nochcut(this, this.state.selectedClass)
-    }
+    refreshList =(className) => {
+            load_data_getUnRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), className?className:this.state.selectedClass, this)
+            load_data_getRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), className?className:this.state.selectedClass, this)
+            load_data_daysOfAttendance_for_all_students_to_nochcut(this, className?className:this.state.selectedClass)
 
+    }
 
     creatRow() {
         return (

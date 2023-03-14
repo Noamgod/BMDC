@@ -11,7 +11,6 @@ import {
 } from "../Db/DataBase";
 import '@fortawesome/fontawesome-free/js/fontawesome';
 import {NavLink} from "react-router-dom";
-import {log10} from "chart.js/helpers";
 
 const cookies = new Cookies();
 
@@ -210,8 +209,8 @@ export default class MainPage extends React.Component {
                             <div className={"collapse navbar-collapse"} id={"navbarTogglerDemo01"}>
                                 <ul className={"nav navbar-collapse"}>
                                     <img style={{maxHeight: "65px", maxWidth: "20%"}}
-                                         src={"https://Chedvatatest.com/assets/logo.png"}
-                                         className={"img-responsive rounded navbar-brand scale-logo-big"} alt={"Logo"}/>
+                                         src={"https://bmdcny.com/assets/logo.png"}
+                                         className={"img-responsive rounded navbar-brand  scale-logo-big"} alt={"Logo"}/>
                                     {this.getButtons()}
 
                                 </ul>

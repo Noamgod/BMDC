@@ -15,7 +15,6 @@ let studentQueries = {}
 let studentCounter = 2;
 let netunimCounter = 1;
 let netunimQueries = {};
-let attendanceCounter = 1;
 
 export function encrypt(text) {
     return CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(text))
@@ -1618,7 +1617,7 @@ export function reset_days_to_new_month(days, email, password) {
         data: {
             type: "reset_days_to_new_month",
             days: days,
-            month: MONTHS[new Date().getMonth()],
+            month: MONTHS[new Date().getMonth()-1],
             email: email,
             password: password
         },

@@ -259,6 +259,7 @@ export default class Students extends React.Component {
                                             <span className={"fw-bold"}>תפקיד</span>
                                             <div className={"d-flex"}>
                                                 <input list={"job-list"}
+
                                                        id={"role"}
                                                        placeholder={this.state.student.role}
                                                        className={"input-group-text editUser"}
@@ -594,7 +595,6 @@ export default class Students extends React.Component {
     }
 
     selectStudent = (user) => {
-        load_data_getClassesForUser(this, user.uuid)
         let student2 = {
             first_name: user.first_name,
             last_name: user.last_name,
@@ -610,7 +610,9 @@ export default class Students extends React.Component {
             class: user.class,
             role: user.role
         }
-        this.setState({student: student2})
+        this.setState({student: student2, classesForUser: null})
+        load_data_getClassesForUser(this, user.uuid)
+
     }
 
     getClassesForCheckBox = () => {
@@ -621,8 +623,8 @@ export default class Students extends React.Component {
                 </div>
             </div>)
         } else {
-            let listOfClasses = this.state.classesForUser[0];
-            Object.keys(listOfClasses).forEach((key) => {
+
+            Object.keys(this.state.classesForUser[0]).forEach((key) => {
                 if (key != "uuid") {
                     elements.push(
                         <div className="d-flex justify-content-between w-75 m-auto">
@@ -631,7 +633,7 @@ export default class Students extends React.Component {
                             <input id={key}
                                    type={"checkbox"}
                                    className="m-1 form-check-input"
-                                   defaultChecked={listOfClasses[key] == 1 ? true : false}
+                                   defaultChecked={this.state.classesForUser[0][key] == 1 ? true : false}
                             />
                         </div>
                     )

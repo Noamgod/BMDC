@@ -3,7 +3,6 @@ import React, {useState} from 'react';
 
 export function SearchModal(props) {
     const [searchResult, setSearchResult] = useState(props.props);
-    console.log(props)
 
     const searchHandler = (search) => {
         search = search.trim()
@@ -21,7 +20,6 @@ export function SearchModal(props) {
     }
        let box = []
        for (let index in searchResult) {
-           console.log(searchResult[index].uuid)
            box.push(
                <div className={"border-1 d-flex flex-row"}>
                    <input id={"checkBoxSB"+index} type={"checkbox"} className={"checkbox addToClass"} value={searchResult[index].uuid}/>
