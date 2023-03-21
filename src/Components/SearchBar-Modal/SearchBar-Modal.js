@@ -46,7 +46,7 @@ export function SearchModal(props) {
                             document.querySelectorAll(".checkbox").forEach((x)=>{
                                 x.checked = e.currentTarget.checked
                             })}}/>
-                        <label htmlFor={"checkAll"}><strong>Check all</strong></label>
+                        <label htmlFor={"checkAll"}><strong>סמן הכול</strong></label>
                     </div>
                     <div className={"border-1 d-flex flex-row"}>
                         <input type={"checkbox"} id={"mandatoryCheckBox"} onClick={(e)=>{
@@ -54,7 +54,7 @@ export function SearchModal(props) {
                                 x.checked = e.currentTarget.checked
                                 x.disabled = e.currentTarget.checked;
                             })}}/>
-                        <label htmlFor={"mandatoryCheckBox"}><strong>Mandatory</strong></label>
+                        <label htmlFor={"mandatoryCheckBox"}><strong>שיעור חובה</strong></label>
                     </div>
                     <br/>
                     {searchResult}

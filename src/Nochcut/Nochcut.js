@@ -102,7 +102,7 @@ export default class Nochecut extends Component {
                                 </div>
                             </div>
                             <div className="modal-footer">
-                                <input type={"button"} className={"btn btn-success"} value={"Add"} data-bs-dismiss="modal"
+                                <input type={"button"} className={"btn btn-success"} value={"הוסף"} data-bs-dismiss="modal"
                                        data-dismiss={"modal"} onClick={()=>{
                                     let listOfCheckedUUID = []
                                     document.querySelectorAll(".addToClass").forEach((x)=>{
@@ -172,13 +172,13 @@ export default class Nochecut extends Component {
             </>
         );
     }
-    addClassButton = () =>{
-        return(<div>
-            <button className={"btn button mx-1 btn-secondary text-center"} data-toggle="modal" data-target="#addClassModal">
-                הוסף כיתה
-            </button>
-        </div>)
-    }
+    // addClassButton = () =>{
+    //     return(<div>
+    //         <button className={"btn button mx-1 btn-secondary text-center"} data-toggle="modal" data-target="#addClassModal">
+    //             הוסף כיתה
+    //         </button>
+    //     </div>)
+    // }
     createClassTabButtons = () => {
         if (this.state.classesForRabbi == null) {
             return (
