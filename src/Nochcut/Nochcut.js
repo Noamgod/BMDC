@@ -71,13 +71,16 @@ export default class Nochecut extends Component {
         }
 
         if (this.state.runAjax) {
+            console.log("ajax")
             load_data_getAllUserAttendanceHistoryFor_nochcut(this.props.userProps.email, this.props.userProps.password, this)
-            load_data_getRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this.state.selectedClass, this)
-            load_data_getUnRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this.state.selectedClass, this)
             load_data_daysOfAttendance_for_all_students_to_nochcut(this, this.state.selectedClass)
             load_data_daysInMonth_for_Nochcut(this.props.userProps.email, this.props.userProps.password, this)
             load_data_getAllStudents_name_uuid(this.props.userProps.email, this.props.userProps.password, this)
-            getClassesForRabbi(this)
+            getClassesForRabbi(this).then(r =>{
+                console.log("r:",r)
+                load_data_getRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this.state.selectedClass, this)
+                load_data_getUnRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this.state.selectedClass, this)
+            })
             this.setState({runAjax: false})
         }
 
@@ -180,21 +183,16 @@ export default class Nochecut extends Component {
             return (
                 <div className={"m-auto"}>
                     <ScaleLoader color={"white"}/>
-                </div>)
+                </div>
+            )
         }
         let classes = this.state.classesForRabbi;
         let buttons = [];
 
         Object.keys(classes).forEach((key,i) => {
             if (classes[key] == 1) {
-                if(this.state.bool){
-                    console.log("here", key)
-                    this.refreshList(key)
-                    this.setState({bool: false, selectedClass: key})
-                }
-
                 buttons.push(
-                    <div className="box shadow text-center mx-1 d-flex" onClick={(e) => {
+                    <div className="box shadow text-center mx-1 d-flex" content={key} onClick={(e) => {
                         this.setState({selectedClass: e.currentTarget.innerText.replace(" ","_"), registeredStudents: null, unRegisteredStudents: null})
                         load_data_getRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date),  e.currentTarget.innerText.replace(" ","_"), this)
                         load_data_getUnRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date),  e.currentTarget.innerText.replace(" ","_"), this)
@@ -210,8 +208,12 @@ export default class Nochecut extends Component {
             }
         })
 
-        if (buttons.length > 0)
+        if (buttons.length > 0){
+            if (this.state.selectedClass == null)
+                this.refreshList(buttons[0].props.content)
             buttons[0].props.className += " box-selected";
+
+        }
         return buttons;
     }
 
@@ -273,7 +275,8 @@ export default class Nochecut extends Component {
             load_data_getUnRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), className?className:this.state.selectedClass, this)
             load_data_getRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), className?className:this.state.selectedClass, this)
             load_data_daysOfAttendance_for_all_students_to_nochcut(this, className?className:this.state.selectedClass)
-
+            if (className)
+                this.setState({selectedClass: className})
     }
 
     creatRow() {

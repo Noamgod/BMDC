@@ -513,7 +513,7 @@ export function load_data_updateRequestByQuery(email, password, date, id, update
 }
 
 
-export function getClassesForRabbi(that) {
+export async function getClassesForRabbi(that) {
     $.ajax({
         url: "Cdb.php",
         type: "POST",
