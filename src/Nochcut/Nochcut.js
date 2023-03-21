@@ -20,7 +20,7 @@ import {SearchModal} from "../Components/SearchBar-Modal/SearchBar-Modal";
 let mergedList = [];
 let idForEdit;
 
-function getSearchBarModal(list) {
+function getSearchBarModal(list ) {
     if(list == null){
         return (
             <div className={"m-auto"}>
@@ -28,7 +28,7 @@ function getSearchBarModal(list) {
             </div>
         )
     }else{
-        return <SearchModal props={list}/>
+        return <SearchModal props={list} />
     }
 }
 
@@ -50,7 +50,8 @@ export default class Nochecut extends Component {
             map_attendanceHistory: "",
             daysInMonth: "",
             selectedClass: "תפילה",
-            studentsNameUuid: null
+            studentsNameUuid: null,
+            studentsForNewClass: [],
         }
     }
 
@@ -71,13 +72,11 @@ export default class Nochecut extends Component {
         }
 
         if (this.state.runAjax) {
-            console.log("ajax")
             load_data_getAllUserAttendanceHistoryFor_nochcut(this.props.userProps.email, this.props.userProps.password, this)
             load_data_daysOfAttendance_for_all_students_to_nochcut(this, this.state.selectedClass)
             load_data_daysInMonth_for_Nochcut(this.props.userProps.email, this.props.userProps.password, this)
             load_data_getAllStudents_name_uuid(this.props.userProps.email, this.props.userProps.password, this)
             getClassesForRabbi(this).then(r =>{
-                console.log("r:",r)
                 load_data_getRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this.state.selectedClass, this)
                 load_data_getUnRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this.state.selectedClass, this)
             })
@@ -99,7 +98,7 @@ export default class Nochecut extends Component {
                                 <div className={"d-flex flex-column"}>
                                     <input type="text" className="form-control" id={"newClassName"} placeholder="שם הכיתה"/>
                                     <hr/>
-                                    {getSearchBarModal(this.state.studentsNameUuid)}
+                                    {getSearchBarModal(this.state.studentsNameUuid, this.state.studentsForNewClass)}
                                 </div>
                             </div>
                             <div className="modal-footer">
@@ -111,7 +110,9 @@ export default class Nochecut extends Component {
                                             listOfCheckedUUID.push(x.value)
                                     })
 
-                                    add_data_addNewClass(this.props.userProps.email, this.props.userProps.password, document.getElementById("newClassName").value, listOfCheckedUUID, document.getElementById("mandatoryCheckBox").checked)
+                                    add_data_addNewClass(this.props.userProps.email, this.props.userProps.password, document.getElementById("newClassName").value, listOfCheckedUUID, document.getElementById("mandatoryCheckBox").checked).then((x)=>{
+                                        window.location.reload()
+                                    })
                                 }}/>
                                 <button type="button" className="btn btn-default" data-bs-dismiss="modal"
                                         data-dismiss={"modal"}>סגור
@@ -205,12 +206,19 @@ export default class Nochecut extends Component {
                         <h5 className="m-auto" id={"className"+i}>{key.replace('_'," ")}</h5>
                     </div>
                 )
+
             }
         })
-
-        if (buttons.length > 0){
+        buttons.push(
+            <div  className={"add-class-btn shadow text-center mx-1 d-flex"} data-toggle="modal" data-target="#addClassModal">
+                <h3 className="m-auto">+</h3>
+            </div>
+    )
+        if (buttons.length > 1){
             if (this.state.selectedClass == null)
                 this.refreshList(buttons[0].props.content)
+
+        if (buttons.length > 1)
             buttons[0].props.className += " box-selected";
 
         }

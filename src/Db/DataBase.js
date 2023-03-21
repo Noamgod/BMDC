@@ -1058,7 +1058,7 @@ function finishedStudents(that) {
 
 }
 
-export function add_data_addNewClass(email, password, className, addStudentsList, mandatory) {
+export async function add_data_addNewClass(email, password, className, addStudentsList, mandatory) {
     let x = null;
     $.ajax({
         url: "Cdb.php",

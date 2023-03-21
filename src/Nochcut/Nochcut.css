@@ -38,9 +38,19 @@
         width: 100% !important;
     }
 }
+.add-class-btn{
+    min-width:100px;
+    height:40px;
+    border-radius: 50px;
+    border: 2px dot-dash #8a8a8f;
+    background-color: rgb(222, 221, 221);
+    color: black;
+    padding: 2px;
+    cursor: pointer !important;
+}
 .box{
 
-    width:100px;
+    min-width:100px;
     height:40px;
     border-radius: 50px;
 
