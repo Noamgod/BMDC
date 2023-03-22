@@ -162,9 +162,8 @@ export default class Nochecut extends Component {
 
                     <div>
                         <h5 className={"text-center fw-bold text-white"}>{this.state.date.toLocaleDateString()}</h5>
-                        <div className={"container-fluid d-flex w-95 flex-row justify-content-start"}>
+                        <div className={"container-fluid d-flex w-95 overflow-auto flex-row justify-content-start"}>
                             {this.createClassTabButtons()}
-                            {/*{this.addClassButton()}*/}
                         </div>
                         {this.GetWholeTable()}
                     </div>
