@@ -40,7 +40,7 @@ export function load_all_data_getUserLastMonthPercent(email, password, that) {
         },
         error: function (error) {
             console.log("getAllUserLastMonthPercent", error);
-        }
+        } 
     })
     return x;
 }
@@ -1084,7 +1084,24 @@ export async function add_data_addNewClass(email, password, className, addStuden
         }
     })
 }
-
+export async function load_data_getAllStudents_name_uuid_thenFunction(email, password){ //I know this function already exists, but I need to make one that is Async function for the .then instead of breaking my head
+    let x = null;
+    return $.ajax({
+        url: "Adb.php",
+        type: "POST",
+        data: {type: "getAllStudents_uuid_name", email: email, password: password},
+        dataType: 'json',
+        timeout: 2000,
+        async: true,
+        success: function (response) {
+            x = response
+            return x;
+        },
+        error: function (error) {
+            console.log(error, "getAllStudents_name_uuid")
+        }
+    })
+}
 export function load_data_getAllStudents_name_uuid(email, password, that) {
     let x = null;
     $.ajax({

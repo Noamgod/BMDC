@@ -197,10 +197,10 @@ export default class Netunim extends Component {
     }
 
     getAttendance(uuid) {
-     //   let attendance = this.state.map_attendance.get(uuid) == null ? 0 : this.state.map_attendance.get(uuid);
+       let attendance = this.state.map_attendance.get(uuid) == null ? 0 : this.state.map_attendance.get(uuid);
         return (
-            <td> לא פעיל</td>
-           // <td>{((this.state.daysInMonth.days - attendance) / this.state.daysInMonth.days * 100).toFixed(2)}%</td>
+            // <td> לא פעיל</td>
+           <td>{((this.state.daysInMonth.days - attendance) / this.state.daysInMonth.days * 100).toFixed(2)}%</td>
         )
     }
 
