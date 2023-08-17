@@ -40,7 +40,7 @@ export function load_all_data_getUserLastMonthPercent(email, password, that) {
         },
         error: function (error) {
             console.log("getAllUserLastMonthPercent", error);
-        }
+        } 
     })
     return x;
 }
@@ -1075,7 +1075,24 @@ export async function add_data_addNewClass(email, password, className, addStuden
         }
     })
 }
-
+export async function load_data_getAllStudents_name_uuid_thenFunction(email, password){ //I know this function already exists, but I need to make one that is Async function for the .then instead of breaking my head
+    let x = null;
+    return $.ajax({
+        url: "Adb.php",
+        type: "POST",
+        data: {type: "getAllStudents_uuid_name", email: email, password: password},
+        dataType: 'json',
+        timeout: 2000,
+        async: true,
+        success: function (response) {
+            x = response
+            return x;
+        },
+        error: function (error) {
+            console.log(error, "getAllStudents_name_uuid")
+        }
+    })
+}
 export function load_data_getAllStudents_name_uuid(email, password, that) {
     let x = null;
     $.ajax({
@@ -1608,7 +1625,7 @@ export function reset_days_to_new_month(days, email, password) {
         data: {
             type: "reset_days_to_new_month",
             days: days,
-            month: MONTHS[new Date().getMonth()-1],
+            month: MONTHS[new Date().getMonth() - 1],
             email: email,
             password: password
         },
@@ -1705,13 +1722,29 @@ export function load_data_downloadAttendance_for_all_students(email, password, t
     $.ajax({
         url: "downloadAttendance.php",
         type: "POST",
-        data: {type: "downloadAttendance_for_all_students", email: email, password: password, month: "December"},
+        data: {
+            type: "downloadAttendance_for_all_students",
+            email: email,
+            password: password,
+            //get for me the last month in writin as a string for example: "January"
+            month: MONTHS[current.getMonth()],
+        },
         dataType: 'json',
         timeout: 10000,
         async: true,
+
         success: function (response) {
             x = response;
-            that.setState({loadingAttendanceHistory: false, attendanceHistory: x})
+            let up = [];
+            let down = [];
+            for (let i = 0; i < x.length; i++) {
+                if (90 <= x[i].percent) {
+                    up.push(x[i].last_name + " " + x[i].first_name)
+                } else {
+                    down.push(x[i].last_name + " " + x[i].first_name)
+                }
+            }
+            that.setState({loadingAttendanceHistory: false, attendanceHistoryUpOf90: up,attendanceHistoryDownTo75: down})
         },
         error: function (error) {
             console.log("error", error)
@@ -1828,20 +1861,20 @@ export function load_data_countStatus(email, password, role, that, tickets) {
 //     })
 // }
 
-export function load_data_getLogs(email, password, that){
+export function load_data_getLogs(email, password, that) {
     let x = null;
     $.ajax({
         url: "Ldb.php",
         type: "POST",
-        data:{type:"getLogs", email: email, password: password},
-        dataType:'json',
-        timeout:2000,
-        async:true,
-        success:function (response) {
+        data: {type: "getLogs", email: email, password: password},
+        dataType: 'json',
+        timeout: 2000,
+        async: true,
+        success: function (response) {
             x = response;
             that.setState({loading: false, runAjax: false, logs: x, showingLogs: x})
         },
-        error:function (error) {
+        error: function (error) {
             console.log("getLogs not working:", error)
         }
     })

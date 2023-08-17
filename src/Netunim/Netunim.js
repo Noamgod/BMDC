@@ -20,7 +20,8 @@ export default class Netunim extends Component {
             allUserAttendanceHistory: null,
             loadingAttendanceHistory: true,
             loadingAllUserAttendanceHistory: true,
-            attendanceHistory: null,
+            attendanceHistoryUpOf90: null,
+            attendanceHistoryDownTo75: null,
             attendanceModal: false,
             data: "",
             runAjax: true,
@@ -196,10 +197,10 @@ export default class Netunim extends Component {
     }
 
     getAttendance(uuid) {
-     //   let attendance = this.state.map_attendance.get(uuid) == null ? 0 : this.state.map_attendance.get(uuid);
+       let attendance = this.state.map_attendance.get(uuid) == null ? 0 : this.state.map_attendance.get(uuid);
         return (
-            <td> לא פעיל</td>
-           // <td>{((this.state.daysInMonth.days - attendance) / this.state.daysInMonth.days * 100).toFixed(2)}%</td>
+            // <td> לא פעיל</td>
+           <td>{((this.state.daysInMonth.days - attendance) / this.state.daysInMonth.days * 100).toFixed(2)}%</td>
         )
     }
 
@@ -223,12 +224,9 @@ export default class Netunim extends Component {
                     <tbody>
                     <tr className={"table-light"}>
                         <th colSpan={1}>#</th>
-                        <th className={"child-for-revers"} colSpan={2}>הרב ארי מור</th>
-                        <th className={"child-for-revers"} colSpan={2}>הרב אהרון לוי</th>
-                        <th className={"child-for-revers"} colSpan={2}>הרב אהרון מילר</th>
-                        <th className={"child-for-revers"} colSpan={2}>הרב בר זכאי</th>
+                        <th className={"child-for-revers"} colSpan={2}></th>
                     </tr>
-                    {getAttendanceHistoryList(this.state.attendanceHistory)}
+                    {getAttendanceHistoryList(this.state.attendanceHistoryUpOf90, this.state.attendanceHistoryDownTo75)}
                     </tbody>
                 </table>
             )
@@ -273,38 +271,26 @@ function toAge(date1, date2) {
     return Math.round(diffTime / (1000 * 60 * 60 * 24 * 365))
 }
 
-function getMaxFromArray(array, index) {
-    let arr = []
-    for (let i = 0; i < array.length; i++) {
-        arr.push(array[i][index].length)
-    }
-    return Math.max(...arr);
-}
 
-function create_Td(attendanceHistory, max, index) {
+function create_Td(attendanceHistory) {
     let tr = []
-    for (let i = 0; i < max; i++) {
+    for (let i = 0; i < attendanceHistory.length; i++) {
         tr[i + 1] =
             <tr>
                 <td colSpan={1}>{i}</td>
                 <td className={"child-for-revers"}
-                    colSpan={2}>{attendanceHistory[0][index][i] ? attendanceHistory[0][index][i].first_name + " " + attendanceHistory[0][index][i].last_name : " "} </td>
-                <td className={"child-for-revers"}
-                    colSpan={2}>{attendanceHistory[1][index][i] ? attendanceHistory[1][index][i].first_name + " " + attendanceHistory[1][index][i].last_name : " "} </td>
-                <td className={"child-for-revers"}
-                    colSpan={2}>{attendanceHistory[2][index][i] ? attendanceHistory[2][index][i].first_name + " " + attendanceHistory[2][index][i].last_name : " "} </td>
-                <td className={"child-for-revers"}
-                    colSpan={2}>{attendanceHistory[3][index][i] ? attendanceHistory[3][index][i].first_name + " " + attendanceHistory[3][index][i].last_name : " "} </td>
-            </tr>
+                    colSpan={2}>{attendanceHistory[i]} </td>
+                </tr>
     }
     return tr;
 }
 
-function getAttendanceHistoryList(attendanceHistory) {
+function getAttendanceHistoryList(up90, down75) {
     let tr = [];
-    tr.push(create_Td(attendanceHistory, getMaxFromArray(attendanceHistory, 1), 1))
-    tr.push( <tr className={"table-dark text-white "}><td className={"child-for-revers"} colSpan={9}> רשימת הבחורים שנכחו החודפ פחות מ 75% משיעורי התורה ונשללת מהם האפשרות לבקשת שחרור עד לחזרה לנוכחות המינימלית הנדרשת לישיבה  </td></tr>)
-    tr.push(create_Td(attendanceHistory, getMaxFromArray(attendanceHistory, 0), 0))
+
+    tr.push(create_Td(up90))
+    tr.push( <tr className={"table-dark text-white "}><td className={"child-for-revers"} colSpan={9}> רשימת הבחורים שנכחו החודש פחות מ 75% משיעורי התורה ונשללת מהם האפשרות לבקשת שחרור עד לחזרה לנוכחות המינימלית הנדרשת לישיבה  </td></tr>)
+    tr.push(create_Td(down75))
     return (tr)
 }
 
