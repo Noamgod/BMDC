@@ -76,9 +76,20 @@ export default class Nochecut extends Component {
             load_data_daysOfAttendance_for_all_students_to_nochcut(this, this.state.selectedClass)
             load_data_daysInMonth_for_Nochcut(this.props.userProps.email, this.props.userProps.password, this)
             load_data_getAllStudents_name_uuid(this.props.userProps.email, this.props.userProps.password, this)
-            getClassesForRabbi(this).then(r =>{
-                load_data_getRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this.state.selectedClass, this)
-                load_data_getUnRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), this.state.selectedClass, this)
+            getClassesForRabbi(this.props.userProps.email, this.props.userProps.password).then(r =>{
+                let selected;
+                for (let prop in r) {
+                    if (r.hasOwnProperty(prop)) {
+                        if (r[prop] === 1 || r[prop] === "1") {
+                            selected = prop.toString()
+                            this.setState({selectedClass: prop.toString()})
+                            break;
+                        }
+                    }
+                }
+                this.setState({classesForRabbi: r})
+                load_data_getRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), selected, this)
+                load_data_getUnRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), selected, this)
             })
             this.setState({runAjax: false})
         }
