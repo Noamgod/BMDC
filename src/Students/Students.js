@@ -257,7 +257,7 @@ export default class Students extends React.Component {
                                         {this.getAdminEdit()}
 
                                         <div className={"mb-1"}>
-                                            <span className={"fw-bold"}>תפקיד</span>
+                                            <span className={"fw-bold"}>תפקיד תקלות</span>
                                             <div className={"d-flex"}>
                                                 <input list={"job-list"}
 
