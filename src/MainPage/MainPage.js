@@ -15,7 +15,6 @@ import {NavLink} from "react-router-dom";
 const cookies = new Cookies();
 
 
-
 export default class MainPage extends React.Component {
     constructor(props) {
         super(props);
@@ -149,47 +148,60 @@ export default class MainPage extends React.Component {
                      data-bs-backdrop="false">
                     <div className="offcanvas-header sidebar-header bg-darkblue ">
                         <h5 className="offcanvas-title d-none d-sm-block  text-white" id="offcanvas">Menu</h5>
-                        <button type="button" id={"navCloseBtn"} className="btn-close btn-close-bg-white" data-bs-dismiss="offcanvas"
-                                ></button>
+                        <button type="button" id={"navCloseBtn"} className="btn-close btn-close-bg-white"
+                                data-bs-dismiss="offcanvas"
+                        ></button>
                     </div>
                     <div className="offcanvas-body px-0">
+
                         <ul className="nav nav-pills flex-column px-0" id="menu">
                             <li className="nav-item hover-glow">
-                                <NavLink onClick={forceCloseNavBar} to={"/profile"} className={"nav-link text-truncate"}>
+                                <NavLink onClick={forceCloseNavBar} to={"/profile"}
+                                         className={"nav-link text-truncate"}>
                                     <i className="fas fa-home fa-2x"></i><span
                                     className="mx-2 align-super mb-1 d-sm-inline">פרופיל</span>
                                 </NavLink>
                             </li>
+                            {this.props.userProps.admin != "graduated" &&
+                            (<>
+                                <li className="nav-item hover-glow">
+                                    <NavLink onClick={forceCloseNavBar} to={"/send-request"}
+                                             className={"nav-link text-truncate"}>
+                                        <i className="fas fa-paper-plane fa-2x"></i><span
+                                        className="mx-2 align-super mb-1 d-sm-inline">שלח בקשה</span>
+                                    </NavLink>
+                                </li>
+                                <li className="nav-item hover-glow">
+                                    <NavLink onClick={forceCloseNavBar} to={"/all-requests"}
+                                             className={"nav-link text-truncate"}>
+                                        <i className="fas fa-basket-shopping fa-2x"></i><span
+                                        className="mx-2 align-super mb-1 d-sm-inline">כל הבקשות</span>
+                                    </NavLink>
+                                </li>
+                            </>)}
+
                             <li className="nav-item hover-glow">
-                                <NavLink onClick={forceCloseNavBar} to={"/send-request"} className={"nav-link text-truncate"}  >
-                                    <i className="fas fa-paper-plane fa-2x"></i><span
-                                    className="mx-2 align-super mb-1 d-sm-inline">שלח בקשה</span>
-                                </NavLink>
-                            </li>
-                            <li className="nav-item hover-glow">
-                                <NavLink onClick={forceCloseNavBar} to={"/all-requests"} className={"nav-link text-truncate"}>
-                                    <i className="fas fa-basket-shopping fa-2x"></i><span
-                                    className="mx-2 align-super mb-1 d-sm-inline">כל הבקשות</span>
-                                </NavLink>
-                            </li>
-                            <li className="nav-item hover-glow">
-                                <NavLink onClick={forceCloseNavBar}  to={"/students"} className={"nav-link text-truncate"}>
+                                <NavLink onClick={forceCloseNavBar} to={"/students"}
+                                         className={"nav-link text-truncate"}>
                                     <i className="fas fa-user-circle fa-2x"></i><span
                                     className="mx-2 align-super mb-1 d-sm-inline">תלמידים</span>
                                 </NavLink>
                             </li>
                             <li className="nav-item hover-glow">
-                                <NavLink onClick={forceCloseNavBar}  to={"/events"} className={"nav-link text-truncate"}>
+                                <NavLink onClick={forceCloseNavBar} to={"/events"} className={"nav-link text-truncate"}>
                                     <i className="fas fa-bookmark fa-2x"></i><span
                                     className="mx-2 align-super mb-1 d-sm-inline">ארועים</span>
                                 </NavLink>
                             </li>
-                            <li className="nav-item hover-glow">
-                                <NavLink onClick={forceCloseNavBar} to={"/issues"} className={"nav-link text-truncate"}  >
+
+                            {this.props.userProps.admin != "graduated" &&
+                            (<li className="nav-item hover-glow">
+                                <NavLink onClick={forceCloseNavBar} to={"/issues"} className={"nav-link text-truncate"}>
                                     <i className="fas fa-awdaw fa-2x"></i><span
                                     className="mx-2 align-super d-sm-inline">תקלות</span>
                                 </NavLink>
-                            </li>
+                            </li>)}
+
                             {this.getNuchechut(true)}
                             {this.getLogsButton(true)}
                             {this.getAdminButtons(true)}
@@ -197,7 +209,8 @@ export default class MainPage extends React.Component {
                         </ul>
                     </div>
                 </div>
-                <div id={"navbar-sticky-top"} className={"sticky-top position-fixed border-bottom-active container-fluid"}>
+                <div id={"navbar-sticky-top"}
+                     className={"sticky-top position-fixed border-bottom-active container-fluid"}>
                     <nav id={"navbar"} className={"navbar navbar-expand-xl opacity-enabled"}>
                         <div className="container-fluid align-baseline">
                             <button className="navbar-toggler" type="button" data-bs-toggle="offcanvas" role={"button"}
@@ -210,8 +223,9 @@ export default class MainPage extends React.Component {
                                 <ul className={"nav navbar-collapse"}>
                                     <img style={{maxHeight: "65px", maxWidth: "20%"}}
                                          src={"https://bmdcny.com/assets/logo.png"}
-                                         className={"img-responsive rounded navbar-brand  scale-logo-big"} alt={"Logo"}/>
-                                    {this.getButtons()}
+                                         className={"img-responsive rounded navbar-brand  scale-logo-big"}
+                                         alt={"Logo"}/>
+                                    {this.getButtons(this.state.userProps.admin)}
 
                                 </ul>
                             </div>
@@ -263,34 +277,56 @@ export default class MainPage extends React.Component {
             </>);
         }
     }
-    getButtons = () => {
-        return (<>
-            <NavLink to={"/profile"} className={" white-border navbar-brand nav-top-active text-white btn"}
-            > פרופיל
-            </NavLink>
-            <NavLink to={"/send-request"}
-                     className={" white-border navbar-brand nav-top-active rounded-0 mx-1 text-white btn"}
-            >שליחת בקשה
-            </NavLink>
-            <NavLink to={"/all-requests"}
-                     className={" white-border navbar-brand nav-top-active rounded-0 mx-1 text-white btn"}
-            >כל הבקשות
-            </NavLink>
-            <NavLink to={"/events"}
-                     className={" white-border navbar-brand nav-top-active rounded-0 mx-1 text-white btn hover-zoom"}
-            >אירועים
-            </NavLink>
-            {this.getNuchechut(false)}
-            <NavLink to={"/students"}
-                     className={"btn white-border navbar-brand nav-top-active rounded-0 mx-1 text-white "}
-            >תלמידים
-            </NavLink>
-            <NavLink to={"/issues"} className={"btn white-border navbar-brand nav-top-active mx-1 text-white"}
-            > תקלות
-            </NavLink>
-            {this.getAdminButtons(false)}
-            {this.getLogsButton(false)}
-        </>);
+    getButtons = (admin) => {
+        if (admin != "graduated") {
+            return (<>
+                <NavLink to={"/profile"} className={" white-border navbar-brand nav-top-active text-white btn"}
+                > פרופיל
+                </NavLink>
+                {this.props.userProps.admin != "graduated" &&
+                (<>
+                    <NavLink to={"/send-request"}
+                         className={" white-border navbar-brand nav-top-active rounded-0 mx-1 text-white btn"}
+                    >שליחת בקשה
+                    </NavLink>
+                    <NavLink to={"/all-requests"}
+                             className={" white-border navbar-brand nav-top-active rounded-0 mx-1 text-white btn"}
+                    >כל הבקשות
+                    </NavLink>
+                </>)}
+                <NavLink to={"/events"}
+                         className={" white-border navbar-brand nav-top-active rounded-0 mx-1 text-white btn hover-zoom"}
+                >אירועים
+                </NavLink>
+                {this.getNuchechut(false)}
+                <NavLink to={"/students"}
+                         className={"btn white-border navbar-brand nav-top-active rounded-0 mx-1 text-white "}
+                >תלמידים
+                </NavLink>
+                {this.props.userProps.admin != "graduated" &&
+                    (<NavLink to={"/issues"} className={"btn white-border navbar-brand nav-top-active mx-1 text-white"}
+                    > תקלות
+                    </NavLink>)
+                }
+                {this.getAdminButtons(false)}
+                {this.getLogsButton(false)}
+            </>);
+        } else {
+            return (<>
+                <NavLink to={"/profile"} className={" white-border navbar-brand nav-top-active text-white btn"}
+                > פרופיל
+                </NavLink>
+                <NavLink to={"/events"}
+                         className={" white-border navbar-brand nav-top-active rounded-0 mx-1 text-white btn hover-zoom"}
+                >אירועים
+                </NavLink>
+                <NavLink to={"/students"}
+                         className={"btn white-border navbar-brand nav-top-active rounded-0 mx-1 text-white "}
+                >תלמידים
+                </NavLink>
+            </>)
+        }
+
     }
 
     getNuchechut = (sidebar) => {
@@ -302,7 +338,7 @@ export default class MainPage extends React.Component {
                 </NavLink>)
             else return (
                 <li className="nav-item hover-glow">
-                    <NavLink onClick={forceCloseNavBar} to={"/attendance"} className={"nav-link text-truncate"} >
+                    <NavLink onClick={forceCloseNavBar} to={"/attendance"} className={"nav-link text-truncate"}>
                         <i className="fas fa-pencil fa-2x"></i><span
                         className="mx-2 align-super mb-1 d-sm-inline">נוכחות</span>
                     </NavLink>
@@ -310,8 +346,8 @@ export default class MainPage extends React.Component {
             )
         } else return null;
     }
-    editor = ()=>{
-        if(this.props.userProps.admin == "admin" || this.props.userProps.admin == "operator"){
+    editor = () => {
+        if (this.props.userProps.admin == "admin" || this.props.userProps.admin == "operator") {
             return (<div className="modal fade" id="Editor" role="dialog">
                 <div className="modal-dialog">
                     <div className="modal-content">
@@ -341,7 +377,7 @@ export default class MainPage extends React.Component {
                                     <div className={"d-flex flex-row justify-content-end"}>
                                         <button data-dismiss="modal" onClick={() => {
                                             let days = document.getElementById("daysFromInput");
-                                            reset_days_to_new_month(days.value,this.state.userProps.email,this.state.userProps.password)
+                                            reset_days_to_new_month(days.value, this.state.userProps.email, this.state.userProps.password)
                                             set_days_in_month(this.props.userProps.email, this.state.userProps.password, days.value)
                                             days.setAttribute("placeholder", days.value)
                                             days.value = null
@@ -380,7 +416,7 @@ export default class MainPage extends React.Component {
                     </div>
                 </div>
             </div>)
-        }else{
+        } else {
             return null
         }
     }
@@ -395,7 +431,7 @@ export default class MainPage extends React.Component {
                 )
             } else return (
                 <li className="nav-item hover-glow">
-                    <NavLink onClick={forceCloseNavBar} to={"/data"} className={"nav-link text-truncate"} >
+                    <NavLink onClick={forceCloseNavBar} to={"/data"} className={"nav-link text-truncate"}>
                         <i className="fas fa-chart-bar fa-2x"></i><span
                         className="mx-2 align-super mb-1 d-sm-inline">נתונים</span>
                     </NavLink>
@@ -405,18 +441,18 @@ export default class MainPage extends React.Component {
     }
 
     getLogsButton = (sidebar) => {
-        if(this.props.userProps.admin == "operator" || this.props.userProps.admin == "admin"){
+        if (this.props.userProps.admin == "operator" || this.props.userProps.admin == "admin") {
             console.log("in1")
-            if(!sidebar){
+            if (!sidebar) {
                 console.log("in2")
                 return (
                     <NavLink to={"/logs"} className={"btn white-border navbar-brand nav-top-active mx-1 text-white"}
                     >הסטוריה
                     </NavLink>
                 )
-            }else return (
+            } else return (
                 <li className="nav-item hover-glow">
-                    <NavLink onClick={forceCloseNavBar} to={"/logs"} className={"nav-link text-truncate"} >
+                    <NavLink onClick={forceCloseNavBar} to={"/logs"} className={"nav-link text-truncate"}>
                         <i className="fas fa-chart-bar fa-2x"></i><span
                         className="mx-2 align-super mb-1 d-sm-inline">הסטוריה</span>
                     </NavLink>
@@ -425,7 +461,8 @@ export default class MainPage extends React.Component {
         }
     }
 }
-function forceCloseNavBar(){
+
+function forceCloseNavBar() {
     document.getElementById("navCloseBtn").click()
 }
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {lazy} from "react";
 import {
     get_student_count, //finished but doesn't check if isUser
     load_data_singleUserDataByQuery //Finished
@@ -36,6 +36,7 @@ class App extends React.Component {
 
     render() {
         if (this.state.loading) {
+
             return (
                 <div className="m-auto">
                     <ScaleLoader
@@ -63,6 +64,7 @@ class App extends React.Component {
                             <Profile userProps={this.state.userProps}/>}/>
                         <Route path={"/logs"} element={<Logs userProps={this.state.userProps}/>}/>
                     </Routes>
+
                 </Router>
             );
         }

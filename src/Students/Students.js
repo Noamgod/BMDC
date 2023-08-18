@@ -246,6 +246,7 @@ export default class Students extends React.Component {
                                                 />
 
                                                 <datalist id={"c"}>
+                                                    <option value={"מחזור י\"א - תשפ\"ד"}/>
                                                     <option value={"מחזור י - תשפ\"ג"}/>
                                                     <option value={"מחזור ט - תשפ\"ב"}/>
                                                     <option value={"מחזור ח - תשפ\"א"}/>
@@ -487,7 +488,16 @@ export default class Students extends React.Component {
     }
 
     getCards = () => {
+        const hebrewAdminNames = {
+            operator: "עורך אתר",
+            admin: "מנהל",
+            teacher: "רב",
+            moderator: "מזכיר",
+            student: "תלמיד",
+            graduated: "בוגר"
+        }
         let map = this.state.images;
+        console.log(this.state.students)
         let list1 = this.state.students.filter((student) => {
             return ((student.first_name.includes(this.state.searchFirstName) && student.last_name.includes(this.state.searchLastName)) || student.last_name.includes(this.state.searchFirstName))
         })
@@ -502,7 +512,7 @@ export default class Students extends React.Component {
                 break;
             }
             let user = list1[i];
-            arr2.push(<div className={"card hover-shadow-strong d-flex flex-column justify-content-between"}>
+            arr2.push(<div className={`card hover-shadow-strong d-flex flex-column justify-content-between ${user.admin == "graduated" ? "border-5 border-danger" : ""} `}>
                 <div
                     onClick={() => this.selectStudent(user)
                     }
@@ -513,8 +523,9 @@ export default class Students extends React.Component {
                         src={map.get(user.uuid) == "assets/profile.svg" ? defaultImage : "https://bmdcny.com/" + map.get(user.uuid)}
                         alt={"Profile Image"}/>
                     <div
-                        className={"card-body resize-text d-flex flex-column" + this.birthdayThisMonth(user.birthday)}>
+                        className={`card-body resize-text d-flex flex-column` + this.birthdayThisMonth(user.birthday)}>
                         <h5 className="card-title fw-bold">{user.last_name + " " + user.first_name}</h5>
+                        <i className={"fw-bold card-text " + (user.admin == "graduated"?"rainbow-text":"")}>{hebrewAdminNames[user.admin]}</i>
                         <i className="fw-bold card-text">{user.email} </i>
                         <i className="fw-bold card-text">{user.phone_number} </i>
                         <i className="card-text">תאריך לידה: {this.getBirthday(user.birthday)}</i>
@@ -527,7 +538,6 @@ export default class Students extends React.Component {
         return (<div className={"grid-wrapper"}>{arr2}</div>)
     }
 
-
     getAdminEdit() {
         if (this.props.userProps.admin == "operator") {
             return (<div className={"mb-1"}>
@@ -539,10 +549,12 @@ export default class Students extends React.Component {
                            className={"input-group-text editUser"}
                     />
                     <datalist id={"admin-list"}>
-                        <option value={"admin"}/>
-                        <option value={"student"}/>
                         <option value={"operator"}/>
+                        <option value={"admin"}/>
+                        <option value={"moderator"}/>
                         <option value={"teacher"}/>
+                        <option value={"student"}/>
+                        <option value={"graduated"}/>
                     </datalist>
                 </div>
             </div>)

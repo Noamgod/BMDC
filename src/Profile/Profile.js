@@ -336,7 +336,10 @@ function getStatus(admin) {
     } else if (admin == "teacher") {
         return (<span className={"rainbow-text"}>
 רב        </span>)
-    } else {
+    } else if (admin == "graduated"){
+        return (<span className={"rainbow-text"}>
+בוגר        </span>)
+    }else {
         return (<span>
             תלמיד
         </span>)

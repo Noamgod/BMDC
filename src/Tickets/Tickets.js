@@ -27,8 +27,19 @@ export default class Tickets extends Component {
     }
 
     render() {
+
         if (this.props.userProps == null) {
             window.location.replace("/");
+        }else if (this.props.userProps.admin == "graduated") {
+            return (
+                <div className="margin-top-responsive container">
+                    <div className="row">
+                        <div className="col-12">
+                            <h1>אין לך גישה לדף זה</h1>
+                        </div>
+                    </div>
+                </div>
+            )
         } else {
             if (this.state.runAjax) {
                 //this.state.sql == null ? this.props.userProps.admin == "operator" ? "SELECT * FROM Tickets" : this.props.userProps.role != "student" ? "SELECT * FROM Tickets WHERE category= '" + this.props.userProps.role + "' AND status != 100" : "SELECT * FROM Tickets WHERE uuid=" + this.props.userProps.uuid : this.state.sql
@@ -243,7 +254,7 @@ export default class Tickets extends Component {
             status: 0,
             priority: 1
         }
-        add_Task(data);
+        add_Task(this.props.userProps.email, this.props.userProps.password, data);
 
     }
     getTicket = () => {
@@ -288,7 +299,7 @@ export default class Tickets extends Component {
                     </div>
                     <div className={"m-auto d-flex justify-content-center mt-1"}>
                         <button className={"btn btn-success"} onClick={() => {
-                            update_status_ticket(this.state.ticket_clicked.ticket_id, this.state.status)
+                            update_status_ticket(this.props.userProps.email, this.props.userProps.password, this.state.ticket_clicked.ticket_id, this.state.status)
                             update_priority_ticket(this.state.ticket_clicked.ticket_id, this.state.priority)
                             this.setState({runAjax: true})
 

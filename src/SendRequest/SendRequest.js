@@ -45,7 +45,17 @@ export default class sendRequest extends React.Component {
         if (this.props.userProps == null) {
             window.location.replace("/");
         }
-
+        if (this.props.userProps.admin == "graduated") {
+            return (
+                <div className="margin-top-responsive container">
+                    <div className="row">
+                        <div className="col-12">
+                            <h1>אין לך גישה לדף זה</h1>
+                        </div>
+                    </div>
+                </div>
+            )
+        }
         let user = {
             first_name: this.state.userProps.first_name,
             last_name: this.state.userProps.last_name,

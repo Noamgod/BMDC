@@ -204,12 +204,12 @@ export function load_data_insertID(email, password, id) {
     })
 }
 
-export function add_Task(data) {
+export function add_Task(email, password, data) {
     let x = null
     $.ajax({
         url: "Tdb.php",
         type: "POST",
-        data: {type: "add_task", data: data},
+        data: {type: "add_task",email:email, password:password, data: data},
         dataType: 'json',
         timeout: 2000,
         async: true,
@@ -1775,12 +1775,12 @@ export function load_data_getTickets(that) {
     return x;
 }
 
-export function update_status_ticket(id, status) {
+export function update_status_ticket(email, password, id, status) {
     let x;
     $.ajax({
         url: "Tdb.php",
         type: "POST",
-        data: {type: "update_status_ticket", id: id, status: status},
+        data: {type: "update_status_ticket",email:email, password:password, id: id, status: status},
         dataType: 'json',
         timeout: 2000,
         async: true,
