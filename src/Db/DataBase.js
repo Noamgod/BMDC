@@ -1495,6 +1495,33 @@ export function load_data_getAllUserAttendanceHistoryFor_nochcut(email, password
     return x;
 }
 
+export function load_data_get_AVG_of_nocecunt_for_netunim(email, password, date, that) {
+    $.ajax({
+        url: "Adb.php",
+        type: "POST",
+        data: {type: "get_AVG_of_nocecunt_for_netunim", email: email, password: password, date: date},
+        dataType: 'json',
+        timeout: 2000,
+        async: true,
+        success: function (res) {
+            console.log("get_AVG_of_nocecunt_for_netunim:" )
+            let x = new Map();
+            for (let i = 0; i < res.length; i++) {
+                    x.set(res[i].uuid, (100 - res[i].attendance_percentage).toFixed(2))
+            }
+            console.log(x)
+            that.setState({loadingAVG: false});
+            that.setState({allUserAVG: x})
+        },
+        error: function (error) {
+            console.log("get_AVG_of_nocecunt_for_netunim not work: ", error)
+
+        }
+    })
+    return 2;
+
+}
+
 export function load_data_daysOfAttendance_for_all_students(that) {
     let x = new Map();
     $.ajax({
