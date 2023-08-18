@@ -1,10 +1,13 @@
 import React, {Component} from 'react';
 import {
     getAttendanceListByMonth,
-    load_all_info,  load_data_daysInMonth_for_Nochcut,
+    load_all_info,
+    load_data_daysInMonth_for_Nochcut,
     load_data_daysInMonth_for_Table,
     load_data_daysOfAttendance_for_all_students,
-    load_data_downloadAttendance_for_all_students, load_data_getAllUserAttendanceHistory
+    load_data_downloadAttendance_for_all_students,
+    load_data_get_AVG_of_nocecunt_for_netunim,
+    load_data_getAllUserAttendanceHistory
 } from "../Db/DataBase";
 import {ScaleLoader} from "react-spinners";
 import jsPDF from "jspdf";
@@ -20,6 +23,8 @@ export default class Netunim extends Component {
             allUserAttendanceHistory: null,
             loadingAttendanceHistory: true,
             loadingAllUserAttendanceHistory: true,
+            loadingAVG: true,
+            allUserAVG: null,
             attendanceHistoryUpOf90: null,
             attendanceHistoryDownTo75: null,
             attendanceModal: false,
@@ -31,11 +36,11 @@ export default class Netunim extends Component {
             search: ""
         }
     }
-
     runAjax = () => {
         if (this.state.runAjax) {
-         //   load_data_daysOfAttendance_for_all_students(this)
-           // load_data_daysInMonth_for_Table(this.props.userProps.email,this.props.userProps.password, this);
+            //   load_data_daysOfAttendance_for_all_students(this)
+            // load_data_daysInMonth_for_Table(this.props.userProps.email,this.props.userProps.password, this);
+            load_data_get_AVG_of_nocecunt_for_netunim(this.props.userProps.email, this.props.userProps.password, new Date().toLocaleString('default', { month: 'long' }), this);
             load_all_info(this.props.userProps.email, this.props.userProps.password, this);
             load_data_getAllUserAttendanceHistory(this.props.userProps.email, this.props.userProps.password, this);
             this.setState({runAjax: false})
@@ -120,7 +125,7 @@ export default class Netunim extends Component {
 
     getRows = (allUserAttendanceHistory) => {
 
-        if (this.state.loadingAllUserAttendanceHistory){
+        if (this.state.loadingAllUserAttendanceHistory || this.state.loadingAVG) {
             return (<div className={"m-auto text-white"}>
                 <ScaleLoader color={"white"}/>
             </div>)
@@ -197,10 +202,9 @@ export default class Netunim extends Component {
     }
 
     getAttendance(uuid) {
-       let attendance = this.state.map_attendance.get(uuid) == null ? 0 : this.state.map_attendance.get(uuid);
+       let allUserAVG = this.state.allUserAVG.get(uuid) == null ? 0 : this.state.allUserAVG.get(uuid);
         return (
-            // <td> לא פעיל</td>
-           <td>{((this.state.daysInMonth.days - attendance) / this.state.daysInMonth.days * 100).toFixed(2)}%</td>
+           <td className={"text-center"}>{allUserAVG}%</td>
         )
     }
 
@@ -289,7 +293,11 @@ function getAttendanceHistoryList(up90, down75) {
     let tr = [];
 
     tr.push(create_Td(up90))
-    tr.push( <tr className={"table-dark text-white "}><td className={"child-for-revers"} colSpan={9}> רשימת הבחורים שנכחו החודש פחות מ 75% משיעורי התורה ונשללת מהם האפשרות לבקשת שחרור עד לחזרה לנוכחות המינימלית הנדרשת לישיבה  </td></tr>)
+    tr.push(<tr className={"table-dark text-white "}>
+        <td className={"child-for-revers"} colSpan={9}> רשימת הבחורים שנכחו החודש פחות מ 75% משיעורי התורה ונשללת מהם
+            האפשרות לבקשת שחרור עד לחזרה לנוכחות המינימלית הנדרשת לישיבה
+        </td>
+    </tr>)
     tr.push(create_Td(down75))
     return (tr)
 }
@@ -306,8 +314,6 @@ function createPDF() {
     child.forEach(function (i) {
         i.textContent = i.textContent.split("").reverse().join("");
     })
-
-
     autoTable(doc, {
         html: table,
         styles: {
@@ -320,6 +326,6 @@ function createPDF() {
     });
 
 
-    doc.save(`Noam_was_here${new Date().toLocaleDateString("he-u-ca-hebrew", {month: 'long'})}.pdf`);
+    doc.save(`Noam_was_here ${new Date().toLocaleDateString("he-u-ca-hebrew", {month: 'long'})}.pdf`);
     document.getElementById("longModalCloseBtn").click();
 }

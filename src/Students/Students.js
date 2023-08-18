@@ -532,10 +532,19 @@ export default class Students extends React.Component {
                         <i className="card-text"> מחזור: {user.cycle} </i>
                     </div>
                 </div>
+                {this.callPhone(this.props.userProps.admin, user)}
                 {this.getButton(this.props.userProps.admin, user)}
             </div>);
         }
         return (<div className={"grid-wrapper"}>{arr2}</div>)
+    }
+
+    callPhone = (admin, user) => {
+        let link = this.creatLinkToPhone(user);
+        return (<img onClick={() => {
+            window.open(link, '_blank');
+        }} width={50} src={"https://bmdcny.com/assets/phone.svg"}
+                     className={"bottom-0 position-absolute"} alt={"Phone"}/>)
     }
 
     getAdminEdit() {
@@ -598,6 +607,15 @@ export default class Students extends React.Component {
 
     creatLinkToWhatsapp(user) {
         let link = "https://wa.me/+972"
+        let phone = ""
+        for (let i = 1; i < user.phone_number.length; i++) {
+            phone += user.phone_number[i];
+        }
+        link += phone
+        return link;
+    }
+    creatLinkToPhone(user) {
+        let link = "tel:+972"
         let phone = ""
         for (let i = 1; i < user.phone_number.length; i++) {
             phone += user.phone_number[i];
