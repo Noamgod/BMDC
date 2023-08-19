@@ -40,7 +40,7 @@ export function load_all_data_getUserLastMonthPercent(email, password, that) {
         },
         error: function (error) {
             console.log("getAllUserLastMonthPercent", error);
-        } 
+        }
     })
     return x;
 }
@@ -209,7 +209,7 @@ export function add_Task(email, password, data) {
     $.ajax({
         url: "Tdb.php",
         type: "POST",
-        data: {type: "add_task",email:email, password:password, data: data},
+        data: {type: "add_task", email: email, password: password, data: data},
         dataType: 'json',
         timeout: 2000,
         async: true,
@@ -274,7 +274,7 @@ export function load_data_inEvent(email, password, that, bool) {
 
 export function load_data_signUp(userInfo) {
     let x = null;
-    
+
     $.ajax({
         url: "Udb.php",
         type: "POST",
@@ -1075,7 +1075,8 @@ export async function add_data_addNewClass(email, password, className, addStuden
         }
     })
 }
-export async function load_data_getAllStudents_name_uuid_thenFunction(email, password){ //I know this function already exists, but I need to make one that is Async function for the .then instead of breaking my head
+
+export async function load_data_getAllStudents_name_uuid_thenFunction(email, password) { //I know this function already exists, but I need to make one that is Async function for the .then instead of breaking my head
     let x = null;
     return $.ajax({
         url: "Adb.php",
@@ -1093,6 +1094,7 @@ export async function load_data_getAllStudents_name_uuid_thenFunction(email, pas
         }
     })
 }
+
 export function load_data_getAllStudents_name_uuid(email, password, that) {
     let x = null;
     $.ajax({
@@ -1383,12 +1385,12 @@ export function already_attendance() {
     return x;
 }
 
-export function set_days_in_month(days) {
+export function set_days_in_month(email, password, days) {
     let x;
     $.ajax({
         url: "Adb.php",
         type: "POST",
-        data: {type: "days_in_month", days: days},
+        data: {type: "days_in_month", email: email, password: password, days: days},
         dataType: 'json',
         timeout: 2000,
         async: false,
@@ -1506,7 +1508,7 @@ export function load_data_get_AVG_of_nochechut_for_netunim(email, password, date
         success: function (res) {
             let x = new Map();
             for (let i = 0; i < res.length; i++) {
-                    x.set(res[i].uuid, (100 - res[i].attendance_percentage).toFixed(2))
+                x.set(res[i].uuid, (100 - res[i].attendance_percentage).toFixed(2))
             }
             console.log(x)
             that.setState({loadingAVG: false});
@@ -1718,7 +1720,11 @@ export function load_data_downloadAttendance_for_all_students(email, password, t
                     down.push(x[i].last_name + " " + x[i].first_name)
                 }
             }
-            that.setState({loadingAttendanceHistory: false, attendanceHistoryUpOf90: up,attendanceHistoryDownTo75: down})
+            that.setState({
+                loadingAttendanceHistory: false,
+                attendanceHistoryUpOf90: up,
+                attendanceHistoryDownTo75: down
+            })
         },
         error: function (error) {
             console.log("error", error)
@@ -1754,7 +1760,7 @@ export function update_status_ticket(email, password, id, status) {
     $.ajax({
         url: "Tdb.php",
         type: "POST",
-        data: {type: "update_status_ticket",email:email, password:password, id: id, status: status},
+        data: {type: "update_status_ticket", email: email, password: password, id: id, status: status},
         dataType: 'json',
         timeout: 2000,
         async: true,
