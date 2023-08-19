@@ -24,6 +24,7 @@ export default class MainPage extends React.Component {
             login: false,
             studentCount: props.studentCount,
             updateLoginDate: true,
+            dovidWasHereCount:0,
         }
     }
 
@@ -221,10 +222,10 @@ export default class MainPage extends React.Component {
                             </button>
                             <div className={"collapse navbar-collapse"} id={"navbarTogglerDemo01"}>
                                 <ul className={"nav navbar-collapse"}>
-                                    <img style={{maxHeight: "65px", maxWidth: "20%"}}
-                                         src={"https://bmdcny.com/assets/logo.png"}
-                                         className={"img-responsive rounded navbar-brand  scale-logo-big"}
-                                         alt={"Logo"}/>
+                                    {this.state.dovidWasHereCount ===3?<h1 onClick={this.dovidWasHere}>דוד מיסטריאל היה פה</h1> : <img style={{maxHeight: "65px", maxWidth: "20%"}}
+                                          src={"https://bmdcny.com/assets/logo.png"}
+                                          className={"img-responsive rounded navbar-brand  scale-logo-big"}
+                                          alt={"Logo"} onClick={this.dovidWasHere}/>}
                                     {this.getButtons(this.state.userProps.admin)}
 
                                 </ul>
@@ -459,6 +460,11 @@ export default class MainPage extends React.Component {
                 </li>
             )
         }
+    }
+
+    dovidWasHere = () => {
+        this.setState({dovidWasHereCount: this.state.dovidWasHereCount + 1})
+
     }
 }
 
