@@ -10,7 +10,7 @@ import {
     load_data_getAllUserAttendanceHistoryFor_nochcut,
     getClassesForRabbi,
     load_data_getAllStudents_name_uuid,//Finished
-    add_data_addNewClass
+    add_data_addNewClass, delete_class
 } from "../Db/DataBase";
 import ScaleLoader from "react-spinners/ScaleLoader";
 import {formatDate} from "../SendRequest/SendRequest";
@@ -20,19 +20,20 @@ import {SearchModal} from "../Components/SearchBar-Modal/SearchBar-Modal";
 let mergedList = [];
 let idForEdit;
 
-function getSearchBarModal(list ) {
-    if(list == null){
+function getSearchBarModal(list) {
+    if (list == null) {
         return (
             <div className={"m-auto"}>
                 <ScaleLoader color={"white"}/>
             </div>
         )
-    }else{
-        return <SearchModal props={list} />
+    } else {
+        return <SearchModal props={list}/>
     }
 }
 
 export default class Nochecut extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -76,7 +77,7 @@ export default class Nochecut extends Component {
             load_data_daysOfAttendance_for_all_students_to_nochcut(this, this.state.selectedClass)
             load_data_daysInMonth_for_Nochcut(this.props.userProps.email, this.props.userProps.password, this)
             load_data_getAllStudents_name_uuid(this.props.userProps.email, this.props.userProps.password, this)
-            getClassesForRabbi(this.props.userProps.email, this.props.userProps.password).then(r =>{
+            getClassesForRabbi(this.props.userProps.email, this.props.userProps.password).then(r => {
                 let selected;
                 for (let prop in r) {
                     if (r.hasOwnProperty(prop)) {
@@ -96,6 +97,37 @@ export default class Nochecut extends Component {
 
         return (
             <>
+                <div className="modal fade" id="deleteClassModal" role="dialog">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <button type="button" className="btn-close" data-bs-dismiss="modal"
+                                        data-dismiss={"modal"}
+                                        aria-label="Close"/>
+                                <h4 className="modal-title text-center">עריכה</h4>
+                            </div>
+                            <div className="modal-body">
+                                <div className={"d-flex flex-column"}>
+                                    <div className={"d-flex mb-1 flex-row justify-content-between"}>
+                                        <span className={"fw-bold"}>שם השיעור למחיקה</span>
+                                        <div className={"d-flex flex-row justify-content-end"}>
+                                            <button data-dismiss="modal" onClick={this.deleteClass}
+                                                    type={"button"}
+                                                    className={"mx-1  btn btn-warning"}>שמירה
+                                            </button>
+                                            <input id={"delete_class_name"} type={"text"}
+                                                   placeholder={"שם השיעור"}
+                                                   className={"input-group-text editUser"}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
                 <div className="modal fade" id="addClassModal" role="dialog">
                     <div className="modal-dialog">
                         <div className="modal-content">
@@ -107,21 +139,23 @@ export default class Nochecut extends Component {
                             </div>
                             <div className="modal-body">
                                 <div className={"d-flex flex-column"}>
-                                    <input type="text" className="form-control" id={"newClassName"} placeholder="שם הכיתה"/>
+                                    <input type="text" className="form-control" id={"newClassName"}
+                                           placeholder="שם הכיתה"/>
                                     <hr/>
                                     {getSearchBarModal(this.state.studentsNameUuid, this.state.studentsForNewClass)}
                                 </div>
                             </div>
                             <div className="modal-footer">
-                                <input type={"button"} className={"btn btn-success"} value={"הוסף"} data-bs-dismiss="modal"
-                                       data-dismiss={"modal"} onClick={()=>{
+                                <input type={"button"} className={"btn btn-success"} value={"הוסף"}
+                                       data-bs-dismiss="modal"
+                                       data-dismiss={"modal"} onClick={() => {
                                     let listOfCheckedUUID = []
-                                    document.querySelectorAll(".addToClass").forEach((x)=>{
+                                    document.querySelectorAll(".addToClass").forEach((x) => {
                                         if (x.checked)
                                             listOfCheckedUUID.push(x.value)
                                     })
 
-                                    add_data_addNewClass(this.props.userProps.email, this.props.userProps.password, document.getElementById("newClassName").value, listOfCheckedUUID, document.getElementById("mandatoryCheckBox").checked).then((x)=>{
+                                    add_data_addNewClass(this.props.userProps.email, this.props.userProps.password, document.getElementById("newClassName").value, listOfCheckedUUID, document.getElementById("mandatoryCheckBox").checked).then((x) => {
                                         window.location.reload()
                                     })
                                 }}/>
@@ -151,20 +185,21 @@ export default class Nochecut extends Component {
                                     <button className={"btn button mx-1 btn-success text-center"}
                                             data-dismiss="modal"
                                             onClick={() => {
-                                                insert_into_attendance(idForEdit,1, formatDate(this.state.date), this.state.selectedClass)
+                                                insert_into_attendance(idForEdit, 1, formatDate(this.state.date), this.state.selectedClass)
                                                 this.refreshList()
                                             }}>נכח
                                     </button>
                                     <button className={"btn button mx-1 btn-danger text-center"}
                                             data-dismiss="modal"
                                             onClick={() => {
-                                                insert_into_attendance(idForEdit,0, formatDate(this.state.date), this.state.selectedClass)
+                                                insert_into_attendance(idForEdit, 0, formatDate(this.state.date), this.state.selectedClass)
                                                 this.refreshList()
                                             }}>לא נכח
                                     </button>
                                 </div>
                                 <div className="modal-footer">
-                                    <button type="button" className="btn btn-secondary" data-dismiss="modal">ביטול
+                                    <button type="button" className="btn btn-secondary"
+                                            data-dismiss="modal">ביטול
                                     </button>
                                 </div>
                             </div>
@@ -173,7 +208,8 @@ export default class Nochecut extends Component {
 
                     <div>
                         <h5 className={"text-center fw-bold text-white"}>{this.state.date.toLocaleDateString()}</h5>
-                        <div className={"container-fluid d-flex w-95 overflow-auto flex-row justify-content-start"}>
+                        <div
+                            className={"container-fluid d-flex w-95 overflow-auto flex-row justify-content-start"}>
                             {this.createClassTabButtons()}
                         </div>
                         {this.GetWholeTable()}
@@ -182,6 +218,7 @@ export default class Nochecut extends Component {
             </>
         );
     }
+
     // addClassButton = () =>{
     //     return(<div>
     //         <button className={"btn button mx-1 btn-secondary text-center"} data-toggle="modal" data-target="#addClassModal">
@@ -200,46 +237,55 @@ export default class Nochecut extends Component {
         let classes = this.state.classesForRabbi;
         let buttons = [];
 
-        Object.keys(classes).forEach((key,i) => {
+        Object.keys(classes).forEach((key, i) => {
             if (classes[key] == 1) {
                 buttons.push(
                     <div className="box shadow text-center mx-1 d-flex" content={key} onClick={(e) => {
-                        this.setState({selectedClass: e.currentTarget.innerText.replace(" ","_"), registeredStudents: null, unRegisteredStudents: null})
-                        load_data_getRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date),  e.currentTarget.innerText.replace(" ","_"), this)
-                        load_data_getUnRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date),  e.currentTarget.innerText.replace(" ","_"), this)
+                        this.setState({
+                            selectedClass: e.currentTarget.innerText.replace(" ", "_"),
+                            registeredStudents: null,
+                            unRegisteredStudents: null
+                        })
+                        load_data_getRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), e.currentTarget.innerText.replace(" ", "_"), this)
+                        load_data_getUnRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), e.currentTarget.innerText.replace(" ", "_"), this)
                         let box = document.querySelectorAll(".box")
                         box.forEach((element) => {
                             element.classList.remove("box-selected")
                         })
                         e.currentTarget.classList.add("box-selected");
                     }}>
-                        <h5 className="m-auto" id={"className"+i}>{key.replace('_'," ")}</h5>
+                        <h5 className="m-auto" id={"className" + i}>{key.replace('_', " ")}</h5>
                     </div>
                 )
 
             }
         })
         buttons.push(
-            <div  className={"add-class-btn shadow text-center mx-1 d-flex"} data-toggle="modal" data-target="#addClassModal">
+            <div className={"add-class-btn shadow text-center mx-1 d-flex"} data-toggle="modal"
+                 data-target="#addClassModal">
                 <h3 className="m-auto">+</h3>
-            </div>
-    )
-        if (buttons.length > 1){
+            </div>)
+        buttons.push(
+            <div className={"add-class-btn shadow text-center text-white mx-1 d-flex bg-danger"} data-toggle="modal"
+                 data-target="#deleteClassModal">
+                <h5 className="m-auto">הסרת שיעור</h5>
+            </div>)
+        if (buttons.length > 1) {
             if (this.state.selectedClass == null)
                 this.refreshList(buttons[0].props.content)
 
-        if (buttons.length > 1)
-            buttons[0].props.className += " box-selected";
+            if (buttons.length > 1)
+                buttons[0].props.className += " box-selected";
 
         }
         return buttons;
     }
 
     GetWholeTable = () => {
-        if (this.state.unregisteredStudents !== null && this.state.registeredStudents !== null && this.state.classesForRabbi !== null){
+        if (this.state.unregisteredStudents !== null && this.state.registeredStudents !== null && this.state.classesForRabbi !== null) {
             return (
                 <div className={"m-auto my-custom-scrollbar w-95 mt-2"} style={{minHeight: '500px'}}>
-                    <table className={"table table-hover table-responsive table-light table-bordered"} >
+                    <table className={"table table-hover table-responsive table-light table-bordered"}>
                         {this.creatRow()}
                         <tbody>
                         {this.CreatTable()}
@@ -275,13 +321,13 @@ export default class Nochecut extends Component {
                 <div className={"d-flex flex-row justify-content-center"}>
                     <button className={"btn mx-1 btn-table btn-success text-center"}
                             onClick={() => {
-                                insert_into_attendance(uuid, 1, date,  this.state.selectedClass)
+                                insert_into_attendance(uuid, 1, date, this.state.selectedClass)
                                 this.refreshList()
                             }}>נכח
                     </button>
                     <button className={"btn mx-1 btn-table btn-danger text-center"}
                             onClick={() => {
-                                insert_into_attendance(uuid, 0, date,  this.state.selectedClass)
+                                insert_into_attendance(uuid, 0, date, this.state.selectedClass)
                                 this.refreshList()
                             }}>לא נכח
                     </button>
@@ -289,12 +335,12 @@ export default class Nochecut extends Component {
             )
         }
     }
-    refreshList =(className) => {
-            load_data_getUnRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), className?className:this.state.selectedClass, this)
-            load_data_getRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), className?className:this.state.selectedClass, this)
-            load_data_daysOfAttendance_for_all_students_to_nochcut(this, className?className:this.state.selectedClass)
-            if (className)
-                this.setState({selectedClass: className})
+    refreshList = (className) => {
+        load_data_getUnRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), className ? className : this.state.selectedClass, this)
+        load_data_getRegisteredStudentsForRabbiByDate(this.props.userProps.email, this.props.userProps.password, formatDate(this.state.date), className ? className : this.state.selectedClass, this)
+        load_data_daysOfAttendance_for_all_students_to_nochcut(this, className ? className : this.state.selectedClass)
+        if (className)
+            this.setState({selectedClass: className})
     }
 
     creatRow() {
@@ -393,6 +439,17 @@ export default class Nochecut extends Component {
         return (
             <td className={"text-center"}>{attendance}%</td>
         )
+    }
+    deleteClass = () => {
+        let className = document.getElementById("delete_class_name").value;
+        if (className === "") {
+            alert("שם השיעור ריק")
+            return;
+
+        }else {
+            delete_class(this.props.userProps.email, this.props.userProps.password, className)
+            window.location.reload();
+        }
     }
 }
 

@@ -1430,6 +1430,27 @@ export function load_data_daysOfAttendance(email, password, that) {
     return x;
 }
 
+export function delete_class(email, password, class_name) {
+    let x;
+    $.ajax({
+        url: "Cdb.php",
+        type: "POST",
+        data: {type: "delete_class", email: email, password: password, class_name: class_name},
+        dataType: 'json',
+        timeout: 2000,
+        async: true,
+        success: function (response) {
+            console.log("delete calss was success", response)
+        },
+        error: function (error) {
+            console.log("presence not work: ", error)
+            x = null
+        }
+
+    })
+    return x;
+}
+
 
 function finishedNetunim(that) {
     if (netunimCounter == 0) {
