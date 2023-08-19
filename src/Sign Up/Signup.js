@@ -359,50 +359,81 @@ export default class Signup extends Component {
             )
         }
     }
-
+    checkEmpty = () => {
+        let e, k;
+        if ((e = document.getElementById("email")).value === "") {
+            e.style.borderColor = 'red'
+            errorMsg = "אנא הכנס כתובת מייל"
+            return false
+        }
+        if ((e = document.getElementById("password")).value === "") {
+            e.style.borderColor = 'red'
+            errorMsg = "אנא הכנס סיסמה"
+            return false
+        }
+        if ((e = document.getElementById("repeat-password")).value === "") {
+            e.style.borderColor = 'red'
+            errorMsg = "אנא הכנס אימות סיסמה"
+            return false
+        }
+        if ((e = document.getElementById("cycle")).value === "") {
+            e.style.borderColor = 'red'
+            errorMsg = "אנא הכנס מחזור"
+            return false
+        }
+        if ((e = document.getElementById("class")).value === "") {
+            e.style.borderColor = 'red'
+            errorMsg = "אנא הכנס שיעור"
+            return false
+        }
+        return true
+    }
 
     correctFormat = () => {
+        if (this.checkEmpty() === false){
+            return false}
         let e, k;
         if (document.getElementById("flexSwitchCheckDefault").checked === false) {
             errorMsg = "אנא אשר את תנאי השימוש לפני הרשמה"
-            return true
+            return false
         }
         if ((e = document.getElementById("password")).value.length > 20) {
             e.style.borderColor = 'red'
             errorMsg = "הסיסמה חייבת להיות פחות מ 20 תווים"
-            return true
+            return false
         }
         if ((e = document.getElementById("password")).value !== (k = document.getElementById("repeat-password")).value) {
             e.style.borderColor = 'red'
             k.style.borderColor = 'red'
             errorMsg = "הסיסמאות אינן תואמות"
-            return true
+            return false
         }
         if ((e = document.getElementById("id")).value.length !== 9) {
             e.style.borderColor = 'red'
             errorMsg = "תעודת הזהות חייבת להיות באורך 9 ספרות"
-            return true;
+            return false;
         }
         if ((e = document.getElementById("phoneNumber")).value.length !== 10) {
             e.style.borderColor = 'red'
             errorMsg = "מספר הטלפון חייב להיות באורך 10 ספרות"
-            return true
+            return false
         }
         if ((e = document.getElementById("name")).value.length > 20) {
             e.style.borderColor = 'red'
             errorMsg = "השם חייב להיות באורך פחות מ 20 תווים"
-            return true
+            return false
         }
         if ((e = document.getElementById("Lastname")).value.length > 20) {
             e.style.borderColor = 'red'
             errorMsg = "שם המשפחה חייב להיות באורך פחות מ 20 תווים"
-            return true
+            return false
         }
         if ((e = document.getElementById("email")).value.length > 30) {
             e.style.borderColor = 'red'
             errorMsg = "האימייל חייב להיות באורך פחות מ 30 תווים"
-            return true
+            return false
         }
+        return true
         // if ((e = document.getElementById("B")).checked ===false && (k = document.getElementById("G")).checked ===false)  {
         //     e.style.borderColor = 'red'
         //     k.style.borderColor = 'red'
@@ -437,10 +468,11 @@ export default class Signup extends Component {
 
     setStateInfo = () => {
         resetElements();
-        if (!this.correctFormat()) {
+        if (this.correctFormat()) {
             let info = this.collectData();
             const ui = load_data_signUp(info)
             if (ui.includes("ההרשמה בוצעה בהצלחה")) {
+                toast.success(ui);
                 window.location.href = "/login";
             } else {
                 notify(ui)

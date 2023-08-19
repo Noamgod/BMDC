@@ -2,9 +2,6 @@ import React, {Component} from 'react';
 import {
     getAttendanceListByMonth,
     load_all_info,
-    load_data_daysInMonth_for_Nochcut,
-    load_data_daysInMonth_for_Table,
-    load_data_daysOfAttendance_for_all_students,
     load_data_downloadAttendance_for_all_students,
     load_data_get_AVG_of_nochechut_for_netunim,
     load_data_getAllUserAttendanceHistory
@@ -30,7 +27,7 @@ export default class Netunim extends Component {
             attendanceModal: false,
             data: "",
             runAjax: true,
-            daysInMonthf: "",
+            daysInMonth: "",
             map_attendance: "",
             loading: true,
             search: ""

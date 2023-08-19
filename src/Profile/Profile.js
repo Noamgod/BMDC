@@ -19,7 +19,7 @@ import {decrypt} from "../encryption";
 import {cookies} from "../App";
 import {getBar} from "../Components/Charts/Bar";
 
-const  monthsInHebrew = [ 'אוגוסט', 'ספטמבר', 'אוקטובר','נובמבר', 'דצמבר', 'ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי'];
+const  monthsInHebrew = ["תשרי", "חשוון", "כסלו", "טבת", "שבט", "אדר א'", "אדר ב'", "ניסן", "אייר", "סיוון", "תמוז", "אב", "אלול"]
 
 
 const requestStatus = {
@@ -354,9 +354,12 @@ function getChart(loading, data, currDatePercent) {
         </div>)
     }
     //set data in spot this month to calculatePresent
-    data[new Date().toLocaleString('en',{month: 'long'})] = currDatePercent;
+    data[new Date().toLocaleString('en',{month: 'long'}) + 5 %12] = currDatePercent;
+
+    data = Object.values(data)
+
     return (getBar({
-            monthsInHebrew,
+            labels: monthsInHebrew,
             datasets: [
                 {
                     label: 'אחוז נוכחות',
