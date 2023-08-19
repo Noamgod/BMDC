@@ -146,7 +146,7 @@ export default class Events extends React.Component {
         inEvent.forEach((x) => {
             msg += "<tr><td style='border:#cbcbcb solid 1px;text-align: left;padding: 8px'>" + x.full_name + "</td></tr>"
         })
-        msg += "</table><br><p>כמות הנרשמים - " + inEvent.length + "</p><br><br><a href='chedvata.com'>קישור לאתר</a>"
+        msg += "</table><br><p>כמות הנרשמים - " + inEvent.length + "</p><br><br><a href='bmdcny.com/events'>קישור לאתר</a>"
         return msg;
 
     }

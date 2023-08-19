@@ -10,7 +10,9 @@
 .hide-overflow-bar::-webkit-scrollbar-thumb {
     display: none;
 }
-
+.h-490px{
+    height: 490px;
+}
 .profileImg {
     height: 250px;
 }

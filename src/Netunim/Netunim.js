@@ -6,7 +6,7 @@ import {
     load_data_daysInMonth_for_Table,
     load_data_daysOfAttendance_for_all_students,
     load_data_downloadAttendance_for_all_students,
-    load_data_get_AVG_of_nocecunt_for_netunim,
+    load_data_get_AVG_of_nochechut_for_netunim,
     load_data_getAllUserAttendanceHistory
 } from "../Db/DataBase";
 import {ScaleLoader} from "react-spinners";
@@ -40,7 +40,7 @@ export default class Netunim extends Component {
         if (this.state.runAjax) {
             //   load_data_daysOfAttendance_for_all_students(this)
             // load_data_daysInMonth_for_Table(this.props.userProps.email,this.props.userProps.password, this);
-            load_data_get_AVG_of_nocecunt_for_netunim(this.props.userProps.email, this.props.userProps.password, new Date().toLocaleString('default', { month: 'long' }), this);
+            load_data_get_AVG_of_nochechut_for_netunim(this.props.userProps.email, this.props.userProps.password, new Date().toLocaleString('default', { month: 'long' }), this);
             load_all_info(this.props.userProps.email, this.props.userProps.password, this);
             load_data_getAllUserAttendanceHistory(this.props.userProps.email, this.props.userProps.password, this);
             this.setState({runAjax: false})

@@ -497,7 +497,6 @@ export default class Students extends React.Component {
             graduated: "בוגר"
         }
         let map = this.state.images;
-        console.log(this.state.students)
         let list1 = this.state.students.filter((student) => {
             return ((student.first_name.includes(this.state.searchFirstName) && student.last_name.includes(this.state.searchLastName)) || student.last_name.includes(this.state.searchFirstName))
         })
@@ -512,7 +511,7 @@ export default class Students extends React.Component {
                 break;
             }
             let user = list1[i];
-            arr2.push(<div className={`card hover-shadow-strong d-flex flex-column justify-content-between ${user.admin == "graduated" ? "border-5 border-danger" : ""} `}>
+            arr2.push(<div className={`card hover-shadow-strong d-flex flex-column justify-content-between h-490px ${user.admin == "graduated" ? "border-5 border-danger" : ""} `}>
                 <div
                     onClick={() => this.selectStudent(user)
                     }

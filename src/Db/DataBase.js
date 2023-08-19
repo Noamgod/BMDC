@@ -274,7 +274,7 @@ export function load_data_inEvent(email, password, that, bool) {
 
 export function load_data_signUp(userInfo) {
     let x = null;
-
+    
     $.ajax({
         url: "Udb.php",
         type: "POST",
@@ -1495,16 +1495,15 @@ export function load_data_getAllUserAttendanceHistoryFor_nochcut(email, password
     return x;
 }
 
-export function load_data_get_AVG_of_nocecunt_for_netunim(email, password, date, that) {
+export function load_data_get_AVG_of_nochechut_for_netunim(email, password, date, that) {
     $.ajax({
         url: "Adb.php",
         type: "POST",
-        data: {type: "get_AVG_of_nocecunt_for_netunim", email: email, password: password, date: date},
+        data: {type: "get_AVG_of_nochechut_for_netunim", email: email, password: password, date: date},
         dataType: 'json',
         timeout: 2000,
         async: true,
         success: function (res) {
-            console.log("get_AVG_of_nocecunt_for_netunim:" )
             let x = new Map();
             for (let i = 0; i < res.length; i++) {
                     x.set(res[i].uuid, (100 - res[i].attendance_percentage).toFixed(2))
@@ -1514,7 +1513,7 @@ export function load_data_get_AVG_of_nocecunt_for_netunim(email, password, date,
             that.setState({allUserAVG: x})
         },
         error: function (error) {
-            console.log("get_AVG_of_nocecunt_for_netunim not work: ", error)
+            console.log("get_AVG_of_nochechut_for_netunim not work: ", error)
 
         }
     })
@@ -1683,64 +1682,12 @@ export function delete_User(email, password, id) {
             x = response;
         },
         error: function (error) {
-            console.log("success", error)
+            console.log("Delete User Error: ", error)
             x = error
         }
     })
     return x;
 }
-
-/*export function just_Once() {
-    let email = [];
-    let map = [];
-    $.ajax({
-        url: "Adb.php",
-        type: "POST",
-        data: {type: "justOnce"},
-        dataType: 'json',
-        timeout: 2000,
-        async: false,
-        success: function (response) {
-            for (let i = 0; i < response.length; i++) {
-                email[i] = response[i].email;
-                map[i] = encrypt(response[i].password);
-            }
-            console.log("success form just_Once")
-            console.log("response: ", response)
-            console.log("map", map)
-            console.log("email", email)
-            console.log("End logs from just_Once")
-            getAllPasswords(map, email);
-
-        },
-        error: function (error) {
-            console.log("success", error)
-
-        }
-    })
-    return map;
-
-}*/
-
-/*export function getAllPasswords(map, Emails) {
-    let x;
-    $.ajax({
-        url: "Adb.php",
-        type: "POST",
-        data: {type: "getAllPasswords", Noam: map, Emails: Emails},
-        dataType: 'json',
-        timeout: 2000,
-        async: false,
-        success: function (response) {
-            x = response;
-        },
-        error: function (error) {
-            console.log("success", error)
-            x = error
-        }
-    })
-    return x;
-}*/
 
 export function load_data_downloadAttendance_for_all_students(email, password, that) {
     let x;

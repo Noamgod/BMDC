@@ -23,9 +23,9 @@ export default class Logs extends Component {
         filterShowingLogs=()=> {
             this.setState({showingLogs: this.state.logs.filter((log, index)=>{
                 if(this.state.filterByMyUUID === -1) {
-                    return ((log['command'].toLowerCase().includes(document.getElementById("logsSearchBarFilter").value.toLowerCase()) || log['full_name'].toLowerCase().includes(document.getElementById("logsSearchBarFilter").value.toLowerCase())) && log['date'] >=  formatDate(this.state.filterDate))
+                    return ((log['command'].toLowerCase().includes(document.getElementById("logsSearchBarFilter").value.toLowerCase()) || log['full_name'].toLowerCase().includes(document.getElementById("logsSearchBarFilter").value.toLowerCase())) && ((!document.getElementById("filterShowAll").checked) && log['date'] === formatDate(this.state.filterDate)))
                 }else{
-                    return ((log['command'].toLowerCase().includes(document.getElementById("logsSearchBarFilter").value.toLowerCase()) || log['full_name'].toLowerCase().includes(document.getElementById("logsSearchBarFilter").value.toLowerCase())) && ((log['executioner_uuid'].includes(this.state.filterByMyUUID) || log['executed_on_uuid'].includes(this.state.filterByMyUUID)) && (log['date'] >=  formatDate(this.state.filterDate))))
+                    return ((log['command'].toLowerCase().includes(document.getElementById("logsSearchBarFilter").value.toLowerCase()) || log['full_name'].toLowerCase().includes(document.getElementById("logsSearchBarFilter").value.toLowerCase())) && ((log['executioner_uuid'].includes(this.state.filterByMyUUID) || log['executed_on_uuid'].includes(this.state.filterByMyUUID)) && ((!document.getElementById("filterShowAll").checked) && log['date'] === formatDate(this.state.filterDate))))
                 }
                 })})
         }
