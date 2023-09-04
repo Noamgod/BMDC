@@ -444,7 +444,6 @@ export default class Nochecut extends Component {
         let className = document.getElementById("delete_class_name").value;
         if (className === "") {
             alert("שם השיעור ריק")
-            return;
 
         }else {
             delete_class(this.props.userProps.email, this.props.userProps.password, className)
